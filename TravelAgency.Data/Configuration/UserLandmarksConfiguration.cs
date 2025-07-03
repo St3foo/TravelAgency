@@ -18,12 +18,14 @@ namespace TravelAgency.Data.Configuration
             entity
                 .HasOne(ul => ul.User)
                 .WithMany()
-                .HasForeignKey(ul => ul.UserId);
+                .HasForeignKey(ul => ul.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity
                 .HasOne(ul => ul.Landmark)
                 .WithMany(l => l.UserLandmarks)
-                .HasForeignKey(ul => ul.LandmarkId);
+                .HasForeignKey(ul => ul.LandmarkId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity
                 .HasQueryFilter(ul => ul.Landmark.IsDeleted == false);
