@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GCommon\GCommon.csproj" />
+    <ProjectReference Include="..\GCommon\TravelAgency.GCommon.csproj" />
     <ProjectReference Include="..\TravelAgency.Data.Models\TravelAgency.Data.Models.csproj" />
   </ItemGroup>
 

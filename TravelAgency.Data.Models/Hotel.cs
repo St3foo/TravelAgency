@@ -21,5 +21,7 @@
         public Guid DestinationId { get; set; }
 
         public virtual Destination Destination { get; set; } = null!;
+
+        public virtual ICollection<UserHotels> UsersHotels { get; set; } = new HashSet<UserHotels>();
     }
 }

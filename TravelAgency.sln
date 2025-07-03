@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{0B8B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{A8EA48C1-D010-4B20-8A37-DDFD7E5CEF87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCommon", "GCommon\GCommon.csproj", "{D579C291-4C71-4E16-BF58-6EB512661F8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelAgency.GCommon", "GCommon\TravelAgency.GCommon.csproj", "{D579C291-4C71-4E16-BF58-6EB512661F8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelAgency.Data", "TravelAgency.Data\TravelAgency.Data.csproj", "{B73BB5A4-3F09-41DA-AD87-D349E2406B6E}"
 EndProject

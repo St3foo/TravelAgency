@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GCommon\GCommon.csproj" />
+    <ProjectReference Include="..\GCommon\TravelAgency.GCommon.csproj" />
   </ItemGroup>
 
 </Project>
