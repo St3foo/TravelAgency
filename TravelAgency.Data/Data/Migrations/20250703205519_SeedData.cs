@@ -1,0 +1,366 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace TravelAgency.Data.Migrations
+{
+    /// <inheritdoc />
+    public partial class SeedData : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<string>(
+                name: "ImageUrl",
+                table: "Landmarks",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.UpdateData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "7699db7d-964f-4782-8209-d76562e0fece",
+                columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
+                values: new object[] { "8b1eb363-254e-4dd1-8127-969401434c1d", "AQAAAAIAAYagAAAAEF0HQhYlNwTXmhOS9Bsm7RRb7fdishhl8lDR/qwl7gkhzAu0AFOlGKO7dXrW0CRfdQ==", "97133ae5-a59e-40c3-bfae-ff4cd79b5def" });
+
+            migrationBuilder.InsertData(
+                table: "Destinations",
+                columns: new[] { "Id", "CountryName", "Description", "ImageUrl" },
+                values: new object[,]
+                {
+                    { new Guid("0e0e2740-9aa7-4316-bc76-5ac57c91ab0d"), "Greece", "Greece is a popular tourist destination known for its stunning landscapes, ancient ruins, vibrant culture, and delicious cuisine. The country offers a mix of experiences, from exploring historical sites like the Acropolis in Athens to relaxing on beautiful beaches in the Greek islands. Greece is also famous for its culinary delights, with fresh ingredients and flavorful dishes like moussaka and souvlaki.", "https://www.cuddlynest.com/blog/wp-content/uploads/2022/10/top-attractions-in-greece-athens.jpg" },
+                    { new Guid("1d29ae99-3840-4ae9-aee7-ad0d4dd94cff"), "Spain", "Spain is a vibrant and diverse country, offering a rich tapestry of cultural experiences, stunning landscapes, and delicious cuisine. From bustling cities like Madrid and Barcelona to the sun-kissed beaches of the Mediterranean coast, Spain caters to a wide range of travel preferences. Its history is evident in its architecture, with influences from Roman, Moorish, and Christian cultures, leaving behind iconic landmarks like the Alhambra and numerous cathedrals.", "https://www.connollycove.com/wp-content/uploads/2023/05/Depositphotos_171005292_XL.webp" },
+                    { new Guid("2127672f-0baf-4033-9279-7aa70698dca4"), "India", "India, a vibrant and diverse country, is a popular tourist destination known for its stunning natural wonders, rich cultural heritage, and historical sites. From bustling cities to serene backwaters, India offers a wide range of experiences for every traveler. Its unique blend of ancient traditions and modern life, combined with warm hospitality, makes it an unforgettable destination.", "https://static.investindia.gov.in/s3fs-public/2023-06/1.jpg" },
+                    { new Guid("530d919a-fd28-43f9-89e0-8fc5bd00f3fe"), "France", "France, the world's most visited country, offers a rich tapestry of experiences for tourists, from iconic landmarks and vibrant cities to picturesque countryside and stunning coastlines. It's a land of diverse landscapes, from the lavender fields of Provence to the snowy peaks of the Alps, and boasts a wealth of historical sites, including numerous UNESCO World Heritage sites. ", "https://res.klook.com/image/upload/q_85/c_fill,w_750/v1718112298/klyzxawxgytpixrvsgem.jpg" },
+                    { new Guid("7060a6cc-6942-4346-b2c0-0011337cbaff"), "Italy", "Italy is a popular tourist destination known for its rich history, art, architecture, cuisine, and diverse landscapes. Visitors are drawn to iconic cities like Rome, Florence, and Venice, as well as the scenic beauty of the Amalfi Coast, Lake Como, and the Italian Alps. Italy also boasts a vibrant culture, delicious food, and friendly people, making it a captivating destination for a wide range of travelers.", "https://imgcld.yatra.com/ytimages/image/upload/t_holidays_srplist_tablet_hc/v5879035672/Holidays/Greenland/Venice_ycTyfo.jpg" },
+                    { new Guid("75779581-666c-446d-a9a8-5b30743d6738"), "Hawaii", "Hawaii, known as the Aloha State, is a captivating destination celebrated for its stunning natural beauty, vibrant culture, and unique experiences. It offers diverse landscapes, from volcanic wonders and lush rainforests to golden beaches and dramatic canyons. Visitors can explore volcanic national parks, hike to breathtaking viewpoints, enjoy world-class surfing, and immerse themselves in the rich Polynesian heritage.", "https://www.acg.aaa.com/content/contenthub/us/en/blogs/4c/travel/say-aloha-to-your-ultimate-hawaii-travel-guide/_jcr_content/root/container/container/blog-details/image.coreimg.jpeg/1734336851769/hero-ultimate-hawaii-travel-guide-seo.jpeg" },
+                    { new Guid("bba3d9da-4843-448e-b0f0-ba9c60e91b08"), "United States of America", "A tourist in the USA can experience a vast range of attractions, from natural wonders like national parks and coastlines to vibrant cities and diverse cultural experiences. The country offers something for every type of traveler, including those interested in history, food, outdoor adventures, and the arts.", "https://miro.medium.com/v2/resize:fit:800/1*93v0YEC9A7Q8-8PxPwrstA.jpeg" },
+                    { new Guid("bc2131b6-9529-40c5-a963-628410fa0c41"), "Brazil", "Brazil, the largest country in South America, is a vibrant land known for its diverse landscapes, rich culture, and lively atmosphere. From the iconic beaches of Rio de Janeiro and the lush Amazon rainforest to the historic cities and vibrant festivals, Brazil offers a unique and unforgettable travel experience.", "https://www.mappr.co/wp-content/uploads/2021/04/image-132.jpeg" },
+                    { new Guid("c304fab0-e8e7-4d06-9ffb-607c502be4e6"), "Japan", "Japan is a captivating blend of ancient traditions and modern innovation, offering diverse experiences for travelers. From bustling cityscapes like Tokyo and Osaka to serene temples and stunning natural landscapes, there's something for everyone. Visitors can explore historic castles and shrines, indulge in delicious cuisine, and experience the unique culture of Japan.", "https://www.smartmeetings.com/wp-content/uploads/2018/03/japan-1.jpg" },
+                    { new Guid("f2af18bd-0c37-45dd-b545-3ff2beea2473"), "Egypt", "Egypt is a captivating country known for its rich ancient history, vibrant culture, and stunning natural landscapes. Tourists are drawn to explore the iconic pyramids and temples, cruise along the Nile River, and relax on the beaches of the Red Sea. The country offers a blend of historical exploration, cultural immersion, and opportunities for adventure and relaxation.", "https://www.traveltalktours.com/wp-content/smush-webp/2023/02/Great-Sphinx-of-Giza.jpeg.webp" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Hotels",
+                columns: new[] { "Id", "CityName", "DaysStay", "Description", "DestinationId", "HotelName", "ImageUrl", "Price" },
+                values: new object[,]
+                {
+                    { new Guid("2f7a05d6-d490-4f67-8c3b-ada3127ea585"), "New Delhi", 7, "The Leela Palaces, Hotels and Resorts is an Indian luxury hotel chain known for its opulent properties that blend traditional Indian aesthetics with modern comforts.", new Guid("2127672f-0baf-4033-9279-7aa70698dca4"), "Leela Palace", "https://5.imimg.com/data5/VM/JJ/GLADMIN-9169594/the-leela-palace-5-star-luxury-hotel.jpg", 1800m },
+                    { new Guid("35b584ce-0897-44af-b86a-aa0401abc87e"), "Hilo", 5, "The Hilo Hawaiian Hotel, an oceanfront resort on Hilo Bay, offers a blend of authentic Hawaiian charm and modern amenities.", new Guid("75779581-666c-446d-a9a8-5b30743d6738"), "Hilo Hawaiian Hotel", "https://www.hilohawaiian.com/wp-content/uploads/2024/11/Hilo-Hawaiian-008-copy-1030x687.jpg", 1600m },
+                    { new Guid("4e01fe6f-7ca9-4d5d-a13b-ca513d490a8e"), "Rio de Janeiro", 7, "The Fairmont Rio de Janeiro Copacabana is a 5-star beachfront hotel located on Copacabana Beach in Rio de Janeiro, Brazil. It offers stunning views of the beach, Sugarloaf Mountain, and Rodrigo de Freitas Lagoon.", new Guid("bc2131b6-9529-40c5-a963-628410fa0c41"), "The Fairmont", "https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,q_75,w_1200/v1/crm/iglta/111988_9c002b48-5056-854c-b6bdad1a03141233.jpg", 1750m },
+                    { new Guid("64459ca2-a1fc-475f-a51b-87bb20a66e01"), "Santorini", 10, "Katikies Santorini is a luxury hotel located on the cliffs of Oia, Santorini, Greece. It's renowned for its stunning views of the caldera and the Aegean Sea, and its unique, cubist-style architecture integrated into the cliffside. ", new Guid("0e0e2740-9aa7-4316-bc76-5ac57c91ab0d"), "Katikies Santorini", "https://cms.inspirato.com/ImageGen.ashx?image=%2Fmedia%2F9396609%2Fsantorini-greece_katikies-hotel_exterior2.jpg&width=1081.5", 2000m },
+                    { new Guid("873c1c6c-c0aa-4a3c-b7fc-fc93cb31254b"), "Las Vegas", 5, "The MGM Grand Las Vegas is a massive hotel and casino resort located on the Las Vegas Strip, known for its size, entertainment options, and vibrant atmosphere. It boasts a huge casino floor, numerous restaurants, a large pool complex, and is home to the MGM Grand Garden Arena, a popular venue for concerts and sporting events.", new Guid("bba3d9da-4843-448e-b0f0-ba9c60e91b08"), "MGM Grand", "https://thelibrary.mgmresorts.com/transform/M2h6tISLUZ61/MGM103112227.tif", 1250m },
+                    { new Guid("a21e6f7e-009a-4202-be2e-abdaed81df7e"), "Madrid", 5, "Hotel Catalonia Goya is a 4-star hotel located in the Salamanca district of Madrid. It's situated in a 19th-century building and offers modern, comfortable rooms with wooden floors and elegant dark furniture.", new Guid("1d29ae99-3840-4ae9-aee7-ad0d4dd94cff"), "Catalonia Goya", "https://storage.googleapis.com/app-engine-imagenes-pro/pro/styles/talla_uno/cloud-storage/2024-09/Hero_10.jpg.webp", 1050m },
+                    { new Guid("d857605f-1a16-4539-afaf-5e42f604413b"), "Cairo", 7, "The hotel features mainly Art Deco and contemporary design features within its overall interior decoration style. It is situated between the two towers of the Nile City Complex. It is also located about 23 km away from tourist attractions including the Giza pyramid complex.", new Guid("f2af18bd-0c37-45dd-b545-3ff2beea2473"), "Fairmont Nile City", "https://m.ahstatic.com/is/image/accorhotels/aja_p_5280-04:8by10?fmt=jpg&op_usm=1.75,0.3,2,0&resMode=sharp2&iccEmbed=true&icc=sRGB&dpr=on,1.5&wid=335&hei=418&qlt=80", 1070m },
+                    { new Guid("e27408c7-41dc-4504-b9c9-79f1cfe92f83"), "Rome", 5, "Hotel Artemide is a 4-star hotel located in the heart of Rome, known for its central location and elegant accommodations. It features a rooftop terrace, a spa, and an Italian cuisine restaurant.", new Guid("7060a6cc-6942-4346-b2c0-0011337cbaff"), "Artemide", "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/96/aa/1f/exterior-hotel-facade.jpg?w=900&h=500&s=1", 1100m },
+                    { new Guid("eb99a8e9-1f43-4cf9-bb47-b398177bfc73"), "Paris", 7, "Hotel Baume is a 4-star, 35-room boutique hotel in Paris with a 1930s Art Deco design, located in the Saint-Germain-des-Prés neighborhood.", new Guid("530d919a-fd28-43f9-89e0-8fc5bd00f3fe"), "Baume", "https://live.staticflickr.com/65535/52533798631_1a273b2e86_c_d.jpg", 900m },
+                    { new Guid("f8e2efd0-0e54-4c6d-8582-3651fa46f7b3"), "Tokyo", 5, "The Sheraton Grande Tokyo Bay Hotel is a luxurious urban resort hotel located near Tokyo Disneyland and Tokyo DisneySea.", new Guid("c304fab0-e8e7-4d06-9ffb-607c502be4e6"), "Sheraton Grande", "https://cache.marriott.com/is/image/marriotts7prod/si-tyosi-tyosi-exterior-9518-28621:Wide-Hor?wid=1336&fit=constrain", 1200m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Landmarks",
+                columns: new[] { "Id", "Description", "DestinationId", "ImageUrl", "LocationName", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("0a5bd069-b91b-49f7-acfe-2f0df5985028"), "The Colosseum, also known as the Flavian Amphitheatre, is a massive elliptical structure in Rome, Italy, famous for its historical significance as a venue for gladiatorial contests and public spectacles. Built with travertine stone, tuff, and brick-faced concrete, it's the largest amphitheater ever constructed, with an oval shape measuring 189 meters long and 156 meters wide.", new Guid("7060a6cc-6942-4346-b2c0-0011337cbaff"), "https://res.cloudinary.com/dtljonz0f/image/upload/c_auto,ar_4:3,w_3840,g_auto/f_auto/q_auto/v1/roman-coliseum-under-clouds-sunset-summer?_a=BAVAZGE70", "Rome", "Colosseum" },
+                    { new Guid("19670860-5d97-4e3e-a7a4-e79107e4b948"), "Ibiza, also known as Eivissa in Catalan, is a Spanish island in the Balearic Islands archipelago, renowned for its vibrant nightlife and stunning beaches. It's a popular tourist destination, attracting visitors with its unique blend of cosmopolitan atmosphere, natural beauty, and historical sites like Dalt Vila, a UNESCO World Heritage site.", new Guid("1d29ae99-3840-4ae9-aee7-ad0d4dd94cff"), "https://www.invisahoteles.com/uploads/cms_apps/imagenes/san_antoni.png", "Island of Ibiza", "Ibiza" },
+                    { new Guid("1be37f07-c443-4dfb-8400-f78f6a667de7"), "Leblon Beach, located in Rio de Janeiro, is known for its upscale atmosphere, family-friendly environment, and beautiful scenery. It's situated in the wealthy Leblon neighborhood, adjacent to Ipanema, but offers a more tranquil and sophisticated experience. ", new Guid("bc2131b6-9529-40c5-a963-628410fa0c41"), "https://mediaim.expedia.com/destination/1/41c8d7b4508417f56a0654d0384603ff.jpg", "Rio de Janeiro", "Leblon Beach" },
+                    { new Guid("257877c3-1bf9-4da2-bd67-134c7aaebe9b"), "Mount Rushmore is a massive sculpture carved into the granite face of Mount Rushmore in the Black Hills of South Dakota. It features the 60-foot-high carved faces of four U.S. presidents: George Washington, Thomas Jefferson, Theodore Roosevelt, and Abraham Lincoln. The monument, known as the \"Shrine of Democracy\", symbolizes the birth, growth, development, and preservation of the United States.", new Guid("bba3d9da-4843-448e-b0f0-ba9c60e91b08"), "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Mount_Rushmore_detail_view_%28100MP%29.jpg/1200px-Mount_Rushmore_detail_view_%28100MP%29.jpg", "Keystone", "Mount Rushmore" },
+                    { new Guid("26d2d910-86f5-419a-a88a-a5b57206a72b"), "Mount Fuji, also known as Fujisan, is Japan's highest mountain and a globally recognized symbol of the country. It's a dormant stratovolcano with a near-perfect symmetrical cone shape, often capped with snow. Rising to 3,776 meters (12,389 feet), it's a popular destination for climbers and a source of artistic inspiration.", new Guid("c304fab0-e8e7-4d06-9ffb-607c502be4e6"), "https://www.beautifulworld.com/wp-content/uploads/2020/11/Mount-Fuji-Japan.jpg", "Island of Honshu", "Mount Fuji" },
+                    { new Guid("2846bf55-4630-4834-a3cb-9188ae9ebb2f"), "Escadaria Selarón, also known as the Selarón Steps, is a vibrant and iconic set of 215 steps in Rio de Janeiro, Brazil. It's a masterpiece of public art created by Chilean-born artist Jorge Selarón, who dedicated it as a tribute to the Brazilian people.", new Guid("bc2131b6-9529-40c5-a963-628410fa0c41"), "https://freewalkertours.com/wp-content/uploads/Escalera-Selaron5.jpeg", "Rio de Janeiro", "Escadaria Selarón" },
+                    { new Guid("2a9bd06c-b5e6-4b86-a412-49f2f2c1873e"), "Waikiki Beach is a world-famous, two-mile stretch of white sand in Honolulu, Hawaii, known for its vibrant atmosphere and beautiful turquoise waters. It's a popular destination for swimming, surfing, and sunbathing, and is lined with palm trees, high-rise hotels, and resorts.", new Guid("75779581-666c-446d-a9a8-5b30743d6738"), "https://www.alamoanahotelhonolulu.com/Portals/alamoanahotelhonolulu.com/Images/HeroImages/waikiki-beach_1920x720.jpg?ver=2018-09-07-111100-177", "Honolulu", "Waikiki Beach" },
+                    { new Guid("4a656a15-efcd-43eb-88f9-a2c24e3bd820"), "The Arc de Triomphe, located in Paris, is a monument commissioned by Napoleon Bonaparte in 1806 to honor his military victories. Inspired by ancient Roman arches, it stands as a symbol of French military prowess and national unity. The monument features intricate sculptures, inscriptions of battles and generals, and the Tomb of the Unknown Soldier.", new Guid("530d919a-fd28-43f9-89e0-8fc5bd00f3fe"), "https://media.cntraveler.com/photos/5a93281d8087c02669a7dc07/16:9/w_2560,c_limit/Arc%20de%20Triomphe_GettyImages-615063063.jpg", "Paris", "Arc de Triomphe" },
+                    { new Guid("4b8e0894-f680-4fa7-bfdb-ac92f3061788"), "The Eiffel Tower, a wrought iron lattice tower, is a globally recognized symbol of Paris and a testament to engineering and architectural boldness. Standing at 330 meters (1,083 feet) tall, including the antenna, it was the tallest structure in the world for over four decades. The tower features three levels for visitors, offering panoramic views of the city, restaurants, and shops.", new Guid("530d919a-fd28-43f9-89e0-8fc5bd00f3fe"), "https://planetrail.co.uk/wp-content/uploads/Eiffel-Tower-Paris-resized.jpg", "Paris", "Eiffel Tower" },
+                    { new Guid("5a883558-99eb-4c1a-8250-fcd2af1049bf"), "Fushimi Inari-taisha, located in Kyoto, Japan, is a prominent Shinto shrine dedicated to Inari, the god of rice and prosperity. It is famous for its thousands of vibrant vermilion torii gates that wind up a mountain path, creating a mesmerizing tunnel-like effect. The shrine is the head shrine for all Inari shrines in Japan and is a popular destination for both tourists and locals. ", new Guid("c304fab0-e8e7-4d06-9ffb-607c502be4e6"), "https://dskyoto.s3.amazonaws.com/gallery/full/8514/5559/7797/08-20131216_FushimiInari_Mainspot-307.jpg", "Kyoto", "Fushimi Inari Taisha" },
+                    { new Guid("6824566a-9f3d-406e-b74a-f49f8aab1196"), "The Leaning Tower of Pisa is a renowned bell tower (campanile) in Pisa, Italy, notable for its unintended tilt caused by unstable ground. It's a cylindrical, eight-story structure of white marble, part of the Pisa Cathedral complex, and features colonnaded balconies and arches.", new Guid("7060a6cc-6942-4346-b2c0-0011337cbaff"), "https://static.toiimg.com/photo/112466783.cms", "Pisa", "Leaning Tower of Pisa" },
+                    { new Guid("6826870b-52e3-4e87-9b74-e8840020db59"), "The Christ the Redeemer statue in Brazil is a colossal Art Deco-style statue of Jesus Christ, located atop Corcovado Mountain in Rio de Janeiro. It stands 30 meters (98 feet) tall, with a 8-meter (26-foot) pedestal, and has arms that stretch 28 meters (92 feet) wide.", new Guid("bc2131b6-9529-40c5-a963-628410fa0c41"), "https://upload.wikimedia.org/wikipedia/commons/4/4f/Christ_the_Redeemer_-_Cristo_Redentor.jpg", "Rio de Janeiro", "Christ the Redeemer" },
+                    { new Guid("7fd83bf7-24e8-45fb-b1e5-877a0452ba43"), "The Amber Palace, also known as Amer Fort, is a stunning example of Rajput architecture located 11 kilometers from Jaipur, India. Built primarily from pale yellow and pink sandstone with white marble, it stands on a hill overlooking Maota Lake.", new Guid("2127672f-0baf-4033-9279-7aa70698dca4"), "https://cdn.britannica.com/50/152850-050-2DB7645E/Wall-centre-background-Amer-Palace-Sun-Gate.jpg", "Jaipur", "Amber Palace" },
+                    { new Guid("8236660d-2616-425c-82dc-99bb0863307b"), "The Meenakshi Amman Temple in Madurai, India, is a renowned example of Dravidian architecture, dedicated to Goddess Meenakshi and Lord Sundareshwarar. The temple complex is vast, featuring towering gopurams (gateway towers), intricate sculptures, and the famous Hall of a Thousand Pillars.", new Guid("2127672f-0baf-4033-9279-7aa70698dca4"), "https://i0.wp.com/naedin.click/wp-content/uploads/2021/10/Meenakshi-Amman-Temple-Tamil-Nadu-India-10.jpg?resize=696%2C522&ssl=1", "Madurai", "Meenakshi Amman Temple" },
+                    { new Guid("8273a188-b39f-44ca-a663-33ba6a262083"), "Karnak, located in Luxor, Egypt, is the largest religious complex in the world, dedicated to the Theban Triad of Amun, Mut, and Khonsu. Construction began in the Middle Kingdom and continued into the Ptolemaic period, with most of the current structures dating to the New Kingdom. The site is known for its colossal statues, towering columns, and vast Hypostyle Hall. ", new Guid("f2af18bd-0c37-45dd-b545-3ff2beea2473"), "https://images.memphistours.com/xlarge/839487522_Karnak%20Temple.jpg", "Luxor", "Karnak" },
+                    { new Guid("847d8970-36dd-40da-af65-6f0d19162eb7"), "Niagara Falls is a collective name for a group of three waterfalls located on the Niagara River, straddling the border between Ontario, Canada, and New York, USA.", new Guid("bba3d9da-4843-448e-b0f0-ba9c60e91b08"), "https://cdn.britannica.com/30/94430-050-D0FC51CD/Niagara-Falls.jpg", "Ontario", "Niagara Falls" },
+                    { new Guid("85bdc262-b92f-440e-be00-b753edfb2d3c"), "Hanauma Bay is a protected marine embayment on the southeast coast of Oʻahu, Hawaii, formed within a tuff ring of a volcanic cone. It's renowned for its vibrant coral reef and abundant marine life, making it a popular destination for snorkeling and swimming. ", new Guid("75779581-666c-446d-a9a8-5b30743d6738"), "https://www.hawaiiactivities.com/travelguide/wp-content/uploads/Hawaii_Oahu_Hanauma-Bay_shutterstock_2376889275.jpg", "Honolulu", "Hanauma Bay" },
+                    { new Guid("9318ddf7-c4f4-4deb-9480-82566d12da56"), "Meteora, meaning \"suspended in the air\", is a unique rock formation in central Greece, famous for its monasteries perched atop towering sandstone pillars. These monasteries, built by monks beginning in the 14th century, represent a significant example of Byzantine architecture and are a UNESCO World Heritage site.", new Guid("0e0e2740-9aa7-4316-bc76-5ac57c91ab0d"), "https://siskata.com/wp-content/uploads/2013/07/DSC_0181.jpg", "Trikala", "Meteora" },
+                    { new Guid("acf38f44-653f-48d0-9c3f-76b7da78fcf3"), "Palma Cathedral, also known as La Seu, is a magnificent Gothic Roman Catholic cathedral located in Palma de Mallorca, Spain. It is a prominent landmark overlooking the city and the sea, known for its impressive size, intricate architecture, and historical significance.", new Guid("1d29ae99-3840-4ae9-aee7-ad0d4dd94cff"), "https://exoticholiday.bg/img/POBEKTI/BIG_shutterstock_15288900951170.jpg", "Palma de Mallorca", "La Seu" },
+                    { new Guid("b2c81222-382e-4266-9ebc-488bba633004"), "The Sagrada Familia, also known as the Basilica i Temple Expiatori de la Sagrada Família, is a large, unfinished Roman Catholic church in Barcelona, Spain, designed by Antoni Gaudí. It is a UNESCO World Heritage Site and an iconic symbol of Barcelona.", new Guid("1d29ae99-3840-4ae9-aee7-ad0d4dd94cff"), "https://media.tacdn.com/media/attractions-splice-spp-674x446/0b/e1/0a/1e.jpg", "Barcelona", "Sagrada Família" },
+                    { new Guid("b4a25684-2851-44c5-bcde-b488530526a1"), "The Rialto Bridge, or Ponte di Rialto, is a historic stone arch bridge in Venice, Italy, spanning the Grand Canal. It's the oldest bridge across the canal and a major tourist attraction. Built between 1588 and 1591, it replaced earlier wooden structures and is known for its single-span design, arcades, and shops. ", new Guid("7060a6cc-6942-4346-b2c0-0011337cbaff"), "https://csengineermag.com/wp-content/uploads/2022/11/AdobeStock_232079420.jpeg", "Venice", "Rialto Bridge" },
+                    { new Guid("b57bf2bd-d373-4b40-8144-8ecf1b8a8dfb"), "Palamidi Fortress is a Venetian-built castle located on a hill overlooking Nafplio in the Peloponnese region of Greece. It is known for its impressive baroque architecture and strategic location, offering panoramic views of the town and the Argolic Gulf.", new Guid("0e0e2740-9aa7-4316-bc76-5ac57c91ab0d"), "https://ucarecdn.com/6cccfe0a-0316-40df-bce6-a7429f58415d/-/crop/4000x2098/0,75/-/resize/1200x630/-/resize/x300/", "Nafplio", "Palamidi" },
+                    { new Guid("c61d4179-3893-43f4-bdbd-0df0d5d1a777"), "The Statue of Liberty is a colossal neoclassical sculpture on Liberty Island in New York Harbor. It depicts Libertas, the Roman goddess of liberty, as a woman holding a torch in her right hand and a tablet inscribed with the date of the American Declaration of Independence (July 4, 1776) in her left. The statue, a gift from France to the United States, is a symbol of freedom and democracy. ", new Guid("bba3d9da-4843-448e-b0f0-ba9c60e91b08"), "https://cdn-imgix.headout.com/tour/30357/TOUR-IMAGE/6cdcf542-452d-4897-beed-76cf68f154e4-1act-de005e04-05d9-4715-96b0-6a089d5c3460.jpg?auto=format&w=1222.3999999999999&h=687.6&q=90&ar=16%3A9&crop=faces&fit=crop", "New York", "Statue of Liberty" },
+                    { new Guid("cc77e510-98d0-4ef9-967e-1b5f04e6a9c1"), "Lanikai Beach, also known as Ka'ōhao Beach, is a world-renowned beach on the windward coast of Oahu, Hawaii, known for its soft, white sand and calm, turquoise waters. It's often ranked as one of the best beaches in the world and is celebrated for its stunning views of the Mokulua Islands.", new Guid("75779581-666c-446d-a9a8-5b30743d6738"), "https://loveoahu.org/wp-content/uploads/Lanikai-beach-mokes.jpg", "Kailua", "Lanikai Beach" },
+                    { new Guid("e1264931-2355-4271-a612-398ca2f84b15"), "The Valley of the Kings is a historical site in Egypt, known as the burial ground for many pharaohs and powerful nobles of the New Kingdom period (1539-1075 BC). It is located on the west bank of the Nile River, opposite Luxor, and is characterized by its numerous rock-cut tombs, some adorned with intricate hieroglyphs and vivid decorations. ", new Guid("f2af18bd-0c37-45dd-b545-3ff2beea2473"), "https://www.cleopatraegypttours.com/wp-content/uploads/2020/01/Valley-of-the-Kings.jpg", "Luxor", "Valley of the Kings" },
+                    { new Guid("e896a347-9756-43b4-9791-dca8c5aeb84b"), "The Giza pyramid complex (also called the Giza necropolis) in Egypt is home to the Great Pyramid, the pyramid of Khafre, and the pyramid of Menkaure, along with their associated pyramid complexes and the Great Sphinx. All were built during the Fourth Dynasty of the Old Kingdom of ancient Egypt, between c. 2600 – c.", new Guid("f2af18bd-0c37-45dd-b545-3ff2beea2473"), "https://cdn-imgix.headout.com/media/images/e3e4b92772a00bf08922a79dd5a874d7-Giza.jpg", "Egypt", "Piramids of Giza" },
+                    { new Guid("e8ef0ae9-80b9-414a-8851-23fd5e9a7625"), "The Acropolis of Athens is an ancient citadel located on a rocky hill above the city. It's famous for its collection of historical buildings, including the Parthenon, and is considered a symbol of classical Greek civilization and the birthplace of Western civilization.", new Guid("0e0e2740-9aa7-4316-bc76-5ac57c91ab0d"), "https://cdn.britannica.com/99/255999-159-73560D25/Parthenon-temple-at-the-Acropolis-of-Athens-Greece-built-5th-century-BC.jpg", "Athens", "Acropolis of Athens" },
+                    { new Guid("eb08ee39-2927-4861-bc8c-05c2f1b1a3d0"), "The Taj Mahal is a magnificent white marble mausoleum located in Agra, India, renowned for its stunning architecture and as a symbol of enduring love. Built by Mughal emperor Shah Jahan in memory of his wife Mumtaz Mahal, it stands as a masterpiece of Indo-Islamic design.", new Guid("2127672f-0baf-4033-9279-7aa70698dca4"), "https://www.travelandleisure.com/thmb/wdUcyBQyQ0wUVs4wLahp0iWgZhc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/taj-mahal-agra-india-TAJ0217-9eab8f20d11d4391901867ed1ce222b8.jpg", "Agra", "Taj Mahal" },
+                    { new Guid("f1bb2a61-7d0a-4ebc-b37e-c8ee0caeaaea"), "The Louvre, or Musée du Louvre, is one of the world's largest and most famous art museums, located in Paris, France. Originally a fortress and then a royal palace, it now houses a vast collection of art and artifacts, spanning various historical periods and cultures. The museum is renowned for its iconic masterpieces like the Mona Lisa and the Venus de Milo.", new Guid("530d919a-fd28-43f9-89e0-8fc5bd00f3fe"), "https://www.franceguide.info/wp-content/uploads/sites/18/paris-louvre-pyramid-hd.jpg", "Paris", "Louvre" },
+                    { new Guid("f87bbd97-a72e-47ff-a03f-487d07394e48"), "The Arashiyama Bamboo Forest, also known as Sagano Bamboo Forest, is a captivating natural attraction in Kyoto, Japan, renowned for its towering bamboo stalks and serene atmosphere. Visitors can stroll along pathways that wind through the grove, experiencing the unique sights and sounds of the rustling bamboo leaves.", new Guid("c304fab0-e8e7-4d06-9ffb-607c502be4e6"), "https://arashiyamabambooforest.com/wp-content/uploads/2024/09/arashiyama-bamboo-forest-sagano-kyoto-dense-towering-grove-1.jpeg", "Kyoto", "Arashiyama Bamboo Forest" }
+                });
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("2f7a05d6-d490-4f67-8c3b-ada3127ea585"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("35b584ce-0897-44af-b86a-aa0401abc87e"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("4e01fe6f-7ca9-4d5d-a13b-ca513d490a8e"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("64459ca2-a1fc-475f-a51b-87bb20a66e01"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("873c1c6c-c0aa-4a3c-b7fc-fc93cb31254b"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("a21e6f7e-009a-4202-be2e-abdaed81df7e"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("d857605f-1a16-4539-afaf-5e42f604413b"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("e27408c7-41dc-4504-b9c9-79f1cfe92f83"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("eb99a8e9-1f43-4cf9-bb47-b398177bfc73"));
+
+            migrationBuilder.DeleteData(
+                table: "Hotels",
+                keyColumn: "Id",
+                keyValue: new Guid("f8e2efd0-0e54-4c6d-8582-3651fa46f7b3"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("0a5bd069-b91b-49f7-acfe-2f0df5985028"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("19670860-5d97-4e3e-a7a4-e79107e4b948"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("1be37f07-c443-4dfb-8400-f78f6a667de7"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("257877c3-1bf9-4da2-bd67-134c7aaebe9b"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("26d2d910-86f5-419a-a88a-a5b57206a72b"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("2846bf55-4630-4834-a3cb-9188ae9ebb2f"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("2a9bd06c-b5e6-4b86-a412-49f2f2c1873e"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("4a656a15-efcd-43eb-88f9-a2c24e3bd820"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("4b8e0894-f680-4fa7-bfdb-ac92f3061788"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("5a883558-99eb-4c1a-8250-fcd2af1049bf"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("6824566a-9f3d-406e-b74a-f49f8aab1196"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("6826870b-52e3-4e87-9b74-e8840020db59"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("7fd83bf7-24e8-45fb-b1e5-877a0452ba43"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("8236660d-2616-425c-82dc-99bb0863307b"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("8273a188-b39f-44ca-a663-33ba6a262083"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("847d8970-36dd-40da-af65-6f0d19162eb7"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("85bdc262-b92f-440e-be00-b753edfb2d3c"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("9318ddf7-c4f4-4deb-9480-82566d12da56"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("acf38f44-653f-48d0-9c3f-76b7da78fcf3"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("b2c81222-382e-4266-9ebc-488bba633004"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("b4a25684-2851-44c5-bcde-b488530526a1"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("b57bf2bd-d373-4b40-8144-8ecf1b8a8dfb"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("c61d4179-3893-43f4-bdbd-0df0d5d1a777"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("cc77e510-98d0-4ef9-967e-1b5f04e6a9c1"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("e1264931-2355-4271-a612-398ca2f84b15"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("e896a347-9756-43b4-9791-dca8c5aeb84b"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("e8ef0ae9-80b9-414a-8851-23fd5e9a7625"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("eb08ee39-2927-4861-bc8c-05c2f1b1a3d0"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("f1bb2a61-7d0a-4ebc-b37e-c8ee0caeaaea"));
+
+            migrationBuilder.DeleteData(
+                table: "Landmarks",
+                keyColumn: "Id",
+                keyValue: new Guid("f87bbd97-a72e-47ff-a03f-487d07394e48"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("0e0e2740-9aa7-4316-bc76-5ac57c91ab0d"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("1d29ae99-3840-4ae9-aee7-ad0d4dd94cff"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("2127672f-0baf-4033-9279-7aa70698dca4"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("530d919a-fd28-43f9-89e0-8fc5bd00f3fe"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("7060a6cc-6942-4346-b2c0-0011337cbaff"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("75779581-666c-446d-a9a8-5b30743d6738"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("bba3d9da-4843-448e-b0f0-ba9c60e91b08"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("bc2131b6-9529-40c5-a963-628410fa0c41"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("c304fab0-e8e7-4d06-9ffb-607c502be4e6"));
+
+            migrationBuilder.DeleteData(
+                table: "Destinations",
+                keyColumn: "Id",
+                keyValue: new Guid("f2af18bd-0c37-45dd-b545-3ff2beea2473"));
+
+            migrationBuilder.DropColumn(
+                name: "ImageUrl",
+                table: "Landmarks");
+
+            migrationBuilder.UpdateData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "7699db7d-964f-4782-8209-d76562e0fece",
+                columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
+                values: new object[] { "cd5060da-14e5-4653-bdd8-bbb29d4314f2", "AQAAAAIAAYagAAAAEGDmjA5fnfsYIwafeYaWjHeVvVS8IP0z1BuFLsqrU1Y8JfQOf3K+zIjKR6QAlpEKqQ==", "cfb379a3-157d-4bd9-b260-ee9ff8a24b90" });
+        }
+    }
+}
