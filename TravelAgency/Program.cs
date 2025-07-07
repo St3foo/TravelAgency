@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
+using TravelAgency.Service.Core;
+using TravelAgency.Service.Core.Contracts;
 
 namespace TravelAgency
 {
@@ -27,6 +29,7 @@ namespace TravelAgency
             })
                 .AddEntityFrameworkStores<TravelAgencyDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IDestinationService, DestinationService>();
 
             var app = builder.Build();
 

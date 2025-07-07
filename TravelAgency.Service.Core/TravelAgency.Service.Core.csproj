@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GCommon\TravelAgency.GCommon.csproj" />
     <ProjectReference Include="..\TravelAgency.Data\TravelAgency.Data.csproj" />
+    <ProjectReference Include="..\TravelAgency.ViewModels\TravelAgency.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
