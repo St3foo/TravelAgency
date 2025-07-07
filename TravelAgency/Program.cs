@@ -31,6 +31,7 @@ namespace TravelAgency
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IDestinationService, DestinationService>();
             builder.Services.AddScoped<ILandmarkService, LandmarkService>();
+            builder.Services.AddScoped<IHotelInterface, HotelService>();
 
             var app = builder.Build();
 
