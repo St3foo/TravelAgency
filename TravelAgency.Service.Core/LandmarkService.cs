@@ -93,11 +93,15 @@ namespace TravelAgency.Service.Core
 
             if (model != null)
             {
-                var landmark = await _dbContext
+                Landmark? landmark = await _dbContext
                     .Landmarks
                     .SingleOrDefaultAsync(l => l.Id.ToString() == model.Id);
 
-                if (landmark != null)
+                Destination? destination = await _dbContext
+                    .Destinations
+                    .SingleOrDefaultAsync(d => d.Id.ToString() == model.Id);
+
+                if (landmark != null && destination != null)
                 {
                     landmark.Name = model.Name;
                     landmark.Description = model.Description;

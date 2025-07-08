@@ -97,11 +97,15 @@ namespace TravelAgency.Service.Core
 
             if (model != null)
             {
-                var hotel = await _context
+                Hotel? hotel = await _context
                     .Hotels
                     .SingleOrDefaultAsync(h => h.Id.ToString() == model.Id);
 
-                if (hotel != null)
+                Destination? destination = await _context
+                    .Destinations
+                    .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
+
+                if (hotel != null && destination != null)
                 {
                     hotel.HotelName = model.Name;
                     hotel.ImageUrl = model.ImageUrl;
