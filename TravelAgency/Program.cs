@@ -29,6 +29,7 @@ namespace TravelAgency
             })
                 .AddEntityFrameworkStores<TravelAgencyDbContext>();
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddScoped<IDestinationService, DestinationService>();
             builder.Services.AddScoped<ILandmarkService, LandmarkService>();
             builder.Services.AddScoped<IHotelInterface, HotelService>();
