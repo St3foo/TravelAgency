@@ -8,10 +8,12 @@ namespace TravelAgency.Controllers
     public class LandmarkController : BaseController
     {
         private readonly ILandmarkService _landmarkService;
+        private readonly IDestinationService _destinationService;
 
-        public LandmarkController(ILandmarkService service)
+        public LandmarkController(ILandmarkService service, IDestinationService destinationService)
         {
             _landmarkService = service;
+            _destinationService = destinationService;
         }
 
         [AllowAnonymous]
@@ -41,6 +43,51 @@ namespace TravelAgency.Controllers
                     .GetLandmarkDetailAsync(id);
 
                 return View(landmark);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            try
+            {
+                LandmarkEditViewModel? model = await _landmarkService.GetLandmarkForEditAsync(id);
+
+                if (model == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                model.Destinations = await _destinationService.GetAllDestinationsAsync();
+
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(LandmarkEditViewModel model)
+        {
+            try
+            {
+                if(!this.ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                await _landmarkService.SaveEditChangesAsync(model);
+
+                return RedirectToAction(nameof(Details), new { id = model.Id });
+
             }
             catch (Exception e)
             {

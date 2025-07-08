@@ -49,7 +49,6 @@ namespace TravelAgency.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Edit(string id) 
         {
@@ -72,7 +71,6 @@ namespace TravelAgency.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Edit(DestinationEditViewModel? model)
         {

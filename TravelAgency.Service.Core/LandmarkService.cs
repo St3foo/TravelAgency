@@ -62,5 +62,50 @@ namespace TravelAgency.Service.Core
 
             return landmark;
         }
+
+        public async Task<LandmarkEditViewModel> GetLandmarkForEditAsync(string? id)
+        {
+            LandmarkEditViewModel? landmark = null;
+
+            Landmark? landmarkToEdit = await _dbContext
+                .Landmarks
+                .AsNoTracking()
+                .SingleOrDefaultAsync(l => l.Id.ToString() == id);
+
+            if (landmarkToEdit != null)
+            {
+                landmark = new LandmarkEditViewModel
+                {
+                    Id = landmarkToEdit.Id.ToString(),
+                    Name = landmarkToEdit.Name,
+                    Description = landmarkToEdit.Description,
+                    ImageUrl = landmarkToEdit.ImageUrl,
+                    Location = landmarkToEdit.LocationName
+                };
+            }
+
+            return landmark;
+        }
+
+        public async Task SaveEditChangesAsync(LandmarkEditViewModel? model)
+        {
+            if (model != null)
+            {
+                var landmark = await _dbContext
+                    .Landmarks
+                    .SingleOrDefaultAsync(l => l.Id.ToString() == model.Id);
+
+                if (landmark != null)
+                {
+                    landmark.Name = model.Name;
+                    landmark.Description = model.Description;
+                    landmark.ImageUrl = model.ImageUrl;
+                    landmark.LocationName = model.Location;
+                    landmark.DestinationId = Guid.Parse(model.DestinationId);
+
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+        }
     }
 }
