@@ -1,8 +1,8 @@
-﻿@using TravelAgency.ViewModels.Models.LandmarkModels
-@model LandmarkEditViewModel
+﻿@using TravelAgency.ViewModels.Models.HotelModels
+@model HotelEditViewModel
 
 @{
-    ViewData["Title"] = "Edit Landmark";
+    ViewData["Title"] = "Edit Hotel";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
@@ -15,15 +15,15 @@
         <form asp-action="Edit" method="post">
             <div class="row">
                 <div class="col-sm-6 mb-2">
-                    <label asp-for="@Model.Name" class="form-label-add-edit">Landmark Name</label>
+                    <label asp-for="@Model.Name" class="form-label-add-edit">Hotel Name</label>
                     <input asp-for="@Model.Name" class="form-control" />
                     <span asp-validation-for="@Model.Name" class="text-danger"></span>
                 </div>
 
                 <div class="col-sm-6 mb-2">
-                    <label asp-for="@Model.Location" class="form-label-add-edit">Located in</label>
-                    <input asp-for="@Model.Location" class="form-control" type="text" />
-                    <span asp-validation-for="@Model.Location" class="text-danger"></span>
+                    <label asp-for="@Model.CityName" class="form-label-add-edit">Located in</label>
+                    <input asp-for="@Model.CityName" class="form-control" type="text" />
+                    <span asp-validation-for="@Model.CityName" class="text-danger"></span>
                 </div>
             </div>
 
@@ -45,6 +45,20 @@
                     <option value="">Select Destination...</option>
                 </select>
                 <span asp-validation-for="@Model.DestinationId" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.Price" class="form-label-add-edit">Hotel Price</label>
+                    <input asp-for="@Model.Price" class="form-control" />
+                    <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                </div>
+
+                <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.Nights" class="form-label-add-edit">Nights duration</label>
+                    <input asp-for="@Model.Nights" class="form-control" type="text" />
+                    <span asp-validation-for="@Model.Nights" class="text-danger"></span>
+                </div>
             </div>
 
             <input type="hidden" asp-for="@Model.Id" />

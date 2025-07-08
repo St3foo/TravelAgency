@@ -84,7 +84,12 @@ namespace TravelAgency.Controllers
                     return View(model);
                 }
 
-                await _landmarkService.SaveEditChangesAsync(model);
+                bool result = await _landmarkService.SaveEditChangesAsync(model);
+
+                if (result == false)
+                {
+                    return View(model);
+                }
 
                 return RedirectToAction(nameof(Details), new { id = model.Id });
 

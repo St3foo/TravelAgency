@@ -8,10 +8,12 @@ namespace TravelAgency.Controllers
     public class HotelController : BaseController
     {
         private readonly IHotelInterface _hotelInterface;
+        private readonly IDestinationService _destinationService;
 
-        public HotelController(IHotelInterface hotelInerface)
+        public HotelController(IHotelInterface hotelInerface, IDestinationService destinationService)
         {
             _hotelInterface = hotelInerface;
+            _destinationService = destinationService;
         }
 
         [AllowAnonymous]
@@ -41,6 +43,56 @@ namespace TravelAgency.Controllers
                     .GetHotelDetailsAsync(id);
 
                 return View(hotel);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            try
+            {
+                HotelEditViewModel? model = await _hotelInterface.GetHotelForEditAsync(id);
+
+                if (model == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                model.Destinations = await _destinationService.GetAllDestinationsAsync();
+
+                return View(model);
+                    
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(HotelEditViewModel? model)
+        {
+            try
+            {
+                if (!this.ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                bool result = await _hotelInterface.SaveEditChangesAsync(model);
+
+                if (result == false)
+                {
+                    return View(model);
+                }
+
+                return RedirectToAction(nameof(Details), new { id = model.Id });
             }
             catch (Exception e)
             {

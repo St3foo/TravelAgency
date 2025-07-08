@@ -87,8 +87,10 @@ namespace TravelAgency.Service.Core
             return landmark;
         }
 
-        public async Task SaveEditChangesAsync(LandmarkEditViewModel? model)
+        public async Task<bool> SaveEditChangesAsync(LandmarkEditViewModel? model)
         {
+            bool result = false;
+
             if (model != null)
             {
                 var landmark = await _dbContext
@@ -104,8 +106,11 @@ namespace TravelAgency.Service.Core
                     landmark.DestinationId = Guid.Parse(model.DestinationId);
 
                     await _dbContext.SaveChangesAsync();
+                    result = true;
                 }
             }
+
+            return result;
         }
     }
 }

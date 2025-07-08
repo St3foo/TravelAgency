@@ -64,5 +64,59 @@ namespace TravelAgency.Service.Core
 
             return hotel;
         }
+
+        public async Task<HotelEditViewModel> GetHotelForEditAsync(string? id)
+        {
+            HotelEditViewModel? hotel = null;
+
+            var hotelInfo = await _context
+                .Hotels
+                .AsNoTracking()
+                .SingleOrDefaultAsync(h => h.Id.ToString() == id);
+
+            if (hotelInfo != null)
+            {
+                hotel = new HotelEditViewModel
+                {
+                    Id = hotelInfo.Id.ToString(),
+                    Name = hotelInfo.HotelName,
+                    CityName = hotelInfo.CityName,
+                    ImageUrl = hotelInfo.ImageUrl,
+                    Description = hotelInfo.Description,
+                    Price = hotelInfo.Price,
+                    Nights= hotelInfo.DaysStay,
+                };
+            }
+
+            return hotel;
+        }
+
+        public async Task<bool> SaveEditChangesAsync(HotelEditViewModel? model)
+        {
+            bool result = false;
+
+            if (model != null)
+            {
+                var hotel = await _context
+                    .Hotels
+                    .SingleOrDefaultAsync(h => h.Id.ToString() == model.Id);
+
+                if (hotel != null)
+                {
+                    hotel.HotelName = model.Name;
+                    hotel.ImageUrl = model.ImageUrl;
+                    hotel.Description = model.Description;
+                    hotel.CityName = model.CityName;
+                    hotel.Price = model.Price;
+                    hotel.DaysStay = model.Nights;
+                    hotel.DestinationId = Guid.Parse(model.DestinationId);
+
+                    await _context.SaveChangesAsync();
+                    result = true;
+                }
+            }
+
+            return result;
+        }
     }
 }
