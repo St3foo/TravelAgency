@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
+using TravelAgency.Data.Models;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.LandmarkModels;
 
@@ -32,6 +33,34 @@ namespace TravelAgency.Service.Core
                 .ToArrayAsync();
 
             return landmarks;
+        }
+
+        public async Task<LandmarkDetailsViewModel> GetLandmarkDetailAsync(string? landmarkId)
+        {
+            LandmarkDetailsViewModel? landmark = null;
+
+            if (landmarkId != null)
+            {
+                Landmark? landmarkDetails = await _dbContext
+                    .Landmarks
+                    .Include(l => l.Destination)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(l => l.Id.ToString() == landmarkId);
+
+                if (landmarkDetails != null)
+                {
+                    landmark = new LandmarkDetailsViewModel
+                    {
+                        Id = landmarkDetails.Id.ToString(),
+                        Title = landmarkDetails.Name,
+                        Description = landmarkDetails.Description,
+                        Destination = landmarkDetails.Destination.CountryName,
+                        ImageUrl = landmarkDetails.ImageUrl
+                    };
+                }
+            }
+
+            return landmark;
         }
     }
 }
