@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
+using TravelAgency.Data.Models;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.DestinationModels;
 
@@ -50,6 +51,48 @@ namespace TravelAgency.Service.Core
             }
 
             return destinationToPass;
+        }
+
+        public async Task<DestinationEditViewModel> GetDestinationForEditAsync(string id)
+        {
+            DestinationEditViewModel? destinationToPass = null;
+
+            var destination = await _context
+                .Destinations
+                .AsNoTracking()
+                .SingleOrDefaultAsync(d => d.Id.ToString() == id);
+
+            if (destination != null)
+            {
+                destinationToPass = new DestinationEditViewModel
+                {
+                    Id = destination.Id.ToString(),
+                    Name = destination.CountryName,
+                    Description = destination.Description,
+                    ImageUrl = destination.ImageUrl
+                };
+            }
+
+            return destinationToPass;
+        }
+
+        public async Task SaveEditChangesAsync(DestinationEditViewModel? model)
+        {
+            if (model != null) 
+            {
+                var destination = await _context
+                    .Destinations
+                    .SingleOrDefaultAsync(d => d.Id.ToString() == model.Id);
+
+                if (destination != null)
+                {
+                    destination.CountryName = model.Name;
+                    destination.Description = model.Description;
+                    destination.ImageUrl = model.ImageUrl;
+
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
     }
 }

@@ -7,5 +7,9 @@ namespace TravelAgency.Service.Core.Contracts
         Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsAsync();
 
         Task<DestinationDetailViewModel> GetDestinationDetailsAsync(string destinationId);
+
+        Task<DestinationEditViewModel> GetDestinationForEditAsync(string destinationId);
+
+        Task SaveEditChangesAsync(DestinationEditViewModel? model);
     }
 }
