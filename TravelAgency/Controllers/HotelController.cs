@@ -100,5 +100,50 @@ namespace TravelAgency.Controllers
                 throw;
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Add() 
+        {
+            try
+            {
+                AddHotelViewModel model = new AddHotelViewModel
+                {
+                    Destinations = await _destinationService.GetAllDestinationsAsync()
+                };
+
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(AddHotelViewModel? model) 
+        {
+            try
+            {
+                if (!this.ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                bool result = await _hotelInterface.AddHotelAsync(model);
+
+                if (result == false)
+                {
+                    return View(model);
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }

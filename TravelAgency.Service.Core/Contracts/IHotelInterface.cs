@@ -11,5 +11,7 @@ namespace TravelAgency.Service.Core.Contracts
         Task<HotelEditViewModel> GetHotelForEditAsync(string? id);
 
         Task<bool> SaveEditChangesAsync(HotelEditViewModel? model);
+
+        Task<bool> AddHotelAsync(AddHotelViewModel? model);
     }
 }

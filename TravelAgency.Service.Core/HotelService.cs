@@ -14,6 +14,37 @@ namespace TravelAgency.Service.Core
         {
             _context = context;
         }
+
+        public async Task<bool> AddHotelAsync(AddHotelViewModel? model)
+        {
+            bool result = false;
+
+            Destination? destination = await _context
+                .Destinations
+                .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
+
+            if (destination != null)
+            {
+                Hotel hotel = new Hotel 
+                {
+                    HotelName = model.Name,
+                    CityName = model.CityName,
+                    Description = model.Description,
+                    ImageUrl = model.ImageUrl,
+                    DestinationId = destination.Id,
+                    Price = model.Price,
+                    DaysStay = model.Nights
+                };
+
+                await _context.Hotels.AddAsync(hotel);
+                await _context.SaveChangesAsync();
+
+                result = true;
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync()
         {
             IEnumerable<GetAllHotelsViewModel> hotels = await _context
