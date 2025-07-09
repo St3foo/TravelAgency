@@ -11,5 +11,7 @@ namespace TravelAgency.Service.Core.Contracts
         Task<LandmarkEditViewModel> GetLandmarkForEditAsync(string? id);
 
         Task<bool> SaveEditChangesAsync(LandmarkEditViewModel? model);
+
+        Task<bool> AddLandmarkAsync(AddLandmarkViewModel? model);
     }
 }

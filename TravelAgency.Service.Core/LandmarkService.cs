@@ -15,6 +15,34 @@ namespace TravelAgency.Service.Core
             _dbContext = context;
         }
 
+        public async Task<bool> AddLandmarkAsync(AddLandmarkViewModel? model)
+        {
+            bool result = false;
+
+            Destination? destination = await _dbContext
+                .Destinations
+                .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
+
+            if (destination != null)
+            {
+                Landmark landmark = new Landmark 
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    ImageUrl = model.ImageUrl,
+                    LocationName = model.Location,
+                    DestinationId = Guid.Parse(model.DestinationId)
+                };
+
+                await _dbContext.Landmarks.AddAsync(landmark);
+                await _dbContext.SaveChangesAsync();
+
+                result = true;
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId)
         {
             IEnumerable<GetAllLandmarksViewModel> landmarks = await _dbContext

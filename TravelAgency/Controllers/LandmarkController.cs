@@ -100,5 +100,50 @@ namespace TravelAgency.Controllers
                 throw;
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Add() 
+        {
+            try
+            {
+                AddLandmarkViewModel landmark = new AddLandmarkViewModel 
+                {
+                    Destinations = await _destinationService.GetAllDestinationsAsync(),
+                };
+
+                return View(landmark);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(AddLandmarkViewModel? model)
+        {
+            try
+            {
+                if (!this.ModelState.IsValid)
+                { 
+                    return View(model);
+                }
+
+                bool result = await _landmarkService.AddLandmarkAsync(model);
+
+                if (result == false)
+                {
+                    return View(model);
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }
