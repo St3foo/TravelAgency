@@ -80,7 +80,8 @@ namespace TravelAgency.Service.Core
                     Name = landmarkToEdit.Name,
                     Description = landmarkToEdit.Description,
                     ImageUrl = landmarkToEdit.ImageUrl,
-                    Location = landmarkToEdit.LocationName
+                    Location = landmarkToEdit.LocationName,
+                    DestinationId = landmarkToEdit.DestinationId.ToString()
                 };
             }
 

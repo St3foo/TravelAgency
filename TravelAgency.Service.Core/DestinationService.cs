@@ -14,6 +14,29 @@ namespace TravelAgency.Service.Core
         {
             _context = context;
         }
+
+        public async Task<bool> AddDestinationAsync(AddDestinationViewModel? model)
+        {
+            bool result = false;
+
+            if (model != null) 
+            {
+                Destination destination = new Destination 
+                {
+                    CountryName = model.Name,
+                    Description = model.Description,
+                    ImageUrl = model.ImageUrl
+                };
+
+                await _context.Destinations.AddAsync(destination);
+                await _context.SaveChangesAsync();
+
+                result = true;
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsAsync()
         {
             IEnumerable<AllDestinationsViewModel> destinations = await _context
@@ -76,8 +99,10 @@ namespace TravelAgency.Service.Core
             return destinationToPass;
         }
 
-        public async Task SaveEditChangesAsync(DestinationEditViewModel? model)
+        public async Task<bool> SaveEditChangesAsync(DestinationEditViewModel? model)
         {
+            bool result = false;
+
             if (model != null) 
             {
                 var destination = await _context
@@ -91,8 +116,11 @@ namespace TravelAgency.Service.Core
                     destination.ImageUrl = model.ImageUrl;
 
                     await _context.SaveChangesAsync();
+                    result = true;
                 }
             }
+
+            return result;
         }
     }
 }

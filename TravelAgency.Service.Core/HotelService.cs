@@ -85,6 +85,7 @@ namespace TravelAgency.Service.Core
                     Description = hotelInfo.Description,
                     Price = hotelInfo.Price,
                     Nights= hotelInfo.DaysStay,
+                    DestinationId = hotelInfo.DestinationId.ToString()
                 };
             }
 

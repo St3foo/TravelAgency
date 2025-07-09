@@ -10,6 +10,8 @@ namespace TravelAgency.Service.Core.Contracts
 
         Task<DestinationEditViewModel> GetDestinationForEditAsync(string destinationId);
 
-        Task SaveEditChangesAsync(DestinationEditViewModel? model);
+        Task<bool> SaveEditChangesAsync(DestinationEditViewModel? model);
+
+        Task<bool> AddDestinationAsync(AddDestinationViewModel? model);
     }
 }

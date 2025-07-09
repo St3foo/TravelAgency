@@ -81,10 +81,56 @@ namespace TravelAgency.Controllers
                     return View(model);
                 }
 
+                bool result = await _destinationService.SaveEditChangesAsync(model);
 
-                await _destinationService.SaveEditChangesAsync(model);
+                if (result == false)
+                {
+                    return View(model);
+                }
 
                 return RedirectToAction(nameof(Details), new { id = model.Id });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Add() 
+        {
+            try
+            {
+                AddDestinationViewModel model = new AddDestinationViewModel();
+
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(AddDestinationViewModel? model) 
+        {
+            try
+            {
+                if (!this.ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                bool result = await _destinationService.AddDestinationAsync(model);
+
+                if (result == false)
+                {
+                    return View(model);
+                }
+
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
             {
