@@ -45,6 +45,25 @@ namespace TravelAgency.Service.Core
             return result;
         }
 
+        public async Task<bool> DeleteHotelAsync(DeleteHotelViewModel? model)
+        {
+            bool result = false;
+
+            Hotel? hotel = await _context
+                .Hotels
+                .SingleOrDefaultAsync(h => h.Id == model.Id);
+
+            if (hotel != null)
+            {
+                hotel.IsDeleted = true;
+
+                await _context.SaveChangesAsync();
+                result = true;
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync()
         {
             IEnumerable<GetAllHotelsViewModel> hotels = await _context
@@ -94,6 +113,28 @@ namespace TravelAgency.Service.Core
             }
 
             return hotel;
+        }
+
+        public async Task<DeleteHotelViewModel> GetHotelForDeleteAsync(string? id)
+        {
+            DeleteHotelViewModel? hotelToPass = null;
+
+            Hotel? hotel = await _context
+                .Hotels
+                .AsNoTracking()
+                .SingleOrDefaultAsync(h => h.Id.ToString() == id);
+
+            if (hotel != null)
+            {
+                hotelToPass = new DeleteHotelViewModel 
+                {
+                    Id = hotel.Id,
+                    Name = hotel.HotelName,
+                    ImageUrl = hotel.ImageUrl
+                };
+            }
+
+            return hotelToPass;
         }
 
         public async Task<HotelEditViewModel> GetHotelForEditAsync(string? id)

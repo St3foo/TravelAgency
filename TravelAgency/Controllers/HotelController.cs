@@ -145,5 +145,47 @@ namespace TravelAgency.Controllers
                 throw;
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string? id) 
+        {
+            try
+            {
+                DeleteHotelViewModel? model = await _hotelInterface.GetHotelForDeleteAsync(id);
+
+                if (model == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteHotelViewModel? model) 
+        {
+            try
+            {
+                bool result = await _hotelInterface.DeleteHotelAsync(model);
+
+                if (result == false)
+                {
+                    return View(model);
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }
