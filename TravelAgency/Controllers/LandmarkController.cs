@@ -35,7 +35,7 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Details(string? id) 
+        public async Task<IActionResult> Details(string? id)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                if(!this.ModelState.IsValid)
+                if (!this.ModelState.IsValid)
                 {
                     return View(model);
                 }
@@ -102,11 +102,11 @@ namespace TravelAgency.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add() 
+        public async Task<IActionResult> Add()
         {
             try
             {
-                AddLandmarkViewModel landmark = new AddLandmarkViewModel 
+                AddLandmarkViewModel landmark = new AddLandmarkViewModel
                 {
                     Destinations = await _destinationService.GetAllDestinationsAsync(),
                 };
@@ -126,11 +126,53 @@ namespace TravelAgency.Controllers
             try
             {
                 if (!this.ModelState.IsValid)
-                { 
+                {
                     return View(model);
                 }
 
                 bool result = await _landmarkService.AddLandmarkAsync(model);
+
+                if (result == false)
+                {
+                    return View(model);
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string? id) 
+        {
+            try
+            {
+                DeleteLandmarkViewModel? model = await _landmarkService.GetLandmarkForDeleteAsync(id);
+
+                if (model == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteLandmarkViewModel? model) 
+        {
+            try
+            {
+                bool result = await _landmarkService.DeleteLandmarkAsync(model);
 
                 if (result == false)
                 {

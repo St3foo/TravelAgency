@@ -43,6 +43,25 @@ namespace TravelAgency.Service.Core
             return result;
         }
 
+        public async Task<bool> DeleteLandmarkAsync(DeleteLandmarkViewModel? model)
+        {
+            bool result = false;
+
+            Landmark? landmark = await _dbContext
+                .Landmarks
+                .SingleOrDefaultAsync(l => l.Id == model.Id);
+
+            if (landmark != null) 
+            {
+                landmark.IsDeleted = true;
+
+                await _dbContext.SaveChangesAsync();
+                result = true;
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId)
         {
             IEnumerable<GetAllLandmarksViewModel> landmarks = await _dbContext
@@ -89,6 +108,28 @@ namespace TravelAgency.Service.Core
             }
 
             return landmark;
+        }
+
+        public async Task<DeleteLandmarkViewModel> GetLandmarkForDeleteAsync(string? id)
+        {
+            DeleteLandmarkViewModel? landmarkToPass = null;
+
+            Landmark? landmark = await _dbContext
+                .Landmarks
+                .AsNoTracking()
+                .SingleOrDefaultAsync(l => l.Id.ToString() == id);
+
+            if (landmark != null)
+            {
+                landmarkToPass = new DeleteLandmarkViewModel 
+                {
+                    Id = landmark.Id,
+                    Name = landmark.Name,
+                    ImageUrl = landmark?.ImageUrl
+                };
+            }
+
+            return landmarkToPass;
         }
 
         public async Task<LandmarkEditViewModel> GetLandmarkForEditAsync(string? id)
