@@ -13,5 +13,9 @@ namespace TravelAgency.Service.Core.Contracts
         Task<bool> SaveEditChangesAsync(DestinationEditViewModel? model);
 
         Task<bool> AddDestinationAsync(AddDestinationViewModel? model);
+
+        Task<DeleteDestinationViewModel> GetDestinationForDeleteAsync(string? destinationId);
+
+        Task<bool> DeleteDestinationAsync(DeleteDestinationViewModel? model);
     }
 }

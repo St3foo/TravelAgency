@@ -37,6 +37,25 @@ namespace TravelAgency.Service.Core
             return result;
         }
 
+        public async Task<bool> DeleteDestinationAsync(DeleteDestinationViewModel? model)
+        {
+            bool result = false;
+
+            Destination? destination = await _context
+                .Destinations
+                .SingleOrDefaultAsync(d => d.Id == model.Id);
+
+            if (destination != null)
+            {
+                destination.IsDeleted = true;
+
+                await _context.SaveChangesAsync();
+                result = true;
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsAsync()
         {
             IEnumerable<AllDestinationsViewModel> destinations = await _context
@@ -70,6 +89,28 @@ namespace TravelAgency.Service.Core
                     Title = destination.CountryName,
                     ImageUrl = destination.ImageUrl,
                     Description = destination.Description
+                };
+            }
+
+            return destinationToPass;
+        }
+
+        public async Task<DeleteDestinationViewModel> GetDestinationForDeleteAsync(string? destinationId)
+        {
+            DeleteDestinationViewModel? destinationToPass = null;
+
+            var destination = await _context
+                .Destinations
+                .AsNoTracking()
+                .SingleOrDefaultAsync(d => d.Id.ToString() == destinationId);
+
+            if (destination != null)
+            {
+                destinationToPass = new DeleteDestinationViewModel
+                {
+                    Id = destination.Id,
+                    Name = destination.CountryName,
+                    ImageUrl = destination.ImageUrl
                 };
             }
 
