@@ -1,0 +1,57 @@
+﻿@using TravelAgency.ViewModels.Models.FavoritesModels
+@model IEnumerable<GetAllFavoritesViewModel>
+
+@{
+    ViewData["Title"] = "Favorite Landmarks";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+
+@if (Model == null || !Model.Any())
+{
+    <div class="text-center mt-5">
+        <h4>You don't have any favorite Landmarks yet!</h4>
+    </div>
+}
+else
+{
+    @foreach (var landmark in Model)
+    {
+        <div class="row align-items-center mb-4 py-3" style="border-bottom: 1px solid #ccc;">
+            <div class="col-md-2 text-center">
+                @if (!string.IsNullOrEmpty(@landmark.ImageUrl))
+                {
+                    <img src="@landmark.ImageUrl" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="@landmark.Name" />
+                }
+                else
+                {
+                    <img src="~/images/default-image.jpg" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="No Image Available" />
+                }
+            </div>
+            <div class="col-md-4 text-start">
+                <h5 class="mb-0">@landmark.Name</h5>
+                <p class="text-muted mb-0"><small>Location: @landmark.Location</small></p>
+                <p class="text-muted mb-0"><small>Destination: @landmark.Destination</small></p>
+            </div>
+            <div class="col-md-4 text-end d-flex flex-column gap-2">
+                <a asp-controller="Landmark" asp-action="Details" asp-route-id="@landmark.Id" class="btn btn-info fw-bold w-100">
+                    <i class="fas fa-info-circle"></i> Details
+                </a>
+                <form asp-controller="Favorites" asp-action="Remove" asp-route-id="@landmark.Id" method="post">
+                    <button type="submit" class="btn btn-danger fw-bold w-100">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    }
+}
+<div class="text-center mt-5">
+    <a asp-controller="Landmark" asp-action="Index" class="btn btn-primary mt-3">
+        <i class="fas fa-arrow-left"></i> Back to Landmarks
+    </a>
+</div>

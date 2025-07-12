@@ -33,6 +33,7 @@ namespace TravelAgency
             builder.Services.AddScoped<IDestinationService, DestinationService>();
             builder.Services.AddScoped<ILandmarkService, LandmarkService>();
             builder.Services.AddScoped<IHotelInterface, HotelService>();
+            builder.Services.AddScoped<IFavoritesService, FavoritesService>();
 
             var app = builder.Build();
 
