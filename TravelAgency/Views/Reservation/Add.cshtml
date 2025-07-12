@@ -1,0 +1,49 @@
+﻿@using TravelAgency.ViewModels.Models.ReservationModels
+@model AddReservationViewModel
+
+@{
+    ViewBag.Title = "Make a Hotel Reservation";
+}
+
+<h2>Hotel Details</h2>
+
+<hr />
+
+<div style="display: flex;">
+    <div style="flex: 1; padding-right: 20px;">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.Name" />
+        }
+        else
+        {
+            <img src="~/images/default-image.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
+        }
+    </div>
+
+    <div style="flex: 2;">
+        <h3>@Model.Name</h3>
+        <p><strong>City:</strong> @Model.City</p>
+        <p><strong>Destination:</strong> @Model.Destination</p>
+        <p><strong>Price:</strong> @Model.Price $ for @Model.Nights nights</p>
+
+        <form asp-action="Create" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Nights" />
+            <div class="form-group">
+                <label asp-for="ReservationDate">Select Date</label>
+                <input asp-for="ReservationDate" class="form-control" type="date" />
+                <span asp-validation-for="ReservationDate" class="text-danger"></span>
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

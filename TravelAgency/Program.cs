@@ -34,6 +34,7 @@ namespace TravelAgency
             builder.Services.AddScoped<ILandmarkService, LandmarkService>();
             builder.Services.AddScoped<IHotelInterface, HotelService>();
             builder.Services.AddScoped<IFavoritesService, FavoritesService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
 
             var app = builder.Build();
 
