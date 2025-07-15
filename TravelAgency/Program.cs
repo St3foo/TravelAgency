@@ -20,7 +20,6 @@ namespace TravelAgency
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
             {
-
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireDigit = false;
@@ -36,6 +35,7 @@ namespace TravelAgency
             builder.Services.AddScoped<IFavoritesService, FavoritesService>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -49,6 +49,8 @@ namespace TravelAgency
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
