@@ -52,6 +52,7 @@ namespace TravelAgency.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
             try
@@ -76,6 +77,7 @@ namespace TravelAgency.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(HotelEditViewModel? model)
         {
             try
@@ -102,6 +104,7 @@ namespace TravelAgency.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add() 
         {
             try
@@ -121,6 +124,7 @@ namespace TravelAgency.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(AddHotelViewModel? model) 
         {
             try
@@ -147,6 +151,7 @@ namespace TravelAgency.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string? id) 
         {
             try
@@ -168,6 +173,7 @@ namespace TravelAgency.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(DeleteHotelViewModel? model) 
         {
             try

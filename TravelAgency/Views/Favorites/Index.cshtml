@@ -38,11 +38,11 @@ else
             </div>
             <div class="col-md-4 text-end d-flex flex-column gap-2">
                 <a asp-controller="Landmark" asp-action="Details" asp-route-id="@landmark.Id" class="btn btn-info fw-bold w-100">
-                    <i class="fas fa-info-circle"></i> Details
+                     Details
                 </a>
                 <form asp-controller="Favorites" asp-action="Remove" asp-route-id="@landmark.Id" method="post">
                     <button type="submit" class="btn btn-danger fw-bold w-100">
-                        <i class="fas fa-trash"></i> Remove
+                         Remove
                     </button>
                 </form>
             </div>
@@ -52,6 +52,6 @@ else
 }
 <div class="text-center mt-5">
     <a asp-controller="Landmark" asp-action="Index" class="btn btn-primary mt-3">
-        <i class="fas fa-arrow-left"></i> Back to Landmarks
+         Back to Landmarks
     </a>
 </div>

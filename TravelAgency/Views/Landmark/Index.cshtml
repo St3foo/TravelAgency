@@ -7,10 +7,10 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
     <h2>@ViewData["Title"]</h2>
-    @if (User?.Identity?.IsAuthenticated == true)
+    @if (User.IsInRole("Admin"))
     {
         <a asp-controller="Landmark" asp-action="Add" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Add Landmark
+             Add Landmark
         </a>
     }
 </div>
@@ -38,7 +38,7 @@
                         @if (User?.Identity?.IsAuthenticated == true && !landmark.IsFavorite)
                         {
                             <a asp-controller="Landmark" asp-action="Details" asp-route-id="@landmark.Id" class="btn btn-info me-2 w-50">
-                                <i class="fas fa-info-circle"></i> Details
+                                 Details
                             </a>
                             <form asp-controller="Favorites" asp-action="Add" method="post" class="w-50">
                                 <input type="hidden" name="id" value="@landmark.Id" />
@@ -50,7 +50,7 @@
                         else
                         {
                             <a asp-controller="Landmark" asp-action="Details" asp-route-id="@landmark.Id" class="btn btn-info w-100">
-                                <i class="fas fa-info-circle"></i> Details
+                                 Details
                             </a>
                         }
                     </div>
