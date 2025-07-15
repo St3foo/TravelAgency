@@ -40,7 +40,7 @@ namespace TravelAgency.Controllers
             try
             {
                 LandmarkDetailsViewModel? landmark = await _landmarkService
-                    .GetLandmarkDetailAsync(id);
+                    .GetLandmarkDetailAsync(GetUserId(), id);
 
                 return View(landmark);
             }

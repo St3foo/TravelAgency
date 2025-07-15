@@ -6,7 +6,7 @@ namespace TravelAgency.Service.Core.Contracts
     {
         Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId);
 
-        Task<LandmarkDetailsViewModel> GetLandmarkDetailAsync(string? landmarkId);
+        Task<LandmarkDetailsViewModel> GetLandmarkDetailAsync(string? userId, string? landmarkId);
 
         Task<LandmarkEditViewModel> GetLandmarkForEditAsync(string? id);
 

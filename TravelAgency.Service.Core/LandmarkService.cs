@@ -82,7 +82,7 @@ namespace TravelAgency.Service.Core
             return landmarks;
         }
 
-        public async Task<LandmarkDetailsViewModel> GetLandmarkDetailAsync(string? landmarkId)
+        public async Task<LandmarkDetailsViewModel> GetLandmarkDetailAsync(string? userId, string? landmarkId)
         {
             LandmarkDetailsViewModel? landmark = null;
 
@@ -91,6 +91,7 @@ namespace TravelAgency.Service.Core
                 Landmark? landmarkDetails = await _dbContext
                     .Landmarks
                     .Include(l => l.Destination)
+                    .Include(l => l.UserLandmarks)
                     .AsNoTracking()
                     .SingleOrDefaultAsync(l => l.Id.ToString() == landmarkId);
 
@@ -102,7 +103,9 @@ namespace TravelAgency.Service.Core
                         Title = landmarkDetails.Name,
                         Description = landmarkDetails.Description,
                         Destination = landmarkDetails.Destination.CountryName,
-                        ImageUrl = landmarkDetails.ImageUrl
+                        ImageUrl = landmarkDetails.ImageUrl,
+                        IsFavorite = String.IsNullOrEmpty(userId) == false ?
+                                 landmarkDetails.UserLandmarks.Any(ul => ul.UserId.ToLower() == userId.ToLower()) : false
                     };
                 }
             }

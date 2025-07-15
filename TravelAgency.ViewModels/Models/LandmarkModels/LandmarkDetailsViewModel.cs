@@ -11,5 +11,7 @@
         public string Description { get; set; } = null!;
 
         public string? ImageUrl { get; set; }
+
+        public bool IsFavorite { get; set; }
     }
 }

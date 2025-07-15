@@ -50,7 +50,7 @@
                     </button>
                 </form>
                 }
-                else if (User?.Identity?.IsAuthenticated == true)
+                else if (User?.Identity?.IsAuthenticated == true && !Model.IsFavorite)
                 {
                     <form asp-controller="Favorites" asp-action="Add" method="post" class="flex-fill mx-1">
                         <input type="hidden" name="id" value="@Model.Id" />
