@@ -84,6 +84,27 @@ namespace TravelAgency.Service.Core
             return hotels;
         }
 
+        public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsByDestinationIdAsync(string? id)
+        {
+            IEnumerable<GetAllHotelsViewModel> hotels = await _context
+                .Hotels
+                .AsNoTracking()
+                .Where(h => h.DestinationId.ToString() == id)
+                .Select(h => new GetAllHotelsViewModel
+                {
+                    Id = h.Id,
+                    Name = h.HotelName,
+                    Destination = h.Destination.CountryName,
+                    City = h.CityName,
+                    ImageUrl = h.ImageUrl,
+                    Nights = h.DaysStay,
+                    Price = h.Price,
+                })
+                .ToArrayAsync();
+
+            return hotels;
+        }
+
         public async Task<HotelDetailsViewModel> GetHotelDetailsAsync(string id)
         {
             HotelDetailsViewModel? hotel = null;

@@ -6,6 +6,8 @@ namespace TravelAgency.Service.Core.Contracts
     {
         Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync();
 
+        Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsByDestinationIdAsync(string? id);
+
         Task<HotelDetailsViewModel> GetHotelDetailsAsync(string id);
 
         Task<HotelEditViewModel> GetHotelForEditAsync(string? id);

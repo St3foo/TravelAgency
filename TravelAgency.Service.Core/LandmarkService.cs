@@ -82,6 +82,27 @@ namespace TravelAgency.Service.Core
             return landmarks;
         }
 
+        public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksByDestinationIdAsync(string? userId, string? destId)
+        {
+            IEnumerable<GetAllLandmarksViewModel> landmarks = await _dbContext
+                .Landmarks
+                .AsNoTracking()
+                .Where(l => l.DestinationId.ToString() == destId)
+                .Select(l => new GetAllLandmarksViewModel
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    Destination = l.Destination.CountryName,
+                    ImageUrl = l.ImageUrl,
+                    FavoritesCount = l.UserLandmarks.Count,
+                    IsFavorite = String.IsNullOrEmpty(userId) == false ?
+                                 l.UserLandmarks.Any(ul => ul.UserId.ToLower() == userId.ToLower()) : false
+                })
+                .ToArrayAsync();
+
+            return landmarks;
+        }
+
         public async Task<LandmarkDetailsViewModel> GetLandmarkDetailAsync(string? userId, string? landmarkId)
         {
             LandmarkDetailsViewModel? landmark = null;

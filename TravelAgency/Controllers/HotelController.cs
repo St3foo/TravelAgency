@@ -18,13 +18,23 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? id)
         {
             try
             {
-                var hotels = await _hotelInterface.GetAllHotelsAsync();
 
-                return View(hotels);
+                IEnumerable<GetAllHotelsViewModel> hotels = null; 
+
+                if (id == null)
+                {
+                    hotels = await _hotelInterface.GetAllHotelsAsync();
+                }
+                else
+                {
+                    hotels = await _hotelInterface.GetAllHotelsByDestinationIdAsync(id);
+                }
+
+                    return View(hotels);
             }
             catch (Exception e)
             {

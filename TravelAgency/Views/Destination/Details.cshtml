@@ -37,10 +37,19 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <a asp-controller="Destination" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
-                         Edit
+                        Edit
                     </a>
                     <a asp-controller="Destination" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
-                         Delete
+                        Delete
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Hotel" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
+                        Hotels
+                    </a>
+                    <a asp-controller="Landmark" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
+                        Landmarks
                     </a>
                 }
             </div>
