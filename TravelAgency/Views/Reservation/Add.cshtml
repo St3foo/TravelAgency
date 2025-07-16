@@ -2,11 +2,12 @@
 @model AddReservationViewModel
 
 @{
-    ViewBag.Title = "Make a Hotel Reservation";
+    ViewBag.Title = "Reserve a room";
 }
 
-<h2>Hotel Details</h2>
-
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
 <hr />
 
 <div style="display: flex;">
@@ -37,7 +38,7 @@
             </div>
 
             <br />
-            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success">Reserve a room</button>
         </form>
     </div>
 </div>
