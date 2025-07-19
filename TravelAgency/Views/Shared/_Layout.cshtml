@@ -35,7 +35,9 @@
 						</li>
 						@if (User.IsInRole("Admin"))
 						{
-							
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="Manage">Manage Reservations</a>
+							</li>
 						}
 						else if (User?.Identity?.IsAuthenticated == true)
 						{
@@ -67,7 +69,7 @@
 
 	<footer class="border-top footer text-muted">
 		<div class="container">
-			<p>&copy; @footerNote WorldTour | To travel is to live!</p>
+			<p>&copy; @footerNote WorldTour | Telephone : +359899999999 | Email: Admin@abv.bg</p>
 		</div>
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,8 +1,8 @@
 ﻿@using TravelAgency.ViewModels.Models.ReservationModels
-@model IEnumerable<GetUserReservationsViewModel>
+@model IEnumerable<GetAllReservationViewModel>
 
 @{
-	ViewData["Title"] = "My Reservations";
+	ViewData["Title"] = "All Reservations";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
@@ -13,7 +13,7 @@
 @if (Model == null || !Model.Any())
 {
 	<div class="text-center mt-5">
-		<h4>You don't have any Reservations!</h4>
+		<h4>There are no Reservations!</h4>
 	</div>
 }
 else
@@ -32,6 +32,7 @@ else
 				}
 			</div>
 			<div class="col-md-4 text-start">
+				<h5 class="mb-0">User: @reservation.UserName</h5>
 				<h5 class="mb-0">@reservation.HotelName</h5>
 				<p class="text-muted mb-0"><small>Location: @reservation.Location</small></p>
 				<p class="text-muted mb-0"><small>Destination: @reservation.Destination</small></p>
@@ -50,7 +51,7 @@ else
 	}
 }
 <div class="text-center mt-5">
-	<a asp-controller="Hotel" asp-action="Index" class="btn btn-primary mt-3">
-		 Back to Hotels
+	<a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">
+		Back
 	</a>
 </div>

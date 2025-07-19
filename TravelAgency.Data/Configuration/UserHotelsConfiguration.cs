@@ -28,6 +28,11 @@ namespace TravelAgency.Data.Configuration
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity
+                .Property(uh => uh.IsActive)
+                .IsRequired()
+                .HasDefaultValue(true);
+
+            entity
                 .HasQueryFilter(uh => uh.Hotel.IsDeleted == false);
         }
     }

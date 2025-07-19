@@ -36,25 +36,25 @@
 					<p class="card-text">City: @hotel.City</p>
 					<p class="card-text">Price: @hotel.Price $ for @hotel.Nights nights</p>
 					<div class="d-flex justify-content-between mt-auto">
-						@if (User.IsInRole("Admin"))
+
+						@if (User?.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
+						{
+							<a asp-controller="Hotel" asp-action="Details" asp-route-id="@hotel.Id" class="btn btn-info me-2 w-50">
+								Details
+							</a>
+							<form asp-controller="Reservation" asp-action="Add" method="get" class="w-50">
+								<input type="hidden" name="id" value="@hotel.Id" />
+								<button type="submit" class="btn btn-success w-100">
+									Reserve
+								</button>
+							</form>
+						}
+						else
 						{
 							<a asp-controller="Hotel" asp-action="Details" asp-route-id="@hotel.Id" class="btn btn-info w-100">
 								Details
 							</a>
 						}
-						else if (User?.Identity?.IsAuthenticated == true)
-						{
-							<a asp-controller="Hotel" asp-action="Details" asp-route-id="@hotel.Id" class="btn btn-info me-2 w-50">
-								 Details
-							</a>
-							<form asp-controller="Reservation" asp-action="Add" method="get" class="w-50">
-								<input type="hidden" name="id" value="@hotel.Id" />
-								<button type="submit" class="btn btn-success w-100">
-									 Reserve
-								</button>
-							</form>
-						}
-
 					</div>
 				</div>
 			</div>
