@@ -35,7 +35,7 @@
                     <p class="card-text">Destination: @landmark.Destination</p>
                     <p class="card-text"><small>Favorites: @landmark.FavoritesCount</small></p>
                     <div class="d-flex justify-content-between mt-auto">
-                        @if (User?.Identity?.IsAuthenticated == true && !landmark.IsFavorite)
+                        @if (User?.Identity?.IsAuthenticated == true && !landmark.IsFavorite && !User.IsInRole("Admin"))
                         {
                             <a asp-controller="Landmark" asp-action="Details" asp-route-id="@landmark.Id" class="btn btn-info me-2 w-50">
                                  Details

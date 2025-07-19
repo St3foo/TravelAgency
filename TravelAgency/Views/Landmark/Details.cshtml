@@ -43,12 +43,6 @@
                 <a asp-controller="Landmark" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
                     Delete
                 </a>
-                <form asp-controller="Favorites" asp-action="Add" method="post" class="flex-fill mx-1">
-                    <input type="hidden" name="id" value="@Model.Id" />
-                    <button type="submit" class="btn btn-success d-flex justify-content-center align-items-center">
-                        Favorites
-                    </button>
-                </form>
                 }
                 else if (User?.Identity?.IsAuthenticated == true && !Model.IsFavorite)
                 {

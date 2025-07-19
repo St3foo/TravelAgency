@@ -24,17 +24,22 @@
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
-						@if (User?.Identity?.IsAuthenticated == true)
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Destination" asp-action="Index">Destinations</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Hotel" asp-action="Index">Hotels</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Landmark" asp-action="Index">Landmarks</a>
+						</li>
+						@if (User.IsInRole("Admin"))
 						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Destination" asp-action="Index">Destinations</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Hotel" asp-action="Index">Hotels</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Landmark" asp-action="Index">Landmarks</a>
-							</li>
+							
+						}
+						else if (User?.Identity?.IsAuthenticated == true)
+						{
+		
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">MyProfile</a>
 								<div class="dropdown-menu">
@@ -46,18 +51,6 @@
 										 My Reservations
 									</a>
 								</div>
-							</li>
-						}
-						else
-						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Destination" asp-action="Index">Destinations</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Hotel" asp-action="Index">Hotels</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Landmark" asp-action="Index">Landmarks</a>
 							</li>
 						}
 					</ul>
