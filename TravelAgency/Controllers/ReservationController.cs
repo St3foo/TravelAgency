@@ -19,7 +19,7 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                IEnumerable<GetAllReservationsViewModel> reservations = await _reservationService.GetAllReservationsAsync(GetUserId());
+                IEnumerable<GetUserReservationsViewModel> reservations = await _reservationService.GetUserReservationsAsync(GetUserId());
 
                 if (reservations == null)
                 {
@@ -81,10 +81,33 @@ namespace TravelAgency.Controllers
         public async Task<IActionResult> Remove(string? id) 
         {
             try
-            {
+            {               
                 await _reservationService.RemoveFromFavoritesAsync(id);
 
-                return RedirectToAction(nameof(Index));
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectToAction(nameof(Manage));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Manage() 
+        {
+            try
+            {
+                IEnumerable<GetAllReservationViewModel> reservations = await _reservationService.GetAllReservationsAsync();
+
+                return View(reservations);
             }
             catch (Exception e)
             {

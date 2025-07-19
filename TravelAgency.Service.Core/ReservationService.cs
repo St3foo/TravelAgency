@@ -31,7 +31,7 @@ namespace TravelAgency.Service.Core
 
             if (user != null && hotel != null)
             {
-                UserHotels reservation = new UserHotels 
+                UserHotels reservation = new UserHotels
                 {
                     UserId = userId,
                     HotelId = model.Id,
@@ -48,11 +48,11 @@ namespace TravelAgency.Service.Core
             return result;
         }
 
-        public async Task<IEnumerable<GetAllReservationsViewModel>> GetAllReservationsAsync(string? userId)
+        public async Task<IEnumerable<GetUserReservationsViewModel>> GetUserReservationsAsync(string? userId)
         {
             IdentityUser? user = await _user.FindByIdAsync(userId);
 
-            IEnumerable<GetAllReservationsViewModel> reservations = null!;
+            IEnumerable<GetUserReservationsViewModel> reservations = null!;
 
             if (user != null)
             {
@@ -61,7 +61,7 @@ namespace TravelAgency.Service.Core
                     .Include(uh => uh.Hotel)
                     .AsNoTracking()
                     .Where(uh => uh.UserId.ToLower() == userId.ToLower())
-                    .Select(uh => new GetAllReservationsViewModel 
+                    .Select(uh => new GetUserReservationsViewModel
                     {
                         Id = uh.Id,
                         HotelId = uh.HotelId,
@@ -121,6 +121,30 @@ namespace TravelAgency.Service.Core
                 _context.UsersHotels.Remove(reservation);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<GetAllReservationViewModel>> GetAllReservationsAsync()
+        {
+            IEnumerable<GetAllReservationViewModel> reservations = await _context
+                    .UsersHotels
+                    .Include(uh => uh.Hotel)
+                    .AsNoTracking()
+                    .Select(uh => new GetAllReservationViewModel
+                    {
+                        Id = uh.Id,
+                        UserName = uh.User.NormalizedUserName,
+                        HotelId = uh.HotelId,
+                        HotelName = uh.Hotel.HotelName,
+                        Location = uh.Hotel.CityName,
+                        Destination = uh.Hotel.Destination.CountryName,
+                        ImageUrl = uh.Hotel.ImageUrl,
+                        Price = uh.Hotel.Price,
+                        StartDate = uh.StartDate,
+                        EndDate = uh.EndDate
+                    })
+                    .ToListAsync();
+
+            return reservations;
         }
     }
 }

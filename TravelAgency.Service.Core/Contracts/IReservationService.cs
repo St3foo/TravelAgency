@@ -4,7 +4,9 @@ namespace TravelAgency.Service.Core.Contracts
 {
     public interface IReservationService
     {
-        Task<IEnumerable<GetAllReservationsViewModel>> GetAllReservationsAsync(string? userId);
+        Task<IEnumerable<GetUserReservationsViewModel>> GetUserReservationsAsync(string? userId);
+
+        Task<IEnumerable<GetAllReservationViewModel>> GetAllReservationsAsync();
 
         Task<AddReservationViewModel> GetReservationDetailsAsync(string? hotelId);
 
