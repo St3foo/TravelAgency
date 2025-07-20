@@ -1,0 +1,23 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList
+
+@{
+    string search = ViewBag.CurrentFilter as string;
+    string action = ViewBag.PaginationAction ?? "Index";
+    string controller = ViewBag.PaginationController ?? ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action(action, controller, new { page, search }),
+    new PagedListRenderOptions
+    {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+        MaximumPageNumbersToDisplay = 5,
+        UlElementClasses = new[] { "pagination" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" }
+    })
+</div>

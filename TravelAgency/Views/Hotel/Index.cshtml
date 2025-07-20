@@ -66,5 +66,9 @@
 			</div>
 		</div>
 	}
-</div>
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.CurrentFilter }))
+@{
+	ViewBag.PaginationAction = "Index"; 
+	ViewBag.PaginationController = "Hotel";
+}
+
+@Html.Partial("_Pagination", Model)
