@@ -18,7 +18,7 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index(string? id)
+        public async Task<IActionResult> Index(string? id, string? search)
         {
             try
             {
@@ -27,6 +27,11 @@ namespace TravelAgency.Controllers
                 if (id != null)
                 {
                     landmarks = await _landmarkService.GetAllLandmarksByDestinationIdAsync(GetUserId(), id);
+                }
+
+                if (!String.IsNullOrEmpty(search))
+                {
+                    landmarks = landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
                 }
 
                 return View(landmarks);

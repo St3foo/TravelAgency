@@ -7,6 +7,10 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
     <h2>@ViewData["Title"]</h2>
+    <form method="get" action="@Url.Action("Index")">
+        <input type="text" name="search" value="@ViewBag.CurrentFilter" placeholder="Search landmarks..." class="form-control" style="width: 300px; display: inline-block;" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </form>
     @if (User.IsInRole("Admin"))
     {
         <a asp-controller="Landmark" asp-action="Add" class="btn btn-primary">
