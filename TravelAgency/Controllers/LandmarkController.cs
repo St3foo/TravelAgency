@@ -22,18 +22,14 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                IEnumerable<GetAllLandmarksViewModel> landmarks = null; 
+                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksAsync(GetUserId());
 
-                if (id == null)
-                {
-                    landmarks = await _landmarkService.GetAllLandmarksAsync(GetUserId());
-                }
-                else
+                if (id != null)
                 {
                     landmarks = await _landmarkService.GetAllLandmarksByDestinationIdAsync(GetUserId(), id);
                 }
 
-                    return View(landmarks);
+                return View(landmarks);
             }
             catch (Exception e)
             {
@@ -161,7 +157,7 @@ namespace TravelAgency.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(string? id) 
+        public async Task<IActionResult> Delete(string? id)
         {
             try
             {
@@ -183,7 +179,7 @@ namespace TravelAgency.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(DeleteLandmarkViewModel? model) 
+        public async Task<IActionResult> Delete(DeleteLandmarkViewModel? model)
         {
             try
             {

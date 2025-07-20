@@ -16,7 +16,7 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index(string? search, string? id)
+        public async Task<IActionResult> Index(string? search)
         {
             try
             {
@@ -27,14 +27,11 @@ namespace TravelAgency.Controllers
                 {
                     destinations = destinations.Where(d => d.Name.Contains(search));
                 }
-                else if (id != null)
-                {
-                    destinations = destinations.Where(d => d.Id == id);
-                }
+
 
                 ViewBag.CurrentFilter = search;
 
-                    return View(destinations);
+                return View(destinations);
 
             }
             catch (Exception e)

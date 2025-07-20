@@ -66,6 +66,7 @@ namespace TravelAgency.Service.Core
         {
             IEnumerable<GetAllLandmarksViewModel> landmarks = await _dbContext
                 .Landmarks
+                .Include(l => l.Destination)
                 .AsNoTracking()
                 .Select(l => new GetAllLandmarksViewModel 
                 {

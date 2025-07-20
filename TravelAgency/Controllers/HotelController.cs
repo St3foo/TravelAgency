@@ -18,23 +18,26 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index(string? id)
+        public async Task<IActionResult> Index(string? id, string? search)
         {
             try
             {
 
-                IEnumerable<GetAllHotelsViewModel> hotels = null; 
+                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsAsync();
 
-                if (id == null)
-                {
-                    hotels = await _hotelInterface.GetAllHotelsAsync();
-                }
-                else
+                if (id != null)
                 {
                     hotels = await _hotelInterface.GetAllHotelsByDestinationIdAsync(id);
                 }
 
-                    return View(hotels);
+                if (!String.IsNullOrEmpty(search))
+                {
+                    hotels = hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
+                }
+
+                ViewBag.CurrentFilter = search;
+
+                return View(hotels);
             }
             catch (Exception e)
             {
@@ -45,7 +48,7 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Details(string id) 
+        public async Task<IActionResult> Details(string id)
         {
             try
             {
@@ -77,7 +80,7 @@ namespace TravelAgency.Controllers
                 model.Destinations = await _destinationService.GetAllDestinationsAsync();
 
                 return View(model);
-                    
+
             }
             catch (Exception e)
             {
@@ -115,7 +118,7 @@ namespace TravelAgency.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Add() 
+        public async Task<IActionResult> Add()
         {
             try
             {
@@ -135,7 +138,7 @@ namespace TravelAgency.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Add(AddHotelViewModel? model) 
+        public async Task<IActionResult> Add(AddHotelViewModel? model)
         {
             try
             {
@@ -162,7 +165,7 @@ namespace TravelAgency.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(string? id) 
+        public async Task<IActionResult> Delete(string? id)
         {
             try
             {
@@ -184,7 +187,7 @@ namespace TravelAgency.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(DeleteHotelViewModel? model) 
+        public async Task<IActionResult> Delete(DeleteHotelViewModel? model)
         {
             try
             {
