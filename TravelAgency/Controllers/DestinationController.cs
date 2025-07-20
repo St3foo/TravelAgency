@@ -16,13 +16,26 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search, string? id)
         {
             try
             {
+
                 var destinations = await _destinationService.GetAllDestinationsAsync();
 
-                return View(destinations);
+                if (!String.IsNullOrEmpty(search))
+                {
+                    destinations = destinations.Where(d => d.Name.Contains(search));
+                }
+                else if (id != null)
+                {
+                    destinations = destinations.Where(d => d.Id == id);
+                }
+
+                ViewBag.CurrentFilter = search;
+
+                    return View(destinations);
+
             }
             catch (Exception e)
             {
@@ -33,7 +46,7 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Details(string id) 
+        public async Task<IActionResult> Details(string id)
         {
             try
             {
@@ -51,7 +64,7 @@ namespace TravelAgency.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(string id) 
+        public async Task<IActionResult> Edit(string id)
         {
             try
             {
@@ -101,7 +114,7 @@ namespace TravelAgency.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Add() 
+        public async Task<IActionResult> Add()
         {
             try
             {
@@ -118,7 +131,7 @@ namespace TravelAgency.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Add(AddDestinationViewModel? model) 
+        public async Task<IActionResult> Add(AddDestinationViewModel? model)
         {
             try
             {
@@ -145,7 +158,7 @@ namespace TravelAgency.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(string? id) 
+        public async Task<IActionResult> Delete(string? id)
         {
             try
             {
@@ -167,7 +180,7 @@ namespace TravelAgency.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(DeleteDestinationViewModel? model) 
+        public async Task<IActionResult> Delete(DeleteDestinationViewModel? model)
         {
             try
             {

@@ -72,6 +72,7 @@ namespace TravelAgency.Service.Core
             return destinations;
         }
 
+
         public async Task<DestinationDetailViewModel> GetDestinationDetailsAsync(string destinationId)
         {
             DestinationDetailViewModel? destinationToPass = null;
