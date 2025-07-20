@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.DestinationModels;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace TravelAgency.Controllers
 {
@@ -16,8 +18,10 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index(string? search)
+        public async Task<IActionResult> Index(string? search, int page = 1)
         {
+            const int pageSize = 8;
+
             try
             {
 
@@ -31,7 +35,9 @@ namespace TravelAgency.Controllers
 
                 ViewBag.CurrentFilter = search;
 
-                return View(destinations);
+                var pagedList = destinations.ToPagedList(page, pageSize);
+
+                return View(pagedList);
 
             }
             catch (Exception e)

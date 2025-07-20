@@ -1,5 +1,7 @@
 ﻿@using TravelAgency.ViewModels.Models.LandmarkModels
-@model IEnumerable<GetAllLandmarksViewModel>
+@model IPagedList<GetAllLandmarksViewModel>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
 
 @{
     ViewData["Title"] = "All Landmarks";
@@ -7,7 +9,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
     <h2>@ViewData["Title"]</h2>
-    <form method="get" action="@Url.Action("Index")">
+    <form method="get" action="@Url.Action("Index", "Landmark")">
         <input type="text" name="search" value="@ViewBag.CurrentFilter" placeholder="Search landmarks..." class="form-control" style="width: 300px; display: inline-block;" />
         <input type="submit" value="Search" class="btn btn-primary" />
     </form>
@@ -63,3 +65,4 @@
         </div>
     }
 </div>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.CurrentFilter }))

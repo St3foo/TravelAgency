@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.LandmarkModels;
+using X.PagedList.Extensions;
 
 namespace TravelAgency.Controllers
 {
@@ -18,8 +19,11 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index(string? id, string? search)
+        public async Task<IActionResult> Index(string? id, string? search, int page = 1)
         {
+
+            const int pageSize = 8;
+
             try
             {
                 IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksAsync(GetUserId());
@@ -34,7 +38,11 @@ namespace TravelAgency.Controllers
                     landmarks = landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
                 }
 
-                return View(landmarks);
+                ViewBag.CurrentFilter = search;
+
+                var pagedList = landmarks.ToPagedList(page, pageSize);
+
+                return View(pagedList);
             }
             catch (Exception e)
             {
