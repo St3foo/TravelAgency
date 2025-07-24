@@ -158,8 +158,7 @@ namespace TravelAgency.Service.Core
                     destination.Description = model.Description;
                     destination.ImageUrl = model.ImageUrl;
 
-                    await _destinationRepository.UpdateAsync(destination);
-                    result = true;
+                    result = await _destinationRepository.UpdateAsync(destination);
                 }
             }
 

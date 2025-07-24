@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Data.Models;
+using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.HotelModels;
 
@@ -8,19 +9,20 @@ namespace TravelAgency.Service.Core
 {
     public class HotelService : IHotelService
     {
-        private readonly TravelAgencyDbContext _context;
+        private readonly IHotelRepository _hotelRepository;
+        private readonly IDestinationRepository _destinationRepository;
 
-        public HotelService(TravelAgencyDbContext context)
+        public HotelService(IHotelRepository hotelRepository, IDestinationRepository destinationRepository)
         {
-            _context = context;
+            _hotelRepository = hotelRepository;
+            _destinationRepository = destinationRepository;
         }
 
         public async Task<bool> AddHotelAsync(AddHotelViewModel? model)
         {
             bool result = false;
 
-            Destination? destination = await _context
-                .Destinations
+            Destination? destination = await _destinationRepository
                 .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
 
             if (destination != null)
@@ -36,8 +38,7 @@ namespace TravelAgency.Service.Core
                     DaysStay = model.Nights
                 };
 
-                await _context.Hotels.AddAsync(hotel);
-                await _context.SaveChangesAsync();
+                await _hotelRepository.AddAsync(hotel);
 
                 result = true;
             }
@@ -49,15 +50,13 @@ namespace TravelAgency.Service.Core
         {
             bool result = false;
 
-            Hotel? hotel = await _context
-                .Hotels
+            Hotel? hotel = await _hotelRepository
                 .SingleOrDefaultAsync(h => h.Id == model.Id);
 
             if (hotel != null)
             {
-                hotel.IsDeleted = true;
+                await _hotelRepository.DeleteAsync(hotel);
 
-                await _context.SaveChangesAsync();
                 result = true;
             }
 
@@ -66,8 +65,8 @@ namespace TravelAgency.Service.Core
 
         public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync()
         {
-            IEnumerable<GetAllHotelsViewModel> hotels = await _context
-                .Hotels
+            IEnumerable<GetAllHotelsViewModel> hotels = await _hotelRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .Select(h => new GetAllHotelsViewModel
                 {
@@ -86,8 +85,8 @@ namespace TravelAgency.Service.Core
 
         public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsByDestinationIdAsync(string? id)
         {
-            IEnumerable<GetAllHotelsViewModel> hotels = await _context
-                .Hotels
+            IEnumerable<GetAllHotelsViewModel> hotels = await _hotelRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .Where(h => h.DestinationId.ToString() == id)
                 .Select(h => new GetAllHotelsViewModel
@@ -111,8 +110,8 @@ namespace TravelAgency.Service.Core
 
             if (id != null) 
             {
-                Hotel? details = await _context
-                    .Hotels
+                Hotel? details = await _hotelRepository
+                    .GetAllAttached()
                     .Include(h => h.Destination)
                     .AsNoTracking()
                     .SingleOrDefaultAsync(h => h.Id.ToString() == id);
@@ -140,8 +139,8 @@ namespace TravelAgency.Service.Core
         {
             DeleteHotelViewModel? hotelToPass = null;
 
-            Hotel? hotel = await _context
-                .Hotels
+            Hotel? hotel = await _hotelRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(h => h.Id.ToString() == id);
 
@@ -162,8 +161,8 @@ namespace TravelAgency.Service.Core
         {
             HotelEditViewModel? hotel = null;
 
-            var hotelInfo = await _context
-                .Hotels
+            var hotelInfo = await _hotelRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(h => h.Id.ToString() == id);
 
@@ -191,12 +190,10 @@ namespace TravelAgency.Service.Core
 
             if (model != null)
             {
-                Hotel? hotel = await _context
-                    .Hotels
+                Hotel? hotel = await _hotelRepository
                     .SingleOrDefaultAsync(h => h.Id.ToString() == model.Id);
 
-                Destination? destination = await _context
-                    .Destinations
+                Destination? destination = await _destinationRepository
                     .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
 
                 if (hotel != null && destination != null)
@@ -209,8 +206,7 @@ namespace TravelAgency.Service.Core
                     hotel.DaysStay = model.Nights;
                     hotel.DestinationId = Guid.Parse(model.DestinationId);
 
-                    await _context.SaveChangesAsync();
-                    result = true;
+                    result = await _hotelRepository.UpdateAsync(hotel);
                 }
             }
 
