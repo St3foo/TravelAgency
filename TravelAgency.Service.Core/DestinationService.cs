@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Data.Models;
+using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.DestinationModels;
 
@@ -8,28 +9,27 @@ namespace TravelAgency.Service.Core
 {
     public class DestinationService : IDestinationService
     {
-        private readonly TravelAgencyDbContext _context;
+        private readonly IDestinationRepository _destinationRepository;
 
-        public DestinationService(TravelAgencyDbContext context)
+        public DestinationService(IDestinationRepository destinationRepository)
         {
-            _context = context;
+            _destinationRepository = destinationRepository;
         }
 
         public async Task<bool> AddDestinationAsync(AddDestinationViewModel? model)
         {
             bool result = false;
 
-            if (model != null) 
+            if (model != null)
             {
-                Destination destination = new Destination 
+                Destination destination = new Destination
                 {
                     CountryName = model.Name,
                     Description = model.Description,
                     ImageUrl = model.ImageUrl
                 };
 
-                await _context.Destinations.AddAsync(destination);
-                await _context.SaveChangesAsync();
+                await _destinationRepository.AddAsync(destination);
 
                 result = true;
             }
@@ -41,16 +41,12 @@ namespace TravelAgency.Service.Core
         {
             bool result = false;
 
-            Destination? destination = await _context
-                .Destinations
+            Destination? destination = await _destinationRepository
                 .SingleOrDefaultAsync(d => d.Id == model.Id);
 
             if (destination != null)
             {
-                destination.IsDeleted = true;
-
-                await _context.SaveChangesAsync();
-                result = true;
+                result = await _destinationRepository.DeleteAsync(destination);
             }
 
             return result;
@@ -58,10 +54,10 @@ namespace TravelAgency.Service.Core
 
         public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsAsync()
         {
-            IEnumerable<AllDestinationsViewModel> destinations = await _context
-                .Destinations
+            IEnumerable<AllDestinationsViewModel> destinations = await _destinationRepository
+                .GetAllAttached()
                 .AsNoTracking()
-                .Select(d => new AllDestinationsViewModel 
+                .Select(d => new AllDestinationsViewModel
                 {
                     Id = d.Id.ToString(),
                     Name = d.CountryName,
@@ -76,21 +72,23 @@ namespace TravelAgency.Service.Core
         public async Task<DestinationDetailViewModel> GetDestinationDetailsAsync(string destinationId)
         {
             DestinationDetailViewModel? destinationToPass = null;
-            
-            var destination = await _context
-                .Destinations
-                .AsNoTracking()
-                .SingleOrDefaultAsync(d => d.Id.ToString() == destinationId);
 
-            if (destination != null)
+            bool isValidGuid = Guid.TryParse(destinationId, out Guid id);
+
+            if (isValidGuid)
             {
-                destinationToPass = new DestinationDetailViewModel
-                {
-                    Id = destination.Id.ToString(),
-                    Title = destination.CountryName,
-                    ImageUrl = destination.ImageUrl,
-                    Description = destination.Description
-                };
+                destinationToPass = await _destinationRepository
+                    .GetAllAttached()
+                    .AsNoTracking()
+                    .Where(d => d.Id == id)
+                    .Select(d => new DestinationDetailViewModel
+                    {
+                        Id = d.Id.ToString(),
+                        Title = d.CountryName,
+                        ImageUrl = d.ImageUrl,
+                        Description = d.Description
+                    })
+                    .SingleOrDefaultAsync();
             }
 
             return destinationToPass;
@@ -100,19 +98,21 @@ namespace TravelAgency.Service.Core
         {
             DeleteDestinationViewModel? destinationToPass = null;
 
-            var destination = await _context
-                .Destinations
-                .AsNoTracking()
-                .SingleOrDefaultAsync(d => d.Id.ToString() == destinationId);
+            bool isValidGuid = Guid.TryParse(destinationId, out Guid id);
 
-            if (destination != null)
+            if (isValidGuid)
             {
-                destinationToPass = new DeleteDestinationViewModel
-                {
-                    Id = destination.Id,
-                    Name = destination.CountryName,
-                    ImageUrl = destination.ImageUrl
-                };
+                destinationToPass = await _destinationRepository
+                    .GetAllAttached()
+                    .AsNoTracking()
+                    .Where(d => d.Id == id)
+                    .Select(d => new DeleteDestinationViewModel
+                    {
+                        Id = d.Id,
+                        Name = d.CountryName,
+                        ImageUrl = d.ImageUrl
+                    })
+                    .SingleOrDefaultAsync();
             }
 
             return destinationToPass;
@@ -122,20 +122,22 @@ namespace TravelAgency.Service.Core
         {
             DestinationEditViewModel? destinationToPass = null;
 
-            var destination = await _context
-                .Destinations
-                .AsNoTracking()
-                .SingleOrDefaultAsync(d => d.Id.ToString() == id);
+            bool isValidGuid = Guid.TryParse(id, out Guid destId);
 
-            if (destination != null)
+            if (isValidGuid)
             {
-                destinationToPass = new DestinationEditViewModel
-                {
-                    Id = destination.Id.ToString(),
-                    Name = destination.CountryName,
-                    Description = destination.Description,
-                    ImageUrl = destination.ImageUrl
-                };
+                destinationToPass = await _destinationRepository
+                    .GetAllAttached()
+                    .AsNoTracking()
+                    .Where(d => d.Id == destId)
+                    .Select(d => new DestinationEditViewModel
+                    {
+                        Id = d.Id.ToString(),
+                        Name = d.CountryName,
+                        Description = d.Description,
+                        ImageUrl = d.ImageUrl
+                    })
+                    .SingleOrDefaultAsync();
             }
 
             return destinationToPass;
@@ -145,10 +147,9 @@ namespace TravelAgency.Service.Core
         {
             bool result = false;
 
-            if (model != null) 
+            if (model != null)
             {
-                var destination = await _context
-                    .Destinations
+                var destination = await _destinationRepository
                     .SingleOrDefaultAsync(d => d.Id.ToString() == model.Id);
 
                 if (destination != null)
@@ -157,7 +158,7 @@ namespace TravelAgency.Service.Core
                     destination.Description = model.Description;
                     destination.ImageUrl = model.ImageUrl;
 
-                    await _context.SaveChangesAsync();
+                    await _destinationRepository.UpdateAsync(destination);
                     result = true;
                 }
             }

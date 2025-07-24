@@ -4,9 +4,9 @@ using TravelAgency.Data.Models;
 
 namespace TravelAgency.Data.Configuration
 {
-    public class UserHotelsConfiguration : IEntityTypeConfiguration<UserHotels>
+    public class UserHotelsConfiguration : IEntityTypeConfiguration<UserHotel>
     {
-        public void Configure(EntityTypeBuilder<UserHotels> entity)
+        public void Configure(EntityTypeBuilder<UserHotel> entity)
         {
             entity
                 .HasKey(uh => uh.Id);

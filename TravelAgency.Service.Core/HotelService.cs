@@ -6,7 +6,7 @@ using TravelAgency.ViewModels.Models.HotelModels;
 
 namespace TravelAgency.Service.Core
 {
-    public class HotelService : IHotelInterface
+    public class HotelService : IHotelService
     {
         private readonly TravelAgencyDbContext _context;
 

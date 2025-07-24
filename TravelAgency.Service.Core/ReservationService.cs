@@ -31,7 +31,7 @@ namespace TravelAgency.Service.Core
 
             if (user != null && hotel != null)
             {
-                UserHotels reservation = new UserHotels
+                UserHotel reservation = new UserHotel
                 {
                     UserId = userId,
                     HotelId = model.Id,
@@ -112,7 +112,7 @@ namespace TravelAgency.Service.Core
 
         public async Task RemoveFromFavoritesAsync(string? reservationId)
         {
-            UserHotels? reservation = await _context
+            UserHotel? reservation = await _context
                 .UsersHotels
                 .SingleOrDefaultAsync(uh => uh.Id.ToString() == reservationId);
 

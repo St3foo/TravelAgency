@@ -2,7 +2,7 @@
 
 namespace TravelAgency.Data.Models
 {
-    public class UserHotels
+    public class UserHotel
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 

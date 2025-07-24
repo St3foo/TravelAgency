@@ -9,11 +9,11 @@ namespace TravelAgency.Controllers
 {
     public class HotelController : BaseController
     {
-        private readonly IHotelInterface _hotelInterface;
+        private readonly IHotelService _hotelInterface;
         private readonly IDestinationService _destinationService;
         private readonly ILogger<HotelController> _logger;
 
-        public HotelController(IHotelInterface hotelInerface, IDestinationService destinationService, ILogger<HotelController> logger)
+        public HotelController(IHotelService hotelInerface, IDestinationService destinationService, ILogger<HotelController> logger)
         {
             _hotelInterface = hotelInerface;
             _destinationService = destinationService;

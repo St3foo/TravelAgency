@@ -33,7 +33,7 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Landmark" asp-action="Index">Landmarks</a>
 						</li>
-						else if (User?.Identity?.IsAuthenticated == true)
+						@if (User?.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
 						{
 		
 							<li class="nav-item dropdown">

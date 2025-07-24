@@ -18,7 +18,7 @@ namespace TravelAgency.Data
 
         public virtual DbSet<Landmark> Landmarks { get; set; } = null!;
 
-        public virtual DbSet<UserHotels> UsersHotels { get; set; } = null!;
+        public virtual DbSet<UserHotel> UsersHotels { get; set; } = null!;
 
         public virtual DbSet<UserLandmark> UsersLandmarks { get; set; } = null!;
 

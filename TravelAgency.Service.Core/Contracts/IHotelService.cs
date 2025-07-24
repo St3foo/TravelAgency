@@ -2,7 +2,7 @@
 
 namespace TravelAgency.Service.Core.Contracts
 {
-    public interface IHotelInterface
+    public interface IHotelService
     {
         Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync();
 

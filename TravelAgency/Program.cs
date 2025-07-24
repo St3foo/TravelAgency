@@ -6,6 +6,7 @@ using TravelAgency.Data.Seeding;
 using TravelAgency.Service.Core;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.Infrastructure.Extensions;
+using TravelAgency.Data.Repository.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,14 +27,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<TravelAgencyDbContext>();
+
+builder.Services.AddRepositories(typeof(IDestinationRepository).Assembly);
+builder.Services.AddUserDefinedServices(typeof(IDestinationService).Assembly);
+
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddScoped<IDestinationService, DestinationService>();
-builder.Services.AddScoped<ILandmarkService, LandmarkService>();
-builder.Services.AddScoped<IHotelInterface, HotelService>();
-builder.Services.AddScoped<IFavoritesService, FavoritesService>();
-builder.Services.AddScoped<IReservationService, ReservationService>();
-
 
 var app = builder.Build();
 
