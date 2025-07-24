@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Data.Models;
+using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.ReservationModels;
 
@@ -9,12 +10,14 @@ namespace TravelAgency.Service.Core
 {
     public class ReservationService : IReservationService
     {
-        private readonly TravelAgencyDbContext _context;
+        private readonly IUserHotelRepository _userHotelRepository;
+        private readonly IHotelRepository _hotelRepository;
         private readonly UserManager<IdentityUser> _user;
 
-        public ReservationService(TravelAgencyDbContext context, UserManager<IdentityUser> user)
+        public ReservationService(IUserHotelRepository userHotelRepository, IHotelRepository hotelRepository, UserManager<IdentityUser> user)
         {
-            _context = context;
+            _userHotelRepository = userHotelRepository;
+            _hotelRepository = hotelRepository;
             _user = user;
         }
 
@@ -24,8 +27,8 @@ namespace TravelAgency.Service.Core
 
             IdentityUser? user = await _user.FindByIdAsync(userId);
 
-            Hotel? hotel = await _context
-                .Hotels
+            Hotel? hotel = await _hotelRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(h => h.Id == model.Id);
 
@@ -39,8 +42,7 @@ namespace TravelAgency.Service.Core
                     EndDate = model.ReservationDate.AddDays(model.Nights)
                 };
 
-                await _context.UsersHotels.AddAsync(reservation);
-                await _context.SaveChangesAsync();
+                await _userHotelRepository.AddAsync(reservation);
 
                 result = true;
             }
@@ -56,8 +58,8 @@ namespace TravelAgency.Service.Core
 
             if (user != null)
             {
-                reservations = await _context
-                    .UsersHotels
+                reservations = await _userHotelRepository
+                    .GetAllAttached()
                     .Include(uh => uh.Hotel)
                     .AsNoTracking()
                     .Where(uh => uh.UserId.ToLower() == userId.ToLower())
@@ -85,8 +87,8 @@ namespace TravelAgency.Service.Core
 
             if (hotelId != null)
             {
-                Hotel? hotel = await _context
-                    .Hotels
+                Hotel? hotel = await _hotelRepository
+                    .GetAllAttached()
                     .Include(h => h.Destination)
                     .AsNoTracking()
                     .SingleOrDefaultAsync(h => h.Id.ToString() == hotelId);
@@ -112,21 +114,19 @@ namespace TravelAgency.Service.Core
 
         public async Task RemoveFromFavoritesAsync(string? reservationId)
         {
-            UserHotel? reservation = await _context
-                .UsersHotels
+            UserHotel? reservation = await _userHotelRepository
                 .SingleOrDefaultAsync(uh => uh.Id.ToString() == reservationId);
 
             if (reservation != null)
             {
-                _context.UsersHotels.Remove(reservation);
-                await _context.SaveChangesAsync();
+                await _userHotelRepository.HardDeleteAsync(reservation);
             }
         }
 
         public async Task<IEnumerable<GetAllReservationViewModel>> GetAllReservationsAsync()
         {
-            IEnumerable<GetAllReservationViewModel> reservations = await _context
-                    .UsersHotels
+            IEnumerable<GetAllReservationViewModel> reservations = await _userHotelRepository
+                    .GetAllAttached()
                     .Include(uh => uh.Hotel)
                     .AsNoTracking()
                     .Select(uh => new GetAllReservationViewModel

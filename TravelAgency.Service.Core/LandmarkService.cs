@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Data.Models;
+using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.LandmarkModels;
 
@@ -8,19 +9,20 @@ namespace TravelAgency.Service.Core
 {
     public class LandmarkService : ILandmarkService
     {
-        private readonly TravelAgencyDbContext _dbContext;
+        private readonly ILandmarkRepository _landmarkRepository;
+        private readonly IDestinationRepository _destinationRepository;
 
-        public LandmarkService(TravelAgencyDbContext context)
+        public LandmarkService(ILandmarkRepository landmarkRepository, IDestinationRepository destinationRepository)
         {
-            _dbContext = context;
+            _landmarkRepository = landmarkRepository;
+            _destinationRepository = destinationRepository;
         }
 
         public async Task<bool> AddLandmarkAsync(AddLandmarkViewModel? model)
         {
             bool result = false;
 
-            Destination? destination = await _dbContext
-                .Destinations
+            Destination? destination = await _destinationRepository
                 .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
 
             if (destination != null)
@@ -34,8 +36,7 @@ namespace TravelAgency.Service.Core
                     DestinationId = Guid.Parse(model.DestinationId)
                 };
 
-                await _dbContext.Landmarks.AddAsync(landmark);
-                await _dbContext.SaveChangesAsync();
+                await _landmarkRepository.AddAsync(landmark);
 
                 result = true;
             }
@@ -47,16 +48,12 @@ namespace TravelAgency.Service.Core
         {
             bool result = false;
 
-            Landmark? landmark = await _dbContext
-                .Landmarks
+            Landmark? landmark = await _landmarkRepository
                 .SingleOrDefaultAsync(l => l.Id == model.Id);
 
             if (landmark != null) 
             {
-                landmark.IsDeleted = true;
-
-                await _dbContext.SaveChangesAsync();
-                result = true;
+                result = await _landmarkRepository.DeleteAsync(landmark);
             }
 
             return result;
@@ -64,8 +61,8 @@ namespace TravelAgency.Service.Core
 
         public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId)
         {
-            IEnumerable<GetAllLandmarksViewModel> landmarks = await _dbContext
-                .Landmarks
+            IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkRepository
+                .GetAllAttached()
                 .Include(l => l.Destination)
                 .AsNoTracking()
                 .Select(l => new GetAllLandmarksViewModel 
@@ -85,8 +82,8 @@ namespace TravelAgency.Service.Core
 
         public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksByDestinationIdAsync(string? userId, string? destId)
         {
-            IEnumerable<GetAllLandmarksViewModel> landmarks = await _dbContext
-                .Landmarks
+            IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .Where(l => l.DestinationId.ToString() == destId)
                 .Select(l => new GetAllLandmarksViewModel
@@ -110,8 +107,8 @@ namespace TravelAgency.Service.Core
 
             if (landmarkId != null)
             {
-                Landmark? landmarkDetails = await _dbContext
-                    .Landmarks
+                Landmark? landmarkDetails = await _landmarkRepository
+                    .GetAllAttached()
                     .Include(l => l.Destination)
                     .Include(l => l.UserLandmarks)
                     .AsNoTracking()
@@ -139,8 +136,8 @@ namespace TravelAgency.Service.Core
         {
             DeleteLandmarkViewModel? landmarkToPass = null;
 
-            Landmark? landmark = await _dbContext
-                .Landmarks
+            Landmark? landmark = await _landmarkRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(l => l.Id.ToString() == id);
 
@@ -161,8 +158,8 @@ namespace TravelAgency.Service.Core
         {
             LandmarkEditViewModel? landmark = null;
 
-            Landmark? landmarkToEdit = await _dbContext
-                .Landmarks
+            Landmark? landmarkToEdit = await _landmarkRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(l => l.Id.ToString() == id);
 
@@ -188,12 +185,10 @@ namespace TravelAgency.Service.Core
 
             if (model != null)
             {
-                Landmark? landmark = await _dbContext
-                    .Landmarks
+                Landmark? landmark = await _landmarkRepository
                     .SingleOrDefaultAsync(l => l.Id.ToString() == model.Id);
 
-                Destination? destination = await _dbContext
-                    .Destinations
+                Destination? destination = await _destinationRepository
                     .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
 
                 if (landmark != null && destination != null)
@@ -204,8 +199,7 @@ namespace TravelAgency.Service.Core
                     landmark.LocationName = model.Location;
                     landmark.DestinationId = Guid.Parse(model.DestinationId);
 
-                    await _dbContext.SaveChangesAsync();
-                    result = true;
+                    result = await _landmarkRepository.UpdateAsync(landmark);
                 }
             }
 
