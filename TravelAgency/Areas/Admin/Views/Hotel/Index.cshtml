@@ -1,0 +1,64 @@
+﻿@using TravelAgency.ViewModels.Models.HotelModels
+@model IPagedList<GetAllHotelsViewModel>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@{
+	ViewData["Title"] = "All Hotels";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+	<h2>@ViewData["Title"]</h2>
+	<form method="get" action="@Url.Action("Index", "Hotel")">
+		<input type="text" name="search" value="@ViewBag.CurrentFilter" placeholder="Search hotels..." class="form-control" style="width: 300px; display: inline-block;" />
+		<input type="submit" value="Search" class="btn btn-primary" />
+	</form>
+
+	<a asp-area="Admin" asp-controller="Hotel" asp-action="Add" class="btn btn-primary">
+		Add Hotel
+	</a>
+</div>
+<hr />
+
+<div class="row text-center">
+@foreach (var hotel in Model)
+{
+		<div class="row align-items-center mb-4 py-3" style="border-bottom: 1px solid #ccc;">
+			<div class="col-md-2 text-center">
+				@if (!string.IsNullOrEmpty(hotel.ImageUrl))
+				{
+					<img src="@hotel.ImageUrl" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="@hotel.Name" />
+				}
+				else
+				{
+					<img src="~/images/default-image.jpg" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="No Image Available" />
+				}
+			</div>
+			<div class="col-md-4 text-start">
+				<h5 class="mb-0">Hotel name: @hotel.Name</h5>
+				<p class="mb-0"><small>Destination: @hotel.Destination</small></p>
+				<p class="mb-0"><small>Location: @hotel.City</small></p>
+				<p class="mb-0"><small>Price: @hotel.Price $ for Nights: @hotel.Nights</small></p>
+			</div>
+			<div class="col-md-4 text-end d-flex flex-column gap-2">
+				<form asp-area="Admin" asp-controller="Hotel" asp-action="Edit" asp-route-id="@hotel.Id" method="get">
+					<button type="submit" class="btn btn-warning fw-bold w-50">
+						Edit
+					</button>
+				</form>
+				<form asp-area="Admin" asp-controller="Hotel" asp-action="Delete" asp-route-id="@hotel.Id" method="get">
+					<button type="submit" class="btn btn-danger fw-bold w-50">
+						Remove
+					</button>
+				</form>
+			</div>
+
+
+		</div>
+}
+@{
+	ViewBag.PaginationAction = "Index";
+	ViewBag.PaginationController = "Hotel";
+}
+
+@Html.Partial("_Pagination", Model)

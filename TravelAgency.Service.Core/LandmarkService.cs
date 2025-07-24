@@ -194,7 +194,7 @@ namespace TravelAgency.Service.Core
 
                 Destination? destination = await _dbContext
                     .Destinations
-                    .SingleOrDefaultAsync(d => d.Id.ToString() == model.Id);
+                    .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
 
                 if (landmark != null && destination != null)
                 {

@@ -37,16 +37,7 @@
                 <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">
                      Back
                 </a>
-                @if (User.IsInRole("Admin"))
-                {
-                <a asp-controller="Hotel" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
-                    Edit
-                </a>
-                <a asp-controller="Hotel" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
-                    Delete
-                </a>
-                }
-                else if (User?.Identity?.IsAuthenticated == true)
+                @if (User?.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
                 {
                     <form asp-controller="Reservation" asp-action="Add" method="get" class="flex-fill mx-1">
                         <input type="hidden" name="id" value="@Model.Id" />

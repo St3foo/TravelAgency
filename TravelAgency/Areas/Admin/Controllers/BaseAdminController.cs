@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TravelAgency.Controllers
+namespace TravelAgency.Areas.Admin.Controllers
 {
-    [Authorize]
-    public abstract class BaseController : Controller
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public abstract class BaseAdminController : Controller
     {
         protected bool IsUserAuthenticated()
         {

@@ -40,7 +40,7 @@ else
 				<p class="text-muted mb-0"><small>Check in: @reservation.StartDate Check out: @reservation.EndDate</small></p>
 			</div>
 			<div class="col-md-4 text-end d-flex flex-column gap-2">
-				<form asp-controller="Reservation" asp-action="Remove" asp-route-id="@reservation.Id" method="post">
+				<form asp-area="Admin" asp-controller="Reservation" asp-action="Remove" asp-route-id="@reservation.Id" method="post">
 					<button type="submit" class="btn btn-danger fw-bold w-50">
 						Cancel Reservation
 					</button>

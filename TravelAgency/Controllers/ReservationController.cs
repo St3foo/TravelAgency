@@ -80,20 +80,14 @@ namespace TravelAgency.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Remove(string? id) 
+        public async Task<IActionResult> Remove(string? id)
         {
             try
-            {               
+            {
                 await _reservationService.RemoveFromFavoritesAsync(id);
 
-                if (User.IsInRole("Admin"))
-                {
-                    return RedirectToAction(nameof(Manage));
-                }
-                else
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+                return RedirectToAction(nameof(Index));
+
             }
             catch (Exception e)
             {
@@ -102,20 +96,5 @@ namespace TravelAgency.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Manage() 
-        {
-            try
-            {
-                IEnumerable<GetAllReservationViewModel> reservations = await _reservationService.GetAllReservationsAsync();
-
-                return View(reservations);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Manage");
-                return RedirectToAction(nameof(Index));
-            }
-        }
     }
 }

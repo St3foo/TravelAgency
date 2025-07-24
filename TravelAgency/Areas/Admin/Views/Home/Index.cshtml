@@ -1,0 +1,68 @@
+﻿<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4 mb-3 text-black fw-bold">Welcome to the Admin Dashboard</h1>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 bg-white text-black rounded-3 h-100">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <h5 class="card-title fw-bold">Manage Destinations</h5>
+                    <p class="card-text text-muted">Add, edit, or remove Destinations.</p>
+                    <div class="mt-auto w-100">
+                        <a asp-area="Admin" asp-controller="Destination" asp-action="Index"
+                           class="btn btn-primary fw-bold shadow-sm w-100 py-2">
+                                Go to Destinations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 bg-white text-black rounded-3 h-100">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <h5 class="card-title fw-bold">Manage Hotels</h5>
+                    <p class="card-text text-muted">Add, edit, or remove Hotels.</p>
+                    <div class="mt-auto w-100">
+                        <a asp-area="Admin" asp-controller="Hotel" asp-action="Index"
+                           class="btn btn-primary fw-bold shadow-sm w-100 py-2">
+                            Go to Hotels
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 bg-white text-black rounded-3 h-100">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <h5 class="card-title fw-bold">Manage Landmarks</h5>
+                    <p class="card-text text-muted">Add, edit, or remove Landmarks.</p>
+                    <div class="mt-auto w-100">
+                        <a asp-area="Admin" asp-controller="Landmark" asp-action="Index"
+                           class="btn btn-primary fw-bold shadow-sm w-100 py-2">
+                             Go to Landmarks
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 bg-white text-black rounded-3 h-100">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <h5 class="card-title fw-bold">Manage Reservations</h5>
+                    <p class="card-text text-muted">Remove reservations.</p>
+                    <div class="mt-auto w-100">
+                        <a asp-area="Admin" asp-controller="Reservation" asp-action="Index"
+                           class="btn btn-primary fw-bold shadow-sm w-100 py-2">
+                            Go to Reservations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

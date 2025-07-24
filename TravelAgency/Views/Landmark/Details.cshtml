@@ -35,16 +35,7 @@
                 <a asp-controller="Landmark" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">
                      Back
                 </a>
-                @if (User.IsInRole("Admin"))
-                {
-                <a asp-controller="Landmark" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
-                    Edit
-                </a>
-                <a asp-controller="Landmark" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
-                    Delete
-                </a>
-                }
-                else if (User?.Identity?.IsAuthenticated == true && !Model.IsFavorite)
+                @if (User?.Identity?.IsAuthenticated == true && !Model.IsFavorite && !User.IsInRole("Admin"))
                 {
                     <form asp-controller="Favorites" asp-action="Add" method="post" class="flex-fill mx-1">
                         <input type="hidden" name="id" value="@Model.Id" />

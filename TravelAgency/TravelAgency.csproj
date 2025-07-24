@@ -23,4 +23,8 @@
     <ProjectReference Include="..\TravelAgency.ViewModels\TravelAgency.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
 </Project>

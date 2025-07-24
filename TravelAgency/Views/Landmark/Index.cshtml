@@ -13,12 +13,6 @@
         <input type="text" name="search" value="@ViewBag.CurrentFilter" placeholder="Search landmarks..." class="form-control" style="width: 300px; display: inline-block;" />
         <input type="submit" value="Search" class="btn btn-primary" />
     </form>
-    @if (User.IsInRole("Admin"))
-    {
-        <a asp-controller="Landmark" asp-action="Add" class="btn btn-primary">
-             Add Landmark
-        </a>
-    }
 </div>
 <hr />
 

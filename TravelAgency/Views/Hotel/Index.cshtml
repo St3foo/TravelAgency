@@ -13,12 +13,6 @@
 		<input type="text" name="search" value="@ViewBag.CurrentFilter" placeholder="Search hotels..." class="form-control" style="width: 300px; display: inline-block;" />
 		<input type="submit" value="Search" class="btn btn-primary" />
 	</form>
-	@if (User.IsInRole("Admin"))
-	{
-		<a asp-controller="Hotel" asp-action="Add" class="btn btn-primary">
-			 Add Hotel
-		</a>
-	}
 </div>
 <hr />
 

@@ -6,53 +6,42 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    <h2>@ViewData["Title"]</h2>
+	<h2>@ViewData["Title"]</h2>
 </div>
 <hr />
 
 <div class="row justify-content-center" style="margin: 0 auto; max-width: 1500px;">
-    <div class="col-md-4 text-center">
-        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-        {
-            <img src="@Model.ImageUrl" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.Title" />
-        }
-        else
-        {
-            <img src="~/images/default-image.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
-        }
-    </div>
+	<div class="col-md-4 text-center">
+		@if (!string.IsNullOrEmpty(Model.ImageUrl))
+		{
+			<img src="@Model.ImageUrl" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.Title" />
+		}
+		else
+		{
+			<img src="~/images/default-image.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
+		}
+	</div>
 
-    <div class="col-md-8">
-        <div class="card-body">
-            <h5 class="card-title">@Model.Title</h5>
-            <hr />
-            <p class="card-text">@Model.Description</p>
-            <hr />
-        </div>
-        <div class="card-footer text-center">
-            <div class="d-flex justify-content-between align-items-center">
-                <a asp-controller="Destination" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">
-                     Back
-                </a>
-                @if (User.IsInRole("Admin"))
-                {
-                    <a asp-controller="Destination" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
-                        Edit
-                    </a>
-                    <a asp-controller="Destination" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
-                        Delete
-                    </a>
-                }
-                else
-                {
-                    <a asp-controller="Hotel" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
-                        Hotels
-                    </a>
-                    <a asp-controller="Landmark" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
-                        Landmarks
-                    </a>
-                }
-            </div>
-        </div>
-    </div>
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title">@Model.Title</h5>
+			<hr />
+			<p class="card-text">@Model.Description</p>
+			<hr />
+		</div>
+		<div class="card-footer text-center">
+			<div class="d-flex justify-content-between align-items-center">
+				<a asp-controller="Destination" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">
+					Back
+				</a>
+
+				<a asp-controller="Hotel" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
+					Hotels
+				</a>
+				<a asp-controller="Landmark" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
+					Landmarks
+				</a>
+			</div>
+		</div>
+	</div>
 </div>

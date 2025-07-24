@@ -1,8 +1,8 @@
-﻿@using TravelAgency.ViewModels.Models.LandmarkModels
-@model DeleteLandmarkViewModel
+﻿@using TravelAgency.ViewModels.Models.DestinationModels
+@model DeleteDestinationViewModel
 
 @{
-    ViewData["Title"] = "Delete Landmark";
+    ViewData["Title"] = "Delete Destination";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
@@ -35,7 +35,7 @@
                          Confirm Delete
                     </button>
                 </form>
-                <a asp-controller="Landmark" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-warning">
+                <a asp-area="Admin" asp-controller="Destination" asp-action="Index" class="btn btn-warning">
                      Cancel
                 </a>
             </div>
