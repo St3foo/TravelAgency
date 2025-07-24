@@ -5,6 +5,7 @@ using TravelAgency.Data;
 using TravelAgency.Data.Seeding;
 using TravelAgency.Service.Core;
 using TravelAgency.Service.Core.Contracts;
+using TravelAgency.Infrastructure.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,6 +56,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthorization();
+
+app.UserAdminRedirection();
 
 app.MapControllerRoute(
     name: "areas",

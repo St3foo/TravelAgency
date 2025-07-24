@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TravelAgency.Infrastructure\TravelAgency.Infrastructure.csproj" />
     <ProjectReference Include="..\TravelAgency.Service.Core\TravelAgency.Service.Core.csproj" />
     <ProjectReference Include="..\TravelAgency.ViewModels\TravelAgency.ViewModels.csproj" />
   </ItemGroup>
