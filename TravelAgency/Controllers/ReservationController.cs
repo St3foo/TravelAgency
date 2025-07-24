@@ -7,10 +7,12 @@ namespace TravelAgency.Controllers
     public class ReservationController : BaseController
     {
         private readonly IReservationService _reservationService;
+        private readonly ILogger<ReservationController> _logger;
 
-        public ReservationController(IReservationService service)
+        public ReservationController(IReservationService service, ILogger<ReservationController> logger)
         {
             _reservationService = service;
+            _logger = logger;
         }
 
 
@@ -30,8 +32,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -51,8 +53,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Add");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -72,8 +74,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Create");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -95,8 +97,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Remove");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -111,8 +113,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Manage");
+                return RedirectToAction(nameof(Index));
             }
         }
     }

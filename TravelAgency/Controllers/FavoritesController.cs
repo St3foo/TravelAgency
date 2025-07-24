@@ -8,10 +8,12 @@ namespace TravelAgency.Controllers
     public class FavoritesController : BaseController
     {
         private readonly IFavoritesService _favoriteService;
+        private readonly ILogger<FavoritesController> _logger;
 
-        public FavoritesController(IFavoritesService favorites)
+        public FavoritesController(IFavoritesService favorites, ILogger<FavoritesController> logger)
         {
             _favoriteService = favorites;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -30,8 +32,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -46,8 +48,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Add");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -62,8 +64,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Remove");
+                return RedirectToAction(nameof(Index));
             }
         }
     }

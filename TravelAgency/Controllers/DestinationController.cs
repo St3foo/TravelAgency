@@ -2,26 +2,26 @@
 using Microsoft.AspNetCore.Mvc;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.DestinationModels;
-using X.PagedList;
 using X.PagedList.Extensions;
+using static TravelAgency.GCommon.Constants;
 
 namespace TravelAgency.Controllers
 {
     public class DestinationController : BaseController
     {
         private readonly IDestinationService _destinationService;
+        private readonly ILogger<DestinationController> _logger;
 
-        public DestinationController(IDestinationService destSevice)
+        public DestinationController(IDestinationService destSevice, ILogger<DestinationController> logger)
         {
             _destinationService = destSevice;
+            _logger = logger;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index(string? search, int page = 1)
         {
-            const int pageSize = 8;
-
             try
             {
 
@@ -35,15 +35,15 @@ namespace TravelAgency.Controllers
 
                 ViewBag.CurrentFilter = search;
 
-                var pagedList = destinations.ToPagedList(page, pageSize);
+                var pagedList = destinations.ToPagedList(page, PageSize);
 
                 return View(pagedList);
 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -60,8 +60,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "Details");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -83,8 +83,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "EditGet");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -110,8 +110,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "EditPost");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -127,8 +127,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "AddGet");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -154,8 +154,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "AddPost");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -176,8 +176,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "DeleteGet");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -198,8 +198,8 @@ namespace TravelAgency.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                _logger.LogError(e, "DeletePost");
+                return RedirectToAction(nameof(Index));
             }
         }
     }
