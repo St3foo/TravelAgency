@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Data.Models;
+using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.FavoritesModels;
 
@@ -9,42 +10,32 @@ namespace TravelAgency.Service.Core
 {
     public class FavoritesService : IFavoritesService
     {
-        private readonly TravelAgencyDbContext _context;
+        private readonly IUserLandmarkRepository _userLandmarkRepository;
         private readonly UserManager<IdentityUser> _user;
 
-        public FavoritesService(TravelAgencyDbContext context, UserManager<IdentityUser> user)
+        public FavoritesService(IUserLandmarkRepository userLandmarkRepository, UserManager<IdentityUser> user)
         {
-            _context = context;
+            _userLandmarkRepository = userLandmarkRepository;
             _user = user;
         }
 
         public async Task AddToFavoritesAsync(string? userId, string? landmarkId)
         {
-
-            IdentityUser? user = await _user
-                .FindByIdAsync(userId);
-
-            Landmark? landmark = await _context
-                .Landmarks
-                .SingleOrDefaultAsync(l => l.Id.ToString() == landmarkId);
-
-            if (landmark != null && user != null) 
+          
+            if (landmarkId != null && userId != null) 
             {
-                UserLandmark? favLandmark = await _context
-                    .UsersLandmarks
-                    .SingleOrDefaultAsync(ul => ul.UserId.ToLower() == userId.ToLower() && ul.LandmarkId == landmark.Id);
+                UserLandmark? favLandmark = await _userLandmarkRepository
+                    .SingleOrDefaultAsync(ul => ul.UserId.ToLower() == userId.ToLower() && ul.LandmarkId.ToString() == landmarkId);
 
                 if (favLandmark == null)
                 {
                     UserLandmark landmarkToAdd = new UserLandmark 
                     {
                         UserId = userId,
-                        LandmarkId = landmark.Id,
+                        LandmarkId = Guid.Parse(landmarkId)
                     };
 
-                    await _context.UsersLandmarks.AddAsync(landmarkToAdd);
-                    await _context.SaveChangesAsync();
-
+                    await _userLandmarkRepository.AddAsync(landmarkToAdd);                   
                 }
             }
         }
@@ -58,8 +49,8 @@ namespace TravelAgency.Service.Core
 
             if (user != null)
             {
-                models = await _context
-                    .UsersLandmarks
+                models = await _userLandmarkRepository
+                    .GetAllAttached()
                     .Include(ul => ul.Landmark)
                     .AsNoTracking()
                     .Where(ul => ul.UserId.ToLower() == userId.ToLower())
@@ -79,14 +70,12 @@ namespace TravelAgency.Service.Core
 
         public async Task RemoveFromFavoritesAsync(string? userId, string? landmarkId)
         {
-            UserLandmark? landmark = await _context
-                .UsersLandmarks
+            UserLandmark? landmark = await _userLandmarkRepository
                 .SingleOrDefaultAsync(ul => ul.UserId.ToLower() == userId.ToLower() && ul.LandmarkId.ToString() == landmarkId);
 
             if (landmark != null) 
             {
-                _context.UsersLandmarks.Remove(landmark);
-                await _context.SaveChangesAsync();
+                await _userLandmarkRepository.HardDeleteAsync(landmark);
             }
         }
     }
