@@ -1,5 +1,7 @@
 ﻿@using TravelAgency.ViewModels.Models.FavoritesModels
-@model IEnumerable<GetAllFavoritesViewModel>
+@model IPagedList<GetAllFavoritesViewModel>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
 
 @{
     ViewData["Title"] = "Favorite Landmarks";
@@ -50,8 +52,10 @@ else
         </div>
     }
 }
-<div class="text-center mt-5">
-    <a asp-controller="Landmark" asp-action="Index" class="btn btn-primary mt-3">
-         Back to Landmarks
-    </a>
-</div>
+
+@{
+    ViewBag.PaginationAction = "Index";
+    ViewBag.PaginationController = "Favorites";
+}
+
+@Html.Partial("_Pagination", Model)

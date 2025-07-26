@@ -1,12 +1,10 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
-using TravelAgency.Data.Seeding;
-using TravelAgency.Service.Core;
-using TravelAgency.Service.Core.Contracts;
-using TravelAgency.Infrastructure.Extensions;
 using TravelAgency.Data.Repository.Interfaces;
+using TravelAgency.Data.Seeding;
+using TravelAgency.Infrastructure.Extensions;
+using TravelAgency.Service.Core.Contracts;
 
 
 var builder = WebApplication.CreateBuilder(args);

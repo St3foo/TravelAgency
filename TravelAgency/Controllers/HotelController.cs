@@ -22,21 +22,42 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index(string? id, string? search, int page = 1)
+        public async Task<IActionResult> Index(string? search, int page = 1)
         {
             try
             {
 
                 IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsAsync();
 
-                if (id != null)
-                {
-                    hotels = await _hotelInterface.GetAllHotelsByDestinationIdAsync(id);
-                }
-
                 if (!String.IsNullOrEmpty(search))
                 {
                     hotels = hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
+                }
+
+                ViewBag.CurrentFilter = search;
+
+                var pagedList = hotels.ToPagedList(page, PageSize);
+
+                return View(pagedList);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Index");
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetByDestId(string? id,string? search, int page = 1) 
+        {
+            try
+            {
+                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsByDestinationIdAsync(id);
+
+                if (hotels == null)
+                {
+                    return RedirectToAction(nameof(Index));
                 }
 
                 ViewBag.CurrentFilter = search;

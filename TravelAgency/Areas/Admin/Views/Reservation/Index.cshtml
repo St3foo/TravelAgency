@@ -1,5 +1,7 @@
 ﻿@using TravelAgency.ViewModels.Models.ReservationModels
-@model IEnumerable<GetAllReservationViewModel>
+@model IPagedList<GetAllReservationViewModel>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
 
 @{
 	ViewData["Title"] = "All Reservations";
@@ -50,8 +52,10 @@ else
 		</div>
 	}
 }
-<div class="text-center mt-5">
-	<a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">
-		Back
-	</a>
-</div>
+
+@{
+	ViewBag.PaginationAction = "Index";
+	ViewBag.PaginationController = "Reservation";
+}
+
+@Html.Partial("_Pagination", Model)

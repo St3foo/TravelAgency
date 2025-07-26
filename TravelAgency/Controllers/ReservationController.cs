@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Drawing.Printing;
+using Microsoft.AspNetCore.Mvc;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.ReservationModels;
+using X.PagedList.Extensions;
+using static TravelAgency.GCommon.Constants;
 
 namespace TravelAgency.Controllers
 {
@@ -17,7 +20,7 @@ namespace TravelAgency.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             try
             {
@@ -28,7 +31,9 @@ namespace TravelAgency.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                return View(reservations);
+                var pagedList = reservations.ToPagedList(page, PageSize);
+
+                return View(pagedList);
             }
             catch (Exception e)
             {
