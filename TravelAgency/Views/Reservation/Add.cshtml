@@ -2,44 +2,45 @@
 @model AddReservationViewModel
 
 @{
-    ViewBag.Title = "Reserve a room";
+    ViewData["Title"] = "Reserve a Room";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    <h2>@ViewData["Title"]</h2>
-</div>
-<hr />
-
-<div style="display: flex;">
-    <div style="flex: 1; padding-right: 20px;">
-        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-        {
-            <img src="@Model.ImageUrl" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.Name" />
-        }
-        else
-        {
-            <img src="~/images/default-image.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
-        }
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">@ViewData["Title"]</h2>
     </div>
 
-    <div style="flex: 2;">
-        <h3>@Model.Name</h3>
-        <p><strong>City:</strong> @Model.City</p>
-        <p><strong>Destination:</strong> @Model.Destination</p>
-        <p><strong>Price:</strong> @Model.Price $ for @Model.Nights nights</p>
+    <div class="row g-4">
+        <div class="col-md-5 text-center">
+            <img src="@(!string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+                 class="img-fluid rounded shadow-sm"
+                 style="max-height: 350px; object-fit: contain;"
+                 alt="@Model.Name" />
+        </div>
 
-        <form asp-action="Create" method="post">
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Nights" />
-            <div class="form-group">
-                <label asp-for="ReservationDate">Select Date</label>
-                <input asp-for="ReservationDate" class="form-control" type="date" />
-                <span asp-validation-for="ReservationDate" class="text-danger"></span>
+        <div class="col-md-7">
+            <div class="card border-0 shadow-sm p-4">
+                <h4 class="fw-semibold">@Model.Name</h4>
+                <p class="mb-1"><strong>City:</strong> @Model.City</p>
+                <p class="mb-1"><strong>Destination:</strong> @Model.Destination</p>
+                <p class="mb-3"><strong>Price:</strong> @Model.Price $ for @Model.Nights nights</p>
+
+                <form asp-action="Create" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Nights" />
+
+                    <div class="mb-3">
+                        <label asp-for="ReservationDate" class="form-label">Select Date</label>
+                        <input asp-for="ReservationDate" type="date" class="form-control" />
+                        <span asp-validation-for="ReservationDate" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 fw-bold">
+                        Reserve a Room
+                    </button>
+                </form>
             </div>
-
-            <br />
-            <button type="submit" class="btn btn-success">Reserve a room</button>
-        </form>
+        </div>
     </div>
 </div>
 

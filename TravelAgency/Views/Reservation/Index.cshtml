@@ -7,54 +7,58 @@
 	ViewData["Title"] = "My Reservations";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-	<h2>@ViewData["Title"]</h2>
-</div>
-<hr />
+<div class="container mt-5">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="fw-bold text-primary">@ViewData["Title"]</h2>
+	</div>
 
 @if (Model == null || !Model.Any())
 {
-	<div class="text-center mt-5">
-		<h4>You don't have any Reservations!</h4>
-	</div>
+		<div class="text-center mt-5">
+			<h4 class="text-muted">You don't have any reservations yet!</h4>
+		</div>
 }
 else
 {
-	@foreach (var reservation in Model)
-	{
-		<div class="row align-items-center mb-4 py-3" style="border-bottom: 1px solid #ccc;">
-			<div class="col-md-2 text-center">
-				@if (!string.IsNullOrEmpty(@reservation.ImageUrl))
-				{
-					<img src="@reservation.ImageUrl" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="@reservation.HotelName" />
-				}
-				else
-				{
-					<img src="~/images/default-image.jpg" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="No Image Available" />
-				}
-			</div>
-			<div class="col-md-4 text-start">
-				<h5 class="mb-0">@reservation.HotelName</h5>
-				<p class="text-muted mb-0"><small>Location: @reservation.Location</small></p>
-				<p class="text-muted mb-0"><small>Destination: @reservation.Destination</small></p>
-				<p class="text-muted mb-0"><small>Price: @reservation.Price $</small></p>
-				<p class="text-muted mb-0"><small>Check in: @reservation.StartDate Check out: @reservation.EndDate</small></p>
-			</div>
-			<div class="col-md-4 text-end d-flex flex-column gap-2">
-				<form asp-controller="Reservation" asp-action="Remove" asp-route-id="@reservation.Id" method="post">
-					<button type="submit" class="btn btn-danger fw-bold w-50">
-						Cancel Reservation
-					</button>
-				</form>
-			</div>
+		<div class="row g-4">
+			@foreach (var reservation in Model)
+			{
+				<div class="col-md-6">
+					<div class="card shadow-sm border-0 h-100 d-flex flex-row align-items-center p-3">
+						<div class="flex-shrink-0 me-3">
+							<img src="@(!string.IsNullOrEmpty(reservation.ImageUrl) ? reservation.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+								 class="rounded"
+								 alt="@reservation.HotelName"
+								 style="width: 100px; height: 100px; object-fit: cover;" />
+						</div>
+						<div class="flex-grow-1">
+							<h5 class="mb-1 text-primary fw-semibold">@reservation.HotelName</h5>
+							<p class="mb-0 text-muted"><small><strong>Location:</strong> @reservation.Location</small></p>
+							<p class="mb-0 text-muted"><small><strong>Destination:</strong> @reservation.Destination</small></p>
+							<p class="mb-0 text-muted"><small><strong>Price:</strong> $@reservation.Price</small></p>
+							<p class="mb-2 text-muted">
+								<small>
+									<strong>Check-in:</strong> @reservation.StartDate.ToString("dd MMM yyyy") &nbsp;
+									<strong>Check-out:</strong> @reservation.EndDate.ToString("dd MMM yyyy")
+								</small>
+							</p>
 
+							<form asp-controller="Reservation" asp-action="Remove" asp-route-id="@reservation.Id" method="post">
+								<button type="submit" class="btn btn-danger btn-sm w-100 fw-semibold">
+									Cancel Reservation
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			}
 		</div>
-	}
-}
 
+		<div class="d-flex justify-content-center mt-5">
+			@Html.Partial("_Pagination", Model)
+		</div>
+}
 @{
 	ViewBag.PaginationAction = "Index";
 	ViewBag.PaginationController = "Reservation";
 }
-
-@Html.Partial("_Pagination", Model)

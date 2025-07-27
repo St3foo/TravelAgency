@@ -5,45 +5,46 @@
     ViewData["Title"] = "Landmark Details";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    <h2>@ViewData["Title"]</h2>
-</div>
-<hr />
-
-<div class="row justify-content-center" style="margin: 0 auto; max-width: 1500px;">
-    <div class="col-md-4 text-center">
-        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-        {
-            <img src="@Model.ImageUrl" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.Title" />
-        }
-        else
-        {
-            <img src="~/images/default-image.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
-        }
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">@ViewData["Title"]</h2>
     </div>
 
-    <div class="col-md-8">
-        <div class="card-body">
-            <h5 class="card-title">@Model.Title</h5>
-            <p class="card-text">@Model.Destination</p>
-            <hr />
-            <p class="card-text">@Model.Description</p>
-            <hr />
+    <div class="row justify-content-center g-4">
+        <div class="col-md-5 text-center">
+            <img src="@(!string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+                 class="img-fluid rounded shadow-sm"
+                 style="max-height: 350px; object-fit: contain;"
+                 alt="@Model.Title" />
         </div>
-        <div class="card-footer text-center">
-            <div class="d-flex justify-content-between align-items-center">
-                <a asp-controller="Landmark" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">
-                     Back
-                </a>
-                @if (User?.Identity?.IsAuthenticated == true && !Model.IsFavorite && !User.IsInRole("Admin"))
-                {
-                    <form asp-controller="Favorites" asp-action="Add" method="post" class="flex-fill mx-1">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <button type="submit" class="btn btn-success d-flex justify-content-center align-items-center">
-                            Favorites
-                        </button>
-                    </form>
-                }
+
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0 p-4">
+                <h3 class="fw-bold text-secondary">@Model.Title</h3>
+                <p class="text-muted mb-1"><strong>Destination:</strong> @Model.Destination</p>
+
+                <hr />
+
+                <p class="text-muted fs-6">@Model.Description</p>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-between flex-wrap gap-2">
+                    <a asp-controller="Landmark" asp-action="Index"
+                       class="btn btn-outline-secondary w-100">
+                        Back
+                    </a>
+
+                    @if (User?.Identity?.IsAuthenticated == true && !Model.IsFavorite && !User.IsInRole("Admin"))
+                    {
+                        <form asp-controller="Favorites" asp-action="Add" method="post" class="w-100">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-success w-100">
+                                Add to Favorites
+                            </button>
+                        </form>
+                    }
+                </div>
             </div>
         </div>
     </div>

@@ -2,46 +2,45 @@
 @model DestinationDetailViewModel
 
 @{
-	ViewData["Title"] = "Destination Details";
+    ViewData["Title"] = "Destination Details";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-	<h2>@ViewData["Title"]</h2>
-</div>
-<hr />
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">@ViewData["Title"]</h2>
+    </div>
 
-<div class="row justify-content-center" style="margin: 0 auto; max-width: 1500px;">
-	<div class="col-md-4 text-center">
-		@if (!string.IsNullOrEmpty(Model.ImageUrl))
-		{
-			<img src="@Model.ImageUrl" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.Title" />
-		}
-		else
-		{
-			<img src="~/images/default-image.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
-		}
-	</div>
+    <div class="row justify-content-center g-4">
+        <div class="col-md-5 text-center">
+            <img src="@(!string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+                 class="img-fluid rounded shadow-sm"
+                 style="max-height: 350px; object-fit: contain;"
+                 alt="@Model.Title" />
+        </div>
 
-	<div class="col-md-8">
-		<div class="card-body">
-			<h5 class="card-title">@Model.Title</h5>
-			<hr />
-			<p class="card-text">@Model.Description</p>
-			<hr />
-		</div>
-		<div class="card-footer text-center">
-			<div class="d-flex justify-content-between align-items-center">
-				<a asp-controller="Destination" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">
-					Back
-				</a>
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0 p-4">
+                <h3 class="fw-bold text-secondary">@Model.Title</h3>
+                <hr />
+                <p class="text-muted fs-5">@Model.Description</p>
 
-				<a asp-controller="Hotel" asp-action="GetByDestId" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
-					Hotels
-				</a>
-				<a asp-controller="Landmark" asp-action="GetByDestId" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
-					Landmarks
-				</a>
-			</div>
-		</div>
-	</div>
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-between flex-wrap gap-2">
+                    <a asp-controller="Destination" asp-action="Index"
+                       class="btn btn-outline-secondary w-100">
+                        Back
+                    </a>
+                    <a asp-controller="Hotel" asp-action="Filter" asp-route-id="@Model.Id"
+                       class="btn btn-outline-primary w-100">
+                        View Hotels
+                    </a>
+                    <a asp-controller="Landmark" asp-action="Filter" asp-route-id="@Model.Id"
+                       class="btn btn-outline-danger w-100">
+                        View Landmarks
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

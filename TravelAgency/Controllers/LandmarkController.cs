@@ -49,7 +49,7 @@ namespace TravelAgency.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetByDestId(string? id, string? search, int page = 1) 
+        public async Task<IActionResult> Filter(string? id, string? search, int page = 1) 
         {
             try
             {
