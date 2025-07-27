@@ -1,22 +1,106 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* Google Font */
 body {
-  margin-bottom: 60px;
+    font-family: 'Inter', sans-serif;
+    background-color: #f4faff;
+    color: #333;
 }
+
+/* Navbar */
+.custom-navbar {
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+}
+
+    .custom-navbar .navbar-brand,
+    .custom-navbar .nav-link {
+        color: #fff !important;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+        .custom-navbar .nav-link:hover,
+        .custom-navbar .navbar-brand:hover {
+            color: #ffe082 !important;
+        }
+
+/* Card Hover Effect */
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+}
+
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+/* Footer */
+.footer {
+    background-color: #f8f9fa;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* Other utility overrides */
+.border-top {
+    border-top: 1px solid #e5e5e5 !important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5 !important;
+}
+
+a {
+    color: #0077cc;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #005fa3;
+        text-decoration: underline;
+    }
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.card-img-top {
+    object-fit: cover;
+    max-height: 250px;
+}
+
+h1.display-4 {
+    color: #0077cc;
+}
+.card-title {
+    font-size: 1.25rem;
+}
+
+.card-img-top {
+    object-fit: cover;
+    max-height: 180px;
+}
+
+.btn-outline-primary {
+    border-width: 2px;
+}
+.card-title {
+    font-size: 1.25rem;
+}
+
+.card-img-top {
+    object-fit: cover;
+    max-height: 180px;
+}
+
+.btn-outline-primary {
+    border-width: 2px;
+    transition: 0.3s ease;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #1b6ec2;
+        color: #fff;
+    }

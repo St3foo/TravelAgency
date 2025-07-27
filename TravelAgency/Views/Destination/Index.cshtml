@@ -4,47 +4,40 @@
 @using X.PagedList.Mvc.Core
 
 @{
-	ViewData["Title"] = "All Destinations";
+    ViewData["Title"] = "All Destinations";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-	<h2>@ViewData["Title"]</h2>
-	<form method="get" action="@Url.Action("Index", "Destination")">
-		<input type="text" name="search" value="@ViewBag.CurrentFilter" placeholder="Search destinations..." class="form-control" style="width: 300px; display: inline-block;" />
-		<input type="submit" value="Search" class="btn btn-primary" />
-	</form>
+<div class="container mt-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">@ViewData["Title"]</h2>
+        <form method="get" action="@Url.Action("Index", "Destination")" class="d-flex mt-3 mt-md-0" role="search">
+            <input type="text" name="search" value="@ViewBag.CurrentFilter" class="form-control me-2" placeholder="Search destinations..." style="width: 300px;" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var destination in Model)
+        {
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="@(!string.IsNullOrEmpty(destination.ImageUrl) ? destination.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+                         class="card-img-top rounded-top"
+                         style="object-fit: cover; max-height: 180px;"
+                         alt="@destination.Name" />
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary fw-semibold">@destination.Name</h5>
+                        <a asp-controller="Destination" asp-action="Details" asp-route-id="@destination.Id" class="btn btn-outline-primary mt-auto">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        @Html.Partial("_Pagination", Model)
+    </div>
 </div>
-<hr />
-
-<div class="row text-center">
-	@foreach (var destination in Model)
-	{
-		<div class="col-md-3 mb-4">
-			<div class="card h-100" style="width: 100%;">
-				@if (!string.IsNullOrEmpty(destination.ImageUrl))
-				{
-					<img src="@destination.ImageUrl" class="card-img-top" style="max-height: 150px; object-fit: contain;" alt="@destination.Name">
-				}
-				else
-				{
-					<img src="~/images/default-image.jpg" class="card-img-top" style="max-height: 150px; object-fit: contain;" alt="No Image Available">
-				}
-
-				<div class="card-body d-flex flex-column">
-					<h5 class="card-title">@destination.Name</h5>
-					<div class="d-flex justify-content-between mt-auto">
-						<a asp-controller="Destination" asp-action="Details" asp-route-id="@destination.Id" class="btn btn-info w-100">
-							 Details
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	}
-</div>
-@{
-	ViewBag.PaginationAction = "Index"; 
-	ViewBag.PaginationController = "Destination";
-}
-
-@Html.Partial("_Pagination", Model)
