@@ -8,13 +8,13 @@ namespace TravelAgency.Areas.Admin.Controllers
 {
     public class HotelController : BaseAdminController
     {
-        private readonly IHotelService _hotelInterface;
+        private readonly IHotelService _hotelService;
         private readonly IDestinationService _destinationService;
         private readonly ILogger<HotelController> _logger;
 
-        public HotelController(IHotelService hotelInerface, IDestinationService destinationService, ILogger<HotelController> logger)
+        public HotelController(IHotelService hotelService, IDestinationService destinationService, ILogger<HotelController> logger)
         {
-            _hotelInterface = hotelInerface;
+            _hotelService = hotelService;
             _destinationService = destinationService;
             _logger = logger;
         }
@@ -25,11 +25,11 @@ namespace TravelAgency.Areas.Admin.Controllers
             try
             {
 
-                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsAsync();
+                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelService.GetAllHotelsForAdminAsync();
 
                 if (id != null)
                 {
-                    hotels = await _hotelInterface.GetAllHotelsByDestinationIdAsync(id);
+                    hotels = await _hotelService.GetAllHotelsByDestinationIdAsync(id);
                 }
 
                 if (!String.IsNullOrEmpty(search))
@@ -55,7 +55,7 @@ namespace TravelAgency.Areas.Admin.Controllers
         {
             try
             {
-                HotelEditViewModel? model = await _hotelInterface.GetHotelForEditAsync(id);
+                HotelEditViewModel? model = await _hotelService.GetHotelForEditAsync(id);
 
                 if (model == null)
                 {
@@ -84,7 +84,7 @@ namespace TravelAgency.Areas.Admin.Controllers
                     return View(model);
                 }
 
-                bool result = await _hotelInterface.SaveEditChangesAsync(model);
+                bool result = await _hotelService.SaveEditChangesAsync(model);
 
                 if (result == false)
                 {
@@ -129,7 +129,7 @@ namespace TravelAgency.Areas.Admin.Controllers
                     return View(model);
                 }
 
-                bool result = await _hotelInterface.AddHotelAsync(model);
+                bool result = await _hotelService.AddHotelAsync(model);
 
                 if (result == false)
                 {
@@ -146,43 +146,17 @@ namespace TravelAgency.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> ToggleDelete(string? id)
         {
             try
             {
-                DeleteHotelViewModel? model = await _hotelInterface.GetHotelForDeleteAsync(id);
+                await _hotelService.DeleteOrRestoreHotelAsync(id);
 
-                if (model == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                return View(model);
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "DeleteGet");
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(DeleteHotelViewModel? model)
-        {
-            try
-            {
-                bool result = await _hotelInterface.DeleteHotelAsync(model);
-
-                if (result == false)
-                {
-                    return View(model);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "DeletePost");
                 return RedirectToAction(nameof(Index));
             }
         }

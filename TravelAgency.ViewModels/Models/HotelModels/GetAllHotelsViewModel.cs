@@ -15,5 +15,7 @@
         public int Nights { get; set; }
 
         public decimal Price { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

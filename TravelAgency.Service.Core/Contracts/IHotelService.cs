@@ -6,6 +6,8 @@ namespace TravelAgency.Service.Core.Contracts
     {
         Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync();
 
+        Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsForAdminAsync();
+
         Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsByDestinationIdAsync(string? id);
 
         Task<HotelDetailsViewModel> GetHotelDetailsAsync(string id);
@@ -16,8 +18,6 @@ namespace TravelAgency.Service.Core.Contracts
 
         Task<bool> AddHotelAsync(AddHotelViewModel? model);
 
-        Task<DeleteHotelViewModel> GetHotelForDeleteAsync(string? id);
-
-        Task<bool> DeleteHotelAsync(DeleteHotelViewModel? model);
+        Task DeleteOrRestoreHotelAsync(string? id);
     }
 }

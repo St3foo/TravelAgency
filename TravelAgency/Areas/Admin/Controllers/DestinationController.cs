@@ -23,7 +23,7 @@ namespace TravelAgency.Areas.Admin.Controllers
             try
             {
 
-                var destinations = await _destinationService.GetAllDestinationsAsync();
+                var destinations = await _destinationService.GetAllDestinationsForAdminAsync();
 
                 if (!String.IsNullOrEmpty(search))
                 {
@@ -136,43 +136,17 @@ namespace TravelAgency.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> ToggleDelete(string? id)
         {
             try
             {
-                DeleteDestinationViewModel? model = await _destinationService.GetDestinationForDeleteAsync(id);
+                await _destinationService.DeleteOrRestoreDestinationAsync(id);
 
-                if (model == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                return View(model);
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "DeleteGet");
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(DeleteDestinationViewModel? model)
-        {
-            try
-            {
-                bool result = await _destinationService.DeleteDestinationAsync(model);
-
-                if (result == false)
-                {
-                    return View(model);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "DeletePost");
                 return RedirectToAction(nameof(Index));
             }
         }

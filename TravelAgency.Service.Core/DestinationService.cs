@@ -37,19 +37,22 @@ namespace TravelAgency.Service.Core
             return result;
         }
 
-        public async Task<bool> DeleteDestinationAsync(DeleteDestinationViewModel? model)
+        public async Task DeleteOrRestoreDestinationAsync(string? id)
         {
-            bool result = false;
-
-            Destination? destination = await _destinationRepository
-                .SingleOrDefaultAsync(d => d.Id == model.Id);
-
-            if (destination != null)
+            if (!String.IsNullOrWhiteSpace(id))
             {
-                result = await _destinationRepository.DeleteAsync(destination);
-            }
+                Destination? destination = await _destinationRepository
+                    .GetAllAttached()
+                    .IgnoreQueryFilters()
+                    .SingleOrDefaultAsync(d => d.Id.ToString().ToLower() == id.ToLower());
+                if (destination != null)
+                {
+                    destination.IsDeleted = !destination.IsDeleted;
 
-            return result;
+                    await _destinationRepository
+                        .UpdateAsync(destination);
+                }
+            }
         }
 
         public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsAsync()
@@ -61,13 +64,31 @@ namespace TravelAgency.Service.Core
                 {
                     Id = d.Id.ToString(),
                     Name = d.CountryName,
-                    ImageUrl = d.ImageUrl
+                    ImageUrl = d.ImageUrl,
+                    IsDeleted = d.IsDeleted
                 })
                 .ToArrayAsync();
 
             return destinations;
         }
 
+        public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsForAdminAsync()
+        {
+            IEnumerable<AllDestinationsViewModel> destinations = await _destinationRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .AsNoTracking()
+                .Select(d => new AllDestinationsViewModel
+                {
+                    Id = d.Id.ToString(),
+                    Name = d.CountryName,
+                    ImageUrl = d.ImageUrl,
+                    IsDeleted = d.IsDeleted
+                })
+                .ToArrayAsync();
+
+            return destinations;
+        }
 
         public async Task<DestinationDetailViewModel> GetDestinationDetailsAsync(string destinationId)
         {
@@ -94,30 +115,6 @@ namespace TravelAgency.Service.Core
             return destinationToPass;
         }
 
-        public async Task<DeleteDestinationViewModel> GetDestinationForDeleteAsync(string? destinationId)
-        {
-            DeleteDestinationViewModel? destinationToPass = null;
-
-            bool isValidGuid = Guid.TryParse(destinationId, out Guid id);
-
-            if (isValidGuid)
-            {
-                destinationToPass = await _destinationRepository
-                    .GetAllAttached()
-                    .AsNoTracking()
-                    .Where(d => d.Id == id)
-                    .Select(d => new DeleteDestinationViewModel
-                    {
-                        Id = d.Id,
-                        Name = d.CountryName,
-                        ImageUrl = d.ImageUrl
-                    })
-                    .SingleOrDefaultAsync();
-            }
-
-            return destinationToPass;
-        }
-
         public async Task<DestinationEditViewModel> GetDestinationForEditAsync(string id)
         {
             DestinationEditViewModel? destinationToPass = null;
@@ -128,6 +125,7 @@ namespace TravelAgency.Service.Core
             {
                 destinationToPass = await _destinationRepository
                     .GetAllAttached()
+                    .IgnoreQueryFilters()
                     .AsNoTracking()
                     .Where(d => d.Id == destId)
                     .Select(d => new DestinationEditViewModel
@@ -150,6 +148,8 @@ namespace TravelAgency.Service.Core
             if (model != null)
             {
                 var destination = await _destinationRepository
+                    .GetAllAttached()
+                    .IgnoreQueryFilters()
                     .SingleOrDefaultAsync(d => d.Id.ToString() == model.Id);
 
                 if (destination != null)

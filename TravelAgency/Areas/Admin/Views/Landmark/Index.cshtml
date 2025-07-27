@@ -44,9 +44,9 @@
 						Edit
 					</button>
 				</form>
-				<form asp-area="Admin" asp-controller="Landmark" asp-action="Delete" asp-route-id="@landmark.Id" method="get">
-					<button type="submit" class="btn btn-danger fw-bold w-50">
-						Remove
+				<form asp-area="Admin" asp-action="ToggleDelete" asp-route-id="@landmark.Id" method="get">
+					<button type="submit" class="btn @(landmark.IsDeleted ? "btn-warning" : "btn-danger") fw-bold w-50">
+						@(landmark.IsDeleted ? "Restore" : "Delete")
 					</button>
 				</form>
 			</div>

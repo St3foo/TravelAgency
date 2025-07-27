@@ -9,5 +9,7 @@ namespace TravelAgency.ViewModels.Models.DestinationModels
         public string Name { get; set; } = null!;
 
         public string? ImageUrl { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

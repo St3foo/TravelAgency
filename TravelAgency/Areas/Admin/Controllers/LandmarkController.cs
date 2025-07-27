@@ -26,7 +26,7 @@ namespace TravelAgency.Areas.Admin.Controllers
 
             try
             {
-                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksAsync(GetUserId());
+                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksForAdmin(GetUserId());
 
                 if (id != null)
                 {
@@ -147,43 +147,17 @@ namespace TravelAgency.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> ToggleDelete(string? id)
         {
             try
             {
-                DeleteLandmarkViewModel? model = await _landmarkService.GetLandmarkForDeleteAsync(id);
+                await _landmarkService.DeleteOrRestoreLandmarkAsync(id);
 
-                if (model == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                return View(model);
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "DeleteGet");
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(DeleteLandmarkViewModel? model)
-        {
-            try
-            {
-                bool result = await _landmarkService.DeleteLandmarkAsync(model);
-
-                if (result == false)
-                {
-                    return View(model);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "DeletePost");
                 return RedirectToAction(nameof(Index));
             }
         }

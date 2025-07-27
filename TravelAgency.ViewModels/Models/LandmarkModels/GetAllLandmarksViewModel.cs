@@ -13,5 +13,7 @@
         public int FavoritesCount { get; set; }
 
         public bool IsFavorite { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

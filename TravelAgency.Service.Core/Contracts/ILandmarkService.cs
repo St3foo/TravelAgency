@@ -6,6 +6,8 @@ namespace TravelAgency.Service.Core.Contracts
     {
         Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId);
 
+        Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksForAdmin(string? userId);
+
         Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksByDestinationIdAsync(string? userId, string? destId);
 
         Task<LandmarkDetailsViewModel> GetLandmarkDetailAsync(string? userId, string? landmarkId);
@@ -16,8 +18,7 @@ namespace TravelAgency.Service.Core.Contracts
 
         Task<bool> AddLandmarkAsync(AddLandmarkViewModel? model);
 
-        Task<DeleteLandmarkViewModel> GetLandmarkForDeleteAsync(string? id);
+        Task DeleteOrRestoreLandmarkAsync(string? id);
 
-        Task<bool> DeleteLandmarkAsync(DeleteLandmarkViewModel? model);
     }
 }

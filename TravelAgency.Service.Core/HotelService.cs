@@ -46,21 +46,22 @@ namespace TravelAgency.Service.Core
             return result;
         }
 
-        public async Task<bool> DeleteHotelAsync(DeleteHotelViewModel? model)
+        public async Task DeleteOrRestoreHotelAsync(string? id)
         {
-            bool result = false;
-
-            Hotel? hotel = await _hotelRepository
-                .SingleOrDefaultAsync(h => h.Id == model.Id);
-
-            if (hotel != null)
+            if (!String.IsNullOrWhiteSpace(id))
             {
-                await _hotelRepository.DeleteAsync(hotel);
+                Hotel? hotel = await _hotelRepository
+                    .GetAllAttached()
+                    .IgnoreQueryFilters()
+                    .SingleOrDefaultAsync(h => h.Id.ToString().ToLower() == id.ToLower());
+                if (hotel != null)
+                {
+                    hotel.IsDeleted = !hotel.IsDeleted;
 
-                result = true;
+                    await _hotelRepository
+                        .UpdateAsync(hotel);
+                }
             }
-
-            return result;
         }
 
         public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync()
@@ -77,6 +78,7 @@ namespace TravelAgency.Service.Core
                     ImageUrl = h.ImageUrl,
                     Nights = h.DaysStay,
                     Price = h.Price,
+                    IsDeleted = h.IsDeleted,
                 })
                 .ToArrayAsync();
 
@@ -98,6 +100,28 @@ namespace TravelAgency.Service.Core
                     ImageUrl = h.ImageUrl,
                     Nights = h.DaysStay,
                     Price = h.Price,
+                })
+                .ToArrayAsync();
+
+            return hotels;
+        }
+
+        public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsForAdminAsync()
+        {
+            IEnumerable<GetAllHotelsViewModel> hotels = await _hotelRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .AsNoTracking()
+                .Select(h => new GetAllHotelsViewModel
+                {
+                    Id = h.Id,
+                    Name = h.HotelName,
+                    Destination = h.Destination.CountryName,
+                    City = h.CityName,
+                    ImageUrl = h.ImageUrl,
+                    Nights = h.DaysStay,
+                    Price = h.Price,
+                    IsDeleted = h.IsDeleted,
                 })
                 .ToArrayAsync();
 
@@ -135,34 +159,13 @@ namespace TravelAgency.Service.Core
             return hotel;
         }
 
-        public async Task<DeleteHotelViewModel> GetHotelForDeleteAsync(string? id)
-        {
-            DeleteHotelViewModel? hotelToPass = null;
-
-            Hotel? hotel = await _hotelRepository
-                .GetAllAttached()
-                .AsNoTracking()
-                .SingleOrDefaultAsync(h => h.Id.ToString() == id);
-
-            if (hotel != null)
-            {
-                hotelToPass = new DeleteHotelViewModel 
-                {
-                    Id = hotel.Id,
-                    Name = hotel.HotelName,
-                    ImageUrl = hotel.ImageUrl
-                };
-            }
-
-            return hotelToPass;
-        }
-
         public async Task<HotelEditViewModel> GetHotelForEditAsync(string? id)
         {
             HotelEditViewModel? hotel = null;
 
             var hotelInfo = await _hotelRepository
                 .GetAllAttached()
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(h => h.Id.ToString() == id);
 
@@ -191,6 +194,8 @@ namespace TravelAgency.Service.Core
             if (model != null)
             {
                 Hotel? hotel = await _hotelRepository
+                    .GetAllAttached()
+                    .IgnoreQueryFilters()
                     .SingleOrDefaultAsync(h => h.Id.ToString() == model.Id);
 
                 Destination? destination = await _destinationRepository

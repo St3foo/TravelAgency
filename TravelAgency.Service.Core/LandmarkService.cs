@@ -44,19 +44,23 @@ namespace TravelAgency.Service.Core
             return result;
         }
 
-        public async Task<bool> DeleteLandmarkAsync(DeleteLandmarkViewModel? model)
+        public async Task DeleteOrRestoreLandmarkAsync(string? id)
         {
-            bool result = false;
-
-            Landmark? landmark = await _landmarkRepository
-                .SingleOrDefaultAsync(l => l.Id == model.Id);
-
-            if (landmark != null) 
+            if (!String.IsNullOrWhiteSpace(id))
             {
-                result = await _landmarkRepository.DeleteAsync(landmark);
-            }
+                Landmark? landmark = await _landmarkRepository
+                    .GetAllAttached()
+                    .IgnoreQueryFilters()
+                    .SingleOrDefaultAsync(l => l.Id.ToString().ToLower() == id.ToLower());
 
-            return result;
+                if (landmark != null)
+                {
+                    landmark.IsDeleted = !landmark.IsDeleted;
+
+                    await _landmarkRepository
+                        .UpdateAsync(landmark);
+                }
+            }
         }
 
         public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId)
@@ -73,7 +77,8 @@ namespace TravelAgency.Service.Core
                     ImageUrl = l.ImageUrl,
                     FavoritesCount = l.UserLandmarks.Count,
                     IsFavorite = String.IsNullOrEmpty(userId) == false ?
-                                 l.UserLandmarks.Any(ul => ul.UserId.ToLower() == userId.ToLower()) : false
+                                 l.UserLandmarks.Any(ul => ul.UserId.ToLower() == userId.ToLower()) : false,
+                    IsDeleted = l.IsDeleted
                 })
                 .ToArrayAsync();
 
@@ -95,6 +100,29 @@ namespace TravelAgency.Service.Core
                     FavoritesCount = l.UserLandmarks.Count,
                     IsFavorite = String.IsNullOrEmpty(userId) == false ?
                                  l.UserLandmarks.Any(ul => ul.UserId.ToLower() == userId.ToLower()) : false
+                })
+                .ToArrayAsync();
+
+            return landmarks;
+        }
+
+        public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksForAdmin(string? userId)
+        {
+            IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .Include(l => l.Destination)
+                .AsNoTracking()
+                .Select(l => new GetAllLandmarksViewModel
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    Destination = l.Destination.CountryName,
+                    ImageUrl = l.ImageUrl,
+                    FavoritesCount = l.UserLandmarks.Count,
+                    IsFavorite = String.IsNullOrEmpty(userId) == false ?
+                                 l.UserLandmarks.Any(ul => ul.UserId.ToLower() == userId.ToLower()) : false,
+                    IsDeleted = l.IsDeleted
                 })
                 .ToArrayAsync();
 
@@ -132,34 +160,13 @@ namespace TravelAgency.Service.Core
             return landmark;
         }
 
-        public async Task<DeleteLandmarkViewModel> GetLandmarkForDeleteAsync(string? id)
-        {
-            DeleteLandmarkViewModel? landmarkToPass = null;
-
-            Landmark? landmark = await _landmarkRepository
-                .GetAllAttached()
-                .AsNoTracking()
-                .SingleOrDefaultAsync(l => l.Id.ToString() == id);
-
-            if (landmark != null)
-            {
-                landmarkToPass = new DeleteLandmarkViewModel 
-                {
-                    Id = landmark.Id,
-                    Name = landmark.Name,
-                    ImageUrl = landmark?.ImageUrl
-                };
-            }
-
-            return landmarkToPass;
-        }
-
         public async Task<LandmarkEditViewModel> GetLandmarkForEditAsync(string? id)
         {
             LandmarkEditViewModel? landmark = null;
 
             Landmark? landmarkToEdit = await _landmarkRepository
                 .GetAllAttached()
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(l => l.Id.ToString() == id);
 
@@ -186,6 +193,8 @@ namespace TravelAgency.Service.Core
             if (model != null)
             {
                 Landmark? landmark = await _landmarkRepository
+                    .GetAllAttached()
+                    .IgnoreQueryFilters()
                     .SingleOrDefaultAsync(l => l.Id.ToString() == model.Id);
 
                 Destination? destination = await _destinationRepository

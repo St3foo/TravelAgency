@@ -43,11 +43,11 @@
 						Edit
 					</button>
 				</form>
-				<form asp-area="Admin" asp-controller="Destination" asp-action="Delete" asp-route-id="@destination.Id" method="get">
-					<button type="submit" class="btn btn-danger fw-bold w-50">
-						Remove
+				<form asp-area="Admin" asp-action="ToggleDelete" asp-route-id="@destination.Id" method="get">
+					<button type="submit" class="btn @(destination.IsDeleted ? "btn-warning" : "btn-danger") fw-bold w-50">
+					@(destination.IsDeleted ? "Restore" : "Delete")
 					</button>
-				</form>
+			    </form>
 			</div>
 
 
