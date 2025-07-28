@@ -41,7 +41,7 @@ namespace TravelAgency.Areas.Admin.Controllers
         {
             try
             {
-                await _reservationService.RemoveFromFavoritesAsync(id);
+                await _reservationService.RemoveFromReservationAsync(id);
 
                 return RedirectToAction(nameof(Index));
 

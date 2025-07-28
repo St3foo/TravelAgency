@@ -112,7 +112,7 @@ namespace TravelAgency.Service.Core
             return model;
         }
 
-        public async Task RemoveFromFavoritesAsync(string? reservationId)
+        public async Task RemoveFromReservationAsync(string? reservationId)
         {
             UserHotel? reservation = await _userHotelRepository
                 .SingleOrDefaultAsync(uh => uh.Id.ToString() == reservationId);

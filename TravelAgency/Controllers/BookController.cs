@@ -1,43 +1,43 @@
-﻿using System.Drawing.Printing;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using TravelAgency.Service.Core;
 using TravelAgency.Service.Core.Contracts;
+using TravelAgency.ViewModels.Models.Book;
 using TravelAgency.ViewModels.Models.ReservationModels;
 using X.PagedList.Extensions;
 using static TravelAgency.GCommon.Constants;
 
 namespace TravelAgency.Controllers
 {
-    public class ReservationController : BaseController
+    public class BookController : BaseController
     {
-        private readonly IReservationService _reservationService;
-        private readonly ILogger<ReservationController> _logger;
+        private readonly IBookService _bookService;
+        private readonly ILogger<BookController> _logger;
 
-        public ReservationController(IReservationService service, ILogger<ReservationController> logger)
+        public BookController(IBookService bookService, ILogger<BookController> logger)
         {
-            _reservationService = service;
+            _bookService = bookService;
             _logger = logger;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Index(int page = 1)
         {
             try
             {
-                IEnumerable<GetUserReservationsViewModel> reservations = await _reservationService.GetUserReservationsAsync(GetUserId());
+                var bookings = await _bookService.GetUserBookingsAsync(GetUserId());
 
-                if (reservations == null)
+                if (bookings == null)
                 {
                     return RedirectToAction(nameof(Index));
                 }
 
-                var pagedList = reservations.ToPagedList(page, PageSize);
+                var pagedList = bookings.ToPagedList(page, PageSize);
 
                 return View(pagedList);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Index");
+                _logger.LogError(e.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -47,11 +47,11 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                AddReservationViewModel? model = await _reservationService.GetReservationDetailsAsync(id);
+                var model = await _bookService.GetBookingDetailsAsync(id);
 
                 if (model == null)
                 {
-                    return RedirectToAction("Index", "Hotel");
+                    return RedirectToAction(nameof(Index));
                 }
 
                 return View(model);
@@ -64,18 +64,19 @@ namespace TravelAgency.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AddReservationViewModel model)
+        public async Task<IActionResult> Create(AddBookingViewModel model)
         {
             try
             {
-                bool result = await _reservationService.AddReservationAsync(GetUserId(), model);
+                bool result = await _bookService.AddBookingAsync(GetUserId(), model);
 
                 if (result == false)
                 {
-                    return RedirectToAction("Index", "Hotel");
+                    return RedirectToAction("Index", "Tour");
                 }
 
                 return RedirectToAction(nameof(Index));
+
             }
             catch (Exception e)
             {
@@ -89,7 +90,7 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                await _reservationService.RemoveFromReservationAsync(id);
+                await _bookService.RemoveBookingAsync(id);
 
                 return RedirectToAction(nameof(Index));
 
@@ -100,6 +101,5 @@ namespace TravelAgency.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
     }
 }

@@ -1,0 +1,65 @@
+﻿@using TravelAgency.ViewModels.Models.Book
+@model IPagedList<GetUserBookingsViewModel>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@{
+	ViewData["Title"] = "My Bookings";
+}
+
+<div class="container mt-5">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="fw-bold text-primary">@ViewData["Title"]</h2>
+	</div>
+
+@if (Model == null || !Model.Any())
+{
+		<div class="text-center mt-5">
+			<h4 class="text-muted">You don't have any bookings yet!</h4>
+		</div>
+}
+else
+{
+		<div class="row g-4">
+			@foreach (var booking in Model)
+			{
+				<div class="col-md-6">
+					<div class="card shadow-sm border-0 h-100 d-flex flex-row align-items-center p-3">
+						<div class="flex-shrink-0 me-3">
+							<img src="@(!string.IsNullOrEmpty(booking.ImageUrl) ? booking.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+								 class="rounded"
+								 alt="@booking.Name"
+								 style="width: 100px; height: 100px; object-fit: cover;" />
+						</div>
+						<div class="flex-grow-1">
+							<h5 class="mb-1 text-primary fw-semibold">@booking.Name</h5>
+							<p class="mb-0 text-muted"><small><strong>Destination:</strong> @booking.DestinationName</small></p>
+							<p class="mb-0 text-muted"><small><strong>Hotel:</strong> @booking.HotelName</small></p>
+							<p class="mb-0 text-muted"><small><strong>Price:</strong> $@booking.Price</small></p>
+							<p class="mb-2 text-muted">
+								<small>
+									<strong>Check-in:</strong> @booking.StartDate.ToString("dd MMM yyyy") &nbsp;
+									<strong>Check-out:</strong> @booking.EndDate.ToString("dd MMM yyyy")
+								</small>
+							</p>
+
+							<form asp-controller="Book" asp-action="Remove" asp-route-id="@booking.TourId" method="post">
+								<button type="submit" class="btn btn-danger btn-sm w-100 fw-semibold">
+									Cancel Booking
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+
+		<div class="d-flex justify-content-center mt-5">
+			@Html.Partial("_Pagination", Model)
+		</div>
+}
+@{
+	ViewBag.PaginationAction = "Index";
+	ViewBag.PaginationController = "Book";
+}
+

@@ -12,6 +12,6 @@ namespace TravelAgency.Service.Core.Contracts
 
         Task<bool> AddReservationAsync(string? userId, AddReservationViewModel? model);
 
-        Task RemoveFromFavoritesAsync(string? reservationId);
+        Task RemoveFromReservationAsync(string? reservationId);
     }
 }
