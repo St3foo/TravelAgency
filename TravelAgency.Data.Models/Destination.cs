@@ -15,5 +15,7 @@
         public virtual ICollection<Hotel> Hotels { get; set; } = new HashSet<Hotel>();
 
         public virtual ICollection<Landmark> Landmarks { get; set; } = new HashSet<Landmark>();
+
+        public virtual ICollection<Tour> Tours { get; set; } = new HashSet<Tour>();
     }
 }

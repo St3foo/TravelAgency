@@ -23,5 +23,7 @@
         public virtual Destination Destination { get; set; } = null!;
 
         public virtual ICollection<UserHotel> UsersHotels { get; set; } = new HashSet<UserHotel>();
+
+        public virtual ICollection<Tour> Tours { get; set; } = new HashSet<Tour>();
     }
 }

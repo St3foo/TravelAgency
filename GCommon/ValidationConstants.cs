@@ -34,6 +34,15 @@
             public const int MinLenghtDescription = 10;
             public const int MaxLenghtDescription = 500;
         }
+
+        public static class Tour 
+        {
+            public const int MinLenghtTourName = 3;
+            public const int MaxLenghtTourName = 100;
+
+            public const int MinLenghtDescription = 10;
+            public const int MaxLenghtDescription = 500;
+        }
     }
 }
 

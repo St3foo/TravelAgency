@@ -1,0 +1,73 @@
+﻿@using TravelAgency.ViewModels.Models.TourModels
+@model TourDetailsViewModel
+
+@{
+    ViewData["Title"] = "Tour Details";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">@ViewData["Title"]</h2>
+    </div>
+
+    <div class="row justify-content-center g-4">
+        <div class="col-md-5 text-center">
+            <img src="@(!string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+                 class="img-fluid rounded shadow-sm"
+                 style="max-height: 350px; object-fit: contain;"
+                 alt="@Model.Name" />
+        </div>
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0 p-4">
+                <h3 class="fw-bold text-secondary">@Model.Name</h3>
+                <p class="text-muted mb-1"><strong>Hotel name:</strong> @Model.HotelName</p>
+                <p class="text-muted mb-1"><strong>Destination:</strong> @Model.DestinationName</p>
+                <p class="text-success fw-bold fs-5">@Model.Price $ for @Model.Nights nights</p>
+
+                <hr />
+
+                <p class="text-muted fs-6">@Model.Description</p>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-between flex-wrap gap-2">
+                    <a asp-controller="Tour" asp-action="Index"
+                       class="btn btn-outline-secondary w-100">
+                        Back
+                    </a>
+
+                    @if (User?.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
+                    {
+                        <form asp-controller="Book" asp-action="Add" method="get" class="w-100">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-success w-100">
+                                Book
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+        @if (Model.Landmarks?.Any() == true)
+        {
+            <hr class="my-4" />
+            <h4 class="text-center text-secondary mb-3">Landmarks Included in the Tour</h4>
+
+            <div class="overflow-auto px-2">
+                <div class="d-flex flex-row gap-3" style="min-width: max-content;">
+                    @foreach (var landmark in Model.Landmarks)
+                    {
+                        <div class="text-center" style="width: 120px; flex-shrink: 0;">
+                            <img src="@(!string.IsNullOrEmpty(landmark.ImageUrl) ? landmark.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+                                 class="img-thumbnail"
+                                 style="height: 100px; object-fit: cover;"
+                                 alt="@landmark.Name" />
+                            <p class="small mt-1">@landmark.Name</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

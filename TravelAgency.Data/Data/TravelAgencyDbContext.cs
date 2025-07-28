@@ -18,9 +18,15 @@ namespace TravelAgency.Data
 
         public virtual DbSet<Landmark> Landmarks { get; set; } = null!;
 
+        public virtual DbSet<Tour> Tours { get; set; } = null!;
+
         public virtual DbSet<UserHotel> UsersHotels { get; set; } = null!;
 
         public virtual DbSet<UserLandmark> UsersLandmarks { get; set; } = null!;
+
+        public virtual DbSet<UserTour> UsersTours { get; set; } = null!;
+
+        public virtual DbSet<TourLandmark> ToursLandmarks { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder entity)
         {
