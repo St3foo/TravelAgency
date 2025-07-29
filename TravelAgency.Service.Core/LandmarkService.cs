@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TravelAgency.Data;
 using TravelAgency.Data.Models;
 using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;

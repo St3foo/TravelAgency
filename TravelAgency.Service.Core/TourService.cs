@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data.Models;
+using TravelAgency.Data.Repository;
 using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.TourModels;
@@ -14,12 +15,54 @@ namespace TravelAgency.Service.Core
         {
             _tourRepository = tourRepository;
         }
+
+        public async Task DeleteOrRestoreTourAsync(string? id)
+        {
+            if (!String.IsNullOrWhiteSpace(id))
+            {
+                Tour? tour = await _tourRepository
+                    .GetAllAttached()
+                    .IgnoreQueryFilters()
+                    .SingleOrDefaultAsync(t => t.Id.ToString().ToLower() == id.ToLower());
+
+                if (tour != null)
+                {
+                    tour.IsDeleted = !tour.IsDeleted;
+
+                    await _tourRepository
+                        .UpdateAsync(tour);
+                }
+            }
+        }
+
         public async Task<IEnumerable<GetAllToursViewModel>> GetAllToursAsync()
         {
             IEnumerable<GetAllToursViewModel> tours = await _tourRepository
                 .GetAllAttached()
                 .AsNoTracking()
                 .Select(t => new GetAllToursViewModel 
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Destination = t.Destination.CountryName,
+                    HotelName = t.Hotel.HotelName,
+                    IsDeleted = t.IsDeleted,
+                    ImageUrl = t.ImageUrl,
+                    Nights = t.DaysStay,
+                    Price = t.Price
+                })
+                .ToArrayAsync();
+
+            return tours;
+        }
+
+        public async Task<IEnumerable<GetAllToursViewModel>> GetAllToursForAdminAsync()
+        {
+            IEnumerable<GetAllToursViewModel> tours = await _tourRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .AsNoTracking()
+                .Select(t => new GetAllToursViewModel
                 {
                     Id = t.Id,
                     Name = t.Name,

@@ -146,7 +146,7 @@ namespace TravelAgency.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "DeleteGet");
+                _logger.LogError(e, "ToggleDelete");
                 return RedirectToAction(nameof(Index));
             }
         }

@@ -1,8 +1,10 @@
 ﻿namespace TravelAgency.ViewModels.Models.Book
 {
-    public class GetUserBookingsViewModel
+    public class GetAllBookingsViewModel
     {
         public Guid Id { get; set; }
+
+        public string UserName { get; set; } = null!;
 
         public Guid TourId { get; set; }
 

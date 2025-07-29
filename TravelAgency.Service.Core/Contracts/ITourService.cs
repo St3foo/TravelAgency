@@ -6,6 +6,10 @@ namespace TravelAgency.Service.Core.Contracts
     {
         Task<IEnumerable<GetAllToursViewModel>> GetAllToursAsync();
 
+        Task<IEnumerable<GetAllToursViewModel>> GetAllToursForAdminAsync();
+
         Task<TourDetailsViewModel> GetTourDetailsAsync(string? id);
+
+        Task DeleteOrRestoreTourAsync(string? id);
     }
 }

@@ -38,6 +38,21 @@
         <div class="col-md-4">
             <div class="card shadow-lg border-0 bg-white text-black rounded-3 h-100">
                 <div class="card-body d-flex flex-column align-items-center text-center">
+                    <h5 class="card-title fw-bold">Tours</h5>
+                    <p class="card-text text-muted">Add, edit, or remove Tours.</p>
+                    <div class="mt-auto w-100">
+                        <a asp-area="Admin" asp-controller="Tour" asp-action="Index"
+                           class="btn btn-primary fw-bold shadow-sm w-100 py-2">
+                            Go to Tours
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 bg-white text-black rounded-3 h-100">
+                <div class="card-body d-flex flex-column align-items-center text-center">
                     <h5 class="card-title fw-bold">Landmarks</h5>
                     <p class="card-text text-muted">Add, edit, or remove Landmarks.</p>
                     <div class="mt-auto w-100">
@@ -60,6 +75,21 @@
                         <a asp-area="Admin" asp-controller="Reservation" asp-action="Index"
                            class="btn btn-primary fw-bold shadow-sm w-100 py-2">
                             Go to Reservations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 bg-white text-black rounded-3 h-100">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <h5 class="card-title fw-bold">Bookings</h5>
+                    <p class="card-text text-muted">Remove bookings.</p>
+                    <div class="mt-auto w-100">
+                        <a asp-area="Admin" asp-controller="Book" asp-action="Index"
+                           class="btn btn-primary fw-bold shadow-sm w-100 py-2">
+                            Go to Bookings
                         </a>
                     </div>
                 </div>

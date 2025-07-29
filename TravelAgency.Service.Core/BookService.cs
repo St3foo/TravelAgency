@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data.Models;
-using TravelAgency.Data.Repository;
 using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.Book;
@@ -48,6 +47,33 @@ namespace TravelAgency.Service.Core
             }
 
             return result;
+        }
+
+        public async Task<IEnumerable<GetAllBookingsViewModel>> GetAllBookingsAsync()
+        {
+            IEnumerable<GetAllBookingsViewModel> bookings = await _userTourRepository
+                .GetAllAttached()
+                .Include(ut => ut.Tour)
+                .ThenInclude(t => t.Destination)
+                .Include(ut => ut.Tour)
+                .ThenInclude(t => t.Hotel)
+                .AsNoTracking()
+                .Select(t => new GetAllBookingsViewModel
+                {
+                    Id = t.Id,
+                    TourId= t.TourId,
+                    Name = t.Tour.Name,
+                    ImageUrl = t.Tour.ImageUrl,
+                    Price = t.Tour.Price,
+                    StartDate = t.StartDate,
+                    EndDate = t.EndDate,
+                    DestinationName = t.Tour.Destination.CountryName,
+                    HotelName = t.Tour.Hotel.HotelName,
+                    UserName = t.User.NormalizedUserName
+                })
+                .ToArrayAsync();
+
+            return bookings;
         }
 
         public async Task<AddBookingViewModel> GetBookingDetailsAsync(string? tourId)
@@ -100,6 +126,7 @@ namespace TravelAgency.Service.Core
                     .Where(ut => ut.UserId.ToLower() == userId.ToLower())
                     .Select(ut => new GetUserBookingsViewModel
                     {
+                        Id = ut.Id,
                         TourId = ut.TourId,
                         Name = ut.Tour.Name,
                         ImageUrl = ut.Tour.ImageUrl,
@@ -118,7 +145,7 @@ namespace TravelAgency.Service.Core
         public async Task RemoveBookingAsync(string? id)
         {
             UserTour? booking = await _userTourRepository
-                .SingleOrDefaultAsync(ut => ut.TourId.ToString().ToLower() == id.ToLower());
+                .SingleOrDefaultAsync(ut => ut.Id.ToString().ToLower() == id.ToLower());
 
             if (booking != null)
             {

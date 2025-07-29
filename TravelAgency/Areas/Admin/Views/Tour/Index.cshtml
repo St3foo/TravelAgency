@@ -1,0 +1,65 @@
+﻿@using TravelAgency.ViewModels.Models.TourModels
+@model IPagedList<GetAllToursViewModel>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@{
+	ViewData["Title"] = "All Tours";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+	<h2>@ViewData["Title"]</h2>
+	<form method="get" action="@Url.Action("Index", "Tour")">
+		<input type="text" name="search" value="@ViewBag.CurrentFilter" placeholder="Search tours..." class="form-control" style="width: 300px; display: inline-block;" />
+		<input type="submit" value="Search" class="btn btn-primary" />
+	</form>
+
+	<a asp-area="Admin" asp-controller="Tour" asp-action="Add" class="btn btn-primary">
+		Add Tour
+	</a>
+</div>
+<hr />
+
+<div class="row text-center">
+@foreach (var tour in Model)
+{
+		<div class="row align-items-center mb-4 py-3" style="border-bottom: 1px solid #ccc;">
+			<div class="col-md-2 text-center">
+				@if (!string.IsNullOrEmpty(tour.ImageUrl))
+				{
+					<img src="@tour.ImageUrl" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="@tour.Name" />
+				}
+				else
+				{
+					<img src="~/images/default-image.jpg" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="No Image Available" />
+				}
+			</div>
+			<div class="col-md-4 text-start">
+				<h5 class="mb-0">Tour name: @tour.Name</h5>
+				<p class="mb-0"><small>Destination: @tour.Destination</small></p>
+				<p class="mb-0"><small>Hotel: @tour.HotelName</small></p>
+				<p class="mb-0"><small>Price: @tour.Price $ for Nights: @tour.Nights</small></p>
+			</div>
+			<div class="col-md-4 text-end d-flex flex-column gap-2">
+				<form asp-area="Admin" asp-controller="Tour" asp-action="Edit" asp-route-id="@tour.Id" method="get">
+					<button type="submit" class="btn btn-warning fw-bold w-50">
+						Edit
+					</button>
+				</form>
+				<form asp-area="Admin" asp-action="ToggleDelete" asp-route-id="@tour.Id" method="get">
+					<button type="submit" class="btn @(tour.IsDeleted ? "btn-warning" : "btn-danger") fw-bold w-50">
+						@(tour.IsDeleted ? "Restore" : "Delete")
+					</button>
+				</form>
+			</div>
+
+
+		</div>
+}
+@{
+	ViewBag.PaginationAction = "Index";
+	ViewBag.PaginationController = "Tour";
+}
+
+@Html.Partial("_Pagination", Model)
+
