@@ -13,5 +13,9 @@ namespace TravelAgency.Service.Core.Contracts
         Task DeleteOrRestoreTourAsync(string? id);
 
         Task AddTourAsync(AddTourViewModel? model);
+
+        Task<TourEditViewModel> GetTourForEditAsync(string? id);
+
+        Task<bool> SaveEditChangesAsync(TourEditViewModel? model);
     }
 }

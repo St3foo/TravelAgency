@@ -69,7 +69,7 @@ namespace TravelAgency.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add(string? search) 
+        public async Task<IActionResult> Add(string? search)
         {
             try
             {
@@ -100,9 +100,9 @@ namespace TravelAgency.Areas.Admin.Controllers
 
                 if (id != null)
                 {
-                    model = new AddTourViewModel 
-                    { 
-                        DestinationId = Guid.Parse(id) 
+                    model = new AddTourViewModel
+                    {
+                        DestinationId = Guid.Parse(id)
                     };
                 }
 
@@ -120,7 +120,7 @@ namespace TravelAgency.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AddTourViewModel? model) 
+        public async Task<IActionResult> Create(AddTourViewModel? model)
         {
             try
             {
@@ -132,6 +132,59 @@ namespace TravelAgency.Areas.Admin.Controllers
                 }
 
                 await _tourService.AddTourAsync(model);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            try
+            {
+                TourEditViewModel? model = await _tourService.GetTourForEditAsync(id);
+
+                if (model == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                model.AllHotels = await _hotelService.GetHotelsForTourAsync(model.DestinationId.ToString());
+                model.AllLanadmarks = await _landmarkService.GetLandmarksForTourAsync(model.DestinationId.ToString());
+
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(TourEditViewModel? model)
+        {
+            try
+            {
+                if (!this.ModelState.IsValid)
+                {
+                    model.AllHotels = await _hotelService.GetHotelsForTourAsync(model.DestinationId.ToString());
+                    model.AllLanadmarks = await _landmarkService.GetLandmarksForTourAsync(model.DestinationId.ToString());
+                    return View(model);
+                }
+
+                bool result = await _tourService.SaveEditChangesAsync(model);
+
+                if (result == false)
+                {
+                    model.AllHotels = await _hotelService.GetHotelsForTourAsync(model.DestinationId.ToString());
+                    model.AllLanadmarks = await _landmarkService.GetLandmarksForTourAsync(model.DestinationId.ToString());
+                    return View(model);
+                }
 
                 return RedirectToAction(nameof(Index));
             }

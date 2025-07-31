@@ -81,6 +81,7 @@ namespace TravelAgency.Areas.Admin.Controllers
             {
                 if (!this.ModelState.IsValid)
                 {
+                    model.Destinations = await _destinationService.GetAllDestinationsAsync();
                     return View(model);
                 }
 
@@ -88,6 +89,7 @@ namespace TravelAgency.Areas.Admin.Controllers
 
                 if (result == false)
                 {
+                    model.Destinations = await _destinationService.GetAllDestinationsAsync();
                     return View(model);
                 }
 
@@ -127,6 +129,7 @@ namespace TravelAgency.Areas.Admin.Controllers
             {
                 if (!this.ModelState.IsValid)
                 {
+                    model.Destinations = await _destinationService.GetAllDestinationsAsync();
                     return View(model);
                 }
 
@@ -134,6 +137,7 @@ namespace TravelAgency.Areas.Admin.Controllers
 
                 if (result == false)
                 {
+                    model.Destinations = await _destinationService.GetAllDestinationsAsync();
                     return View(model);
                 }
 
