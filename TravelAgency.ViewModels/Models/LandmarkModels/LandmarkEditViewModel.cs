@@ -11,18 +11,18 @@ namespace TravelAgency.ViewModels.Models.LandmarkModels
         public string Id { get; set; } = null!;
 
         [Required(ErrorMessage = NameIsRequerd)]
-        [MinLength(MinLenghtName, ErrorMessage = NameMinLenght)]
-        [MaxLength(MaxLenghtName, ErrorMessage = NameMaxLenght)]
+        [MinLength(MinLenghtName, ErrorMessage = NameMinLenghtRequired)]
+        [MaxLength(MaxLenghtName, ErrorMessage = NameMaxLenghtRequired)]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = LocationNameIsRequerd)]
-        [MinLength(MinLenghtLocation, ErrorMessage = LocationNameMinLenght)]
-        [MaxLength(MaxLenghtLocation, ErrorMessage = LocationNameMaxLenght)]
+        [MinLength(MinLenghtLocation, ErrorMessage = LocationNameMinLenghtRequired)]
+        [MaxLength(MaxLenghtLocation, ErrorMessage = LocationNameMaxLenghtRequired)]
         public string Location { get; set; } = null!;
 
         [Required(ErrorMessage = DescriptionIsRequerd)]
-        [MinLength(MinLenghtDescription, ErrorMessage = DescriptionMinLenght)]
-        [MaxLength(MaxLenghtDescription, ErrorMessage = DescriptionMaxLenght)]
+        [MinLength(MinLenghtDescription, ErrorMessage = DescriptionMinLenghtRequired)]
+        [MaxLength(MaxLenghtDescription, ErrorMessage = DescriptionMaxLenghtRequired)]
         public string Description { get; set; } = null!;
 
         public string? ImageUrl { get; set; }

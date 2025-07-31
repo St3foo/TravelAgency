@@ -1,4 +1,5 @@
 ﻿using TravelAgency.ViewModels.Models.HotelModels;
+using TravelAgency.ViewModels.Models.TourModels;
 
 namespace TravelAgency.Service.Core.Contracts
 {
@@ -19,5 +20,7 @@ namespace TravelAgency.Service.Core.Contracts
         Task<bool> AddHotelAsync(AddHotelViewModel? model);
 
         Task DeleteOrRestoreHotelAsync(string? id);
+
+        Task<IEnumerable<GetAllHotelsForAddTourViewModel>> GetHotelsForTourAsync(string? id);
     }
 }

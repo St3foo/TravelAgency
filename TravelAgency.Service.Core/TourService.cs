@@ -16,6 +16,34 @@ namespace TravelAgency.Service.Core
             _tourRepository = tourRepository;
         }
 
+        public async Task AddTourAsync(AddTourViewModel? model)
+        {
+            Tour tour = new Tour 
+            {
+                Name = model.Name,
+                ImageUrl = model.ImageUrl,
+                Description = model.Description,
+                Price = model.Price,
+                DaysStay = model.DaysStay,
+                DestinationId = model.DestinationId,
+                HotelId = model.HotelId,               
+            };
+
+            foreach (var l in model.Landmarks)
+            {
+                TourLandmark tourLandmark = new TourLandmark 
+                {
+                    LandmarkId = l
+                };
+
+                tour.TourLandmarks.Add(tourLandmark);
+            }
+
+            await _tourRepository.AddAsync(tour);
+            await _tourRepository.SaveChangesAsync();
+
+        }
+
         public async Task DeleteOrRestoreTourAsync(string? id)
         {
             if (!String.IsNullOrWhiteSpace(id))

@@ -1,4 +1,5 @@
 ﻿using TravelAgency.ViewModels.Models.LandmarkModels;
+using TravelAgency.ViewModels.Models.TourModels;
 
 namespace TravelAgency.Service.Core.Contracts
 {
@@ -19,6 +20,8 @@ namespace TravelAgency.Service.Core.Contracts
         Task<bool> AddLandmarkAsync(AddLandmarkViewModel? model);
 
         Task DeleteOrRestoreLandmarkAsync(string? id);
+
+        Task<IEnumerable<GetLandmarksForToursViewModel>> GetLandmarksForTourAsync(string? id);
 
     }
 }

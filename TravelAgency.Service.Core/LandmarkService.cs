@@ -3,6 +3,7 @@ using TravelAgency.Data.Models;
 using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.LandmarkModels;
+using TravelAgency.ViewModels.Models.TourModels;
 
 namespace TravelAgency.Service.Core
 {
@@ -183,6 +184,24 @@ namespace TravelAgency.Service.Core
             }
 
             return landmark;
+        }
+
+        public async Task<IEnumerable<GetLandmarksForToursViewModel>> GetLandmarksForTourAsync(string? id)
+        {
+            IEnumerable<GetLandmarksForToursViewModel> landmarks = await _landmarkRepository
+                .GetAllAttached()
+                .AsNoTracking()
+                .IgnoreQueryFilters()
+                .Where(l => l.DestinationId.ToString().ToLower() == id.ToLower())
+                .Select(l => new GetLandmarksForToursViewModel 
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    ImageUrl= l.ImageUrl,                   
+                })
+                .ToArrayAsync();
+
+            return landmarks;
         }
 
         public async Task<bool> SaveEditChangesAsync(LandmarkEditViewModel? model)

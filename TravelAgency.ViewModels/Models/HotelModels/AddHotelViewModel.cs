@@ -8,18 +8,18 @@ namespace TravelAgency.ViewModels.Models.HotelModels
     public class AddHotelViewModel
     {
         [Required(ErrorMessage = HotelNameIsRequerd)]
-        [MinLength(MinLenghtHotelName, ErrorMessage = HotelNameMinLenght)]
-        [MaxLength(MaxLenghtHotelName, ErrorMessage = HotelNameMaxLenght)]
+        [MinLength(MinLenghtHotelName, ErrorMessage = HotelNameMinLenghtRequired)]
+        [MaxLength(MaxLenghtHotelName, ErrorMessage = HotelNameMaxLenghtRequired)]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = DescriptionIsRequerd)]
-        [MinLength(MinLenghtDescription, ErrorMessage = DescriptionMinLenght)]
-        [MaxLength(MaxLenghtDescription, ErrorMessage = DescriptionMaxLenght)]
+        [MinLength(MinLenghtDescription, ErrorMessage = DescriptionMinLenghtRequired)]
+        [MaxLength(MaxLenghtDescription, ErrorMessage = DescriptionMaxLenghtRequired)]
         public string Description { get; set; } = null!;
 
         [Required(ErrorMessage = CityNameIsRequerd)]
-        [MinLength(MinLenghtCityName, ErrorMessage = CityNameMinLenght)]
-        [MaxLength(MaxLenghtCityName, ErrorMessage = CityNameMaxLenght)]
+        [MinLength(MinLenghtCityName, ErrorMessage = CityNameMinLenghtRequired)]
+        [MaxLength(MaxLenghtCityName, ErrorMessage = CityNameMaxLenghtRequired)]
         public string CityName { get; set; } = null!;
 
         public string? ImageUrl { get; set; }

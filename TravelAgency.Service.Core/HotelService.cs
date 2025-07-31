@@ -3,6 +3,7 @@ using TravelAgency.Data.Models;
 using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.HotelModels;
+using TravelAgency.ViewModels.Models.TourModels;
 
 namespace TravelAgency.Service.Core
 {
@@ -184,6 +185,25 @@ namespace TravelAgency.Service.Core
             }
 
             return hotel;
+        }
+
+        public async Task<IEnumerable<GetAllHotelsForAddTourViewModel>> GetHotelsForTourAsync(string? id)
+        {
+            IEnumerable<GetAllHotelsForAddTourViewModel>? hotels =  await _hotelRepository
+                    .GetAllAttached()
+                    .AsNoTracking()
+                    .IgnoreQueryFilters()
+                    .Where(h => h.DestinationId.ToString().ToLower() == id.ToLower())
+                    .Select(h => new GetAllHotelsForAddTourViewModel 
+                    {
+                        Id = h.Id,
+                        Name = h.HotelName,
+                        DaysStay = h.DaysStay,
+                        Price = h.Price,
+                    })
+                    .ToArrayAsync();
+
+            return hotels;
         }
 
         public async Task<bool> SaveEditChangesAsync(HotelEditViewModel? model)

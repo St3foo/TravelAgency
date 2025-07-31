@@ -10,13 +10,13 @@ namespace TravelAgency.ViewModels.Models.DestinationModels
         public string Id { get; set; } = null!;
 
         [Required(ErrorMessage = NameIsRequerd)]
-        [MinLength(MinLenghtCountryName, ErrorMessage = NameMinLenght)]
-        [MaxLength(MaxLenghtCountryName, ErrorMessage = NameMaxLenght)]
+        [MinLength(MinLenghtCountryName, ErrorMessage = NameMinLenghtRequired)]
+        [MaxLength(MaxLenghtCountryName, ErrorMessage = NameMaxLenghtRequired)]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = DescriptionIsRequerd)]
-        [MinLength(MinLenghtDescription, ErrorMessage = DescriptionMinLenght)]
-        [MaxLength(MaxLenghtDescription, ErrorMessage = DescriptionMaxLenght)]
+        [MinLength(MinLenghtDescription, ErrorMessage = DescriptionMinLenghtRequired)]
+        [MaxLength(MaxLenghtDescription, ErrorMessage = DescriptionMaxLenghtRequired)]
         public string Description { get; set; } = null!;
 
         public string? ImageUrl { get; set; }
