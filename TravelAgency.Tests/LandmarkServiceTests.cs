@@ -14,10 +14,8 @@ namespace TravelAgency.Tests
     public class LandmarkServiceTests
     {
         private Mock<ILandmarkRepository> _landmarkRepositoryMock;
-        private ILandmarkService _landmarkService;
-
         private Mock<IDestinationRepository> _destinationRepositoryMock;
-        private IDestinationService _destinationService;
+        private ILandmarkService _landmarkService;
 
         [SetUp]
         public void Setup()
@@ -25,8 +23,6 @@ namespace TravelAgency.Tests
             _landmarkRepositoryMock = new Mock<ILandmarkRepository>(MockBehavior.Strict);
             _destinationRepositoryMock = new Mock<IDestinationRepository>(MockBehavior.Strict);
             _landmarkService = new LandmarkService(_landmarkRepositoryMock.Object, _destinationRepositoryMock.Object);
-
-            _destinationService = new DestinationService(_destinationRepositoryMock.Object);
         }
 
         [Test]
@@ -482,6 +478,7 @@ namespace TravelAgency.Tests
         public async Task GetAllLandmarksForAdminReturnsAllLandmarks() 
         {
             var landmarkId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var landmarkId1 = Guid.Parse("a4c32ad7-eaa4-4498-9986-24518b4d022a");
             var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
 
             var destination = new Destination
@@ -503,7 +500,7 @@ namespace TravelAgency.Tests
             };
             var landmark1 = new Landmark
             {
-                Id = landmarkId,
+                Id = landmarkId1,
                 Name = "Name",
                 Description = "Description",
                 ImageUrl = null,
@@ -635,7 +632,7 @@ namespace TravelAgency.Tests
         }
 
         [Test]
-        public async Task SaveEditChangesAsync_UpdateFails_ReturnsFalse()
+        public async Task SaveEditChangesAsyncUpdateFailsReturnsFalse()
         {
             var model = new LandmarkEditViewModel
             {
