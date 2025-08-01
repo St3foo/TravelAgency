@@ -22,6 +22,11 @@ namespace TravelAgency.Service.Core
         {
             bool result = false;
 
+            if (model == null)
+            {
+                return result;
+            }
+
             Destination? destination = await _destinationRepository
                 .SingleOrDefaultAsync(d => d.Id.ToString() == model.DestinationId);
 
