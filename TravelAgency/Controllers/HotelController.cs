@@ -60,6 +60,11 @@ namespace TravelAgency.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
+                if (!String.IsNullOrEmpty(search))
+                {
+                    hotels = hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
+                }
+
                 ViewBag.CurrentFilter = search;
 
                 var pagedList = hotels.ToPagedList(page, PageSize);

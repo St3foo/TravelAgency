@@ -60,6 +60,11 @@ namespace TravelAgency.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
+                if (!String.IsNullOrEmpty(search))
+                {
+                    landmarks = landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
+                }
+
                 ViewBag.CurrentFilter = search;
 
                 var pagedList = landmarks.ToPagedList(page, PageSize);

@@ -10,7 +10,7 @@
 <div class="container mt-5">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-primary">@ViewData["Title"]</h2>
-        <form method="get" action="@Url.Action("Index", "Landmark")" class="d-flex mt-3 mt-md-0" role="search">
+        <form method="get" action="@Url.Action("Filter", "Landmark")" class="d-flex mt-3 mt-md-0" role="search">
             <input type="text" name="search" value="@ViewBag.CurrentFilter" class="form-control me-2" placeholder="Search landmarks..." style="width: 300px;" />
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
@@ -58,6 +58,6 @@
 </div>
 
 @{
-    ViewBag.PaginationAction = "Index";
+    ViewBag.PaginationAction = "Filter";
     ViewBag.PaginationController = "Landmark";
 }

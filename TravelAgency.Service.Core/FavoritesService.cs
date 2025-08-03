@@ -69,6 +69,9 @@ namespace TravelAgency.Service.Core
 
         public async Task RemoveFromFavoritesAsync(string? userId, string? landmarkId)
         {
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(landmarkId))
+                return;
+
             UserLandmark? landmark = await _userLandmarkRepository
                 .SingleOrDefaultAsync(ul => ul.UserId.ToLower() == userId.ToLower() && ul.LandmarkId.ToString() == landmarkId);
 

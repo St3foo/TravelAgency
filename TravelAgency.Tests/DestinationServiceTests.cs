@@ -5,6 +5,7 @@ using TravelAgency.Service.Core;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.DestinationModels;
 using MockQueryable;
+using MockQueryable.Moq;
 
 
 namespace TravelAgency.Tests
