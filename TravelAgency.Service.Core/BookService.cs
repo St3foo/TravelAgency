@@ -76,7 +76,7 @@ namespace TravelAgency.Service.Core
             return bookings;
         }
 
-        public async Task<AddBookingViewModel> GetBookingDetailsAsync(string? tourId)
+        public async Task<AddBookingViewModel> GetBookingDetailsForAddAsync(string? tourId)
         {
             AddBookingViewModel? model = null;
 

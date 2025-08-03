@@ -47,7 +47,7 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                var model = await _bookService.GetBookingDetailsAsync(id);
+                var model = await _bookService.GetBookingDetailsForAddAsync(id);
 
                 if (model == null)
                 {
