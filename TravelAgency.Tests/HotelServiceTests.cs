@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using MockQueryable;
 using MockQueryable.Moq;
 using Moq;
 using TravelAgency.Data.Models;
@@ -7,7 +6,6 @@ using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.HotelModels;
-using TravelAgency.ViewModels.Models.LandmarkModels;
 using TravelAgency.ViewModels.Models.TourModels;
 
 namespace TravelAgency.Tests
@@ -105,7 +103,7 @@ namespace TravelAgency.Tests
         }
 
         [Test]
-        public async Task DeleteOrRestoreLandmarkAsyncWithValidIdShouldToggleIsDeletedAndUpdate()
+        public async Task DeleteOrRestoreHotelAsyncWithValidIdShouldToggleIsDeletedAndUpdate()
         {
             var id = Guid.NewGuid();
             var hotel = new Hotel
@@ -133,7 +131,7 @@ namespace TravelAgency.Tests
         }
 
         [Test]
-        public async Task DeleteOrRestoreLandmarkAsyncWithNullIdShouldDoNothing()
+        public async Task DeleteOrRestoreHotelAsyncWithNullIdShouldDoNothing()
         {
             await _hotelService.DeleteOrRestoreHotelAsync(null);
 
@@ -142,7 +140,7 @@ namespace TravelAgency.Tests
         }
 
         [Test]
-        public async Task DeleteOrRestoreLandmarkAsyncWithEmptyIdShouldDoNothing()
+        public async Task DeleteOrRestoreHotelAsyncWithEmptyIdShouldDoNothing()
         {
             await _hotelService.DeleteOrRestoreHotelAsync(" ");
 
@@ -182,15 +180,15 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllHotelsViewModel> allLand = await _hotelService.GetAllHotelsAsync();
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsAsync();
 
-            Assert.IsEmpty(allLand);
+            Assert.IsEmpty(allHotels);
         }
 
         [Test]
         public async Task GetAllHotelsReturnList()
         {
-            var hotelkId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var hotelId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
             var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
 
             var destination = new Destination
@@ -201,7 +199,7 @@ namespace TravelAgency.Tests
 
             var hotel = new Hotel
             {
-                Id = hotelkId,
+                Id = hotelId,
                 HotelName = "Name",
                 Description = "Description",
                 ImageUrl = null,               

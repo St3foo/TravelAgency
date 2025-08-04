@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data.Models;
-using TravelAgency.Data.Repository;
 using TravelAgency.Data.Repository.Interfaces;
 using TravelAgency.Service.Core.Contracts;
 using TravelAgency.ViewModels.Models.TourModels;
@@ -18,8 +17,15 @@ namespace TravelAgency.Service.Core
             _tourLandmarkRepository = tourLandmarkRepository;
         }
 
-        public async Task AddTourAsync(AddTourViewModel? model)
+        public async Task<bool> AddTourAsync(AddTourViewModel? model)
         {
+            bool result = false;
+
+            if (model == null)
+            {
+                return result;
+            }
+
             Tour tour = new Tour
             {
                 Name = model.Name,
@@ -42,8 +48,10 @@ namespace TravelAgency.Service.Core
             }
 
             await _tourRepository.AddAsync(tour);
-            await _tourRepository.SaveChangesAsync();
 
+            result = true;
+
+            return result;
         }
 
         public async Task DeleteOrRestoreTourAsync(string? id)
