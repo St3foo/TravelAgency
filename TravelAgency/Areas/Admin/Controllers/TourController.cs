@@ -67,12 +67,7 @@ namespace TravelAgency.Areas.Admin.Controllers
         {
             try
             {
-                IEnumerable<AllDestinationsViewModel> destinations = await _destinationService.GetAllDestinationsForAdminAsync(null);
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    destinations = destinations.Where(d => d.Name.Contains(search));
-                }
+                IEnumerable<AllDestinationsViewModel> destinations = await _destinationService.GetAllDestinationsForAdminAsync(search);
 
                 ViewBag.CurrentFilter = search;
 
@@ -92,14 +87,15 @@ namespace TravelAgency.Areas.Admin.Controllers
             {
                 AddTourViewModel? model = null;
 
-                if (id != null)
+                if (id == null)
                 {
-                    model = new AddTourViewModel
-                    {
-                        DestinationId = Guid.Parse(id)
-                    };
+                    return RedirectToAction(nameof(Index));
                 }
 
+                model = new AddTourViewModel
+                {
+                    DestinationId = Guid.Parse(id)
+                };
                 model.AllHotels = await _hotelService.GetHotelsForTourAsync(id);
                 model.AllLanadmarks = await _landmarkService.GetLandmarksForTourAsync(id);
 

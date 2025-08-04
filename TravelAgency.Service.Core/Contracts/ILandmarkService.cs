@@ -5,11 +5,11 @@ namespace TravelAgency.Service.Core.Contracts
 {
     public interface ILandmarkService
     {
-        Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId);
+        Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId, string? search);
 
-        Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksForAdmin(string? userId);
+        Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksForAdmin(string? userId, string? search);
 
-        Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksByDestinationIdAsync(string? userId, string? destId);
+        Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksByDestinationIdAsync(string? userId, string? destId, string? search);
 
         Task<LandmarkDetailsViewModel> GetLandmarkDetailAsync(string? userId, string? landmarkId);
 

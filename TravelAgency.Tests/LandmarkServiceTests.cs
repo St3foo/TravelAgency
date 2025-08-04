@@ -354,7 +354,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksAsync(null);
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksAsync(null, null);
 
             Assert.IsEmpty(allLand);
         }
@@ -389,7 +389,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(landmarkList);
 
-            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksAsync(null);
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksAsync(null, null);
 
             Assert.IsNotEmpty(allLand);
             Assert.That(landmarkList.Count(), Is.EqualTo(allLand.Count()));
@@ -403,6 +403,84 @@ namespace TravelAgency.Tests
         }
 
         [Test]
+        public async Task GetAllLandmarksBySearchStringReturnList()
+        {
+            var landmarkId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var landmark = new Landmark
+            {
+                Id = landmarkId,
+                Name = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                LocationName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+                UserLandmarks = new List<UserLandmark>()
+            };
+
+            var landmarkList = new List<Landmark> { landmark }.BuildMock();
+
+            _landmarkRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(landmarkList);
+
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksAsync(null, "Name");
+
+            Assert.IsNotEmpty(allLand);
+            Assert.That(landmarkList.Count(), Is.EqualTo(allLand.Count()));
+            foreach (var land in allLand)
+            {
+                GetAllLandmarksViewModel landVm = allLand.FirstOrDefault(l => l.Id.ToString() == land.Id.ToString());
+
+                Assert.IsNotNull(landVm);
+                Assert.That(land.Name, Is.EqualTo(landVm.Name));
+            }
+        }
+
+        [Test]
+        public async Task GetAllLandmarksBySearchStringReturnEmptyListWhenNotFound()
+        {
+            var landmarkId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var landmark = new Landmark
+            {
+                Id = landmarkId,
+                Name = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                LocationName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+                UserLandmarks = new List<UserLandmark>()
+            };
+
+            var landmarkList = new List<Landmark> { landmark }.BuildMock();
+
+            _landmarkRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(landmarkList);
+
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksAsync(null, "W");
+
+            Assert.IsEmpty(allLand);
+        }
+
+        [Test]
         public async Task GetAllLandmarksByDestIdReturnEmptyListWhenThereIsNoMatch() 
         {
             List<Landmark> landmarks = new List<Landmark>();
@@ -412,7 +490,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksByDestinationIdAsync(null, "ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksByDestinationIdAsync(null, "ca67ea43-c1b6-4a0e-b501-bd5393bb98fd", null);
 
             Assert.IsEmpty(allLand);
         }
@@ -447,7 +525,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(landmarkList);
 
-            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksByDestinationIdAsync(null, destinationId.ToString());
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksByDestinationIdAsync(null, destinationId.ToString(), null);
 
             Assert.IsNotEmpty(allLand);
             Assert.That(landmarkList.Count(), Is.EqualTo(allLand.Count()));
@@ -461,6 +539,84 @@ namespace TravelAgency.Tests
         }
 
         [Test]
+        public async Task GetAllLandmarksByDestIdAndSearchStringReturnLandmarksWhenIdIsCorrectAndStringIsPresent()
+        {
+            var landmarkId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var landmark = new Landmark
+            {
+                Id = landmarkId,
+                Name = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                LocationName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+                UserLandmarks = new List<UserLandmark>()
+            };
+
+            var landmarkList = new List<Landmark> { landmark }.BuildMock();
+
+            _landmarkRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(landmarkList);
+
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksByDestinationIdAsync(null, destinationId.ToString(), "Name");
+
+            Assert.IsNotEmpty(allLand);
+            Assert.That(landmarkList.Count(), Is.EqualTo(allLand.Count()));
+            foreach (var land in allLand)
+            {
+                GetAllLandmarksViewModel landVm = allLand.FirstOrDefault(l => l.Id.ToString() == land.Id.ToString());
+
+                Assert.IsNotNull(landVm);
+                Assert.That(land.Name, Is.EqualTo(landVm.Name));
+            }
+        }
+
+        [Test]
+        public async Task GetAllLandmarksByDestIdAndSearchStringReturnEmptyListWhenThereIsNoMatchingWord()
+        {
+            var landmarkId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var landmark = new Landmark
+            {
+                Id = landmarkId,
+                Name = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                LocationName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+                UserLandmarks = new List<UserLandmark>()
+            };
+
+            var landmarkList = new List<Landmark> { landmark }.BuildMock();
+
+            _landmarkRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(landmarkList);
+
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksByDestinationIdAsync(null, destinationId.ToString(), "W");
+
+            Assert.IsEmpty(allLand);
+        }
+
+        [Test]
         public async Task GetAllLandmarksForAdminReturnEmptyListWhenTherAreNoLandmarks() 
         {
             List<Landmark> landmarks = new List<Landmark>();
@@ -470,7 +626,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksForAdmin(null);
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksForAdmin(null, null);
 
             Assert.IsEmpty(allLand);
         }
@@ -519,7 +675,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(landmarkList);
 
-            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksForAdmin(null);
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksForAdmin(null, null);
 
             Assert.IsNotEmpty(allLand);
             Assert.That(landmarkList.Count(), Is.EqualTo(allLand.Count()));
@@ -530,6 +686,112 @@ namespace TravelAgency.Tests
                 Assert.IsNotNull(landVm);
                 Assert.That(land.Name, Is.EqualTo(landVm.Name));
             }
+        }
+
+        [Test]
+        public async Task GetAllLandmarksForAdminWithSearchWordReturnsAllLandmarksThatMatchWord()
+        {
+            var landmarkId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var landmarkId1 = Guid.Parse("a4c32ad7-eaa4-4498-9986-24518b4d022a");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var landmark = new Landmark
+            {
+                Id = landmarkId,
+                Name = "Bulgaria",
+                Description = "Description",
+                ImageUrl = null,
+                LocationName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+                UserLandmarks = new List<UserLandmark>()
+            };
+            var landmark1 = new Landmark
+            {
+                Id = landmarkId1,
+                Name = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                LocationName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+                UserLandmarks = new List<UserLandmark>(),
+                IsDeleted = true
+            };
+
+
+            var landmarkList = new List<Landmark> { landmark, landmark1 }.BuildMock();
+
+            _landmarkRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(landmarkList);
+
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksForAdmin(null, "Bul");
+
+            Assert.IsNotEmpty(allLand);
+            Assert.That( 1 , Is.EqualTo(allLand.Count()));
+            foreach (var land in allLand)
+            {
+                GetAllLandmarksViewModel landVm = allLand.FirstOrDefault(l => l.Id.ToString() == land.Id.ToString());
+
+                Assert.IsNotNull(landVm);
+                Assert.That(land.Name, Is.EqualTo(landVm.Name));
+            }
+        }
+
+        [Test]
+        public async Task GetAllLandmarksForAdminWithSearchWordReturnsEmptyCollectionWhenNoMatchingWordIsFound()
+        {
+            var landmarkId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var landmarkId1 = Guid.Parse("a4c32ad7-eaa4-4498-9986-24518b4d022a");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var landmark = new Landmark
+            {
+                Id = landmarkId,
+                Name = "Bulgaria",
+                Description = "Description",
+                ImageUrl = null,
+                LocationName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+                UserLandmarks = new List<UserLandmark>()
+            };
+            var landmark1 = new Landmark
+            {
+                Id = landmarkId1,
+                Name = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                LocationName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+                UserLandmarks = new List<UserLandmark>(),
+                IsDeleted = true
+            };
+
+
+            var landmarkList = new List<Landmark> { landmark, landmark1 }.BuildMock();
+
+            _landmarkRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(landmarkList);
+
+            IEnumerable<GetAllLandmarksViewModel> allLand = await _landmarkService.GetAllLandmarksForAdmin(null, "W");
+
+            Assert.IsEmpty(allLand);
         }
 
         [Test]
