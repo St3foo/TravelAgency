@@ -21,22 +21,12 @@ namespace TravelAgency.Areas.Admin.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Index(string? id, string? search, int page = 1)
+        public async Task<IActionResult> Index(string? search, int page = 1)
         {
 
             try
             {
-                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksForAdmin(GetUserId());
-
-                if (id != null)
-                {
-                    landmarks = await _landmarkService.GetAllLandmarksByDestinationIdAsync(GetUserId(), id);
-                }
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    landmarks = landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
-                }
+                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksForAdmin(GetUserId(), search);
 
                 ViewBag.CurrentFilter = search;
 

@@ -27,12 +27,7 @@ namespace TravelAgency.Controllers
 
             try
             {
-                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksAsync(GetUserId());
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    landmarks = landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
-                }
+                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksAsync(GetUserId(), search);
 
                 ViewBag.CurrentFilter = search;
 
@@ -53,17 +48,7 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksByDestinationIdAsync(GetUserId(), id);
-
-                if (landmarks == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    landmarks = landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
-                }
+                IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkService.GetAllLandmarksByDestinationIdAsync(GetUserId(), id, search);
 
                 ViewBag.CurrentFilter = search;
 

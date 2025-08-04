@@ -68,7 +68,7 @@ namespace TravelAgency.Service.Core
             }
         }
 
-        public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId)
+        public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksAsync(string? userId, string? search)
         {
             IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkRepository
                 .GetAllAttached()
@@ -87,10 +87,15 @@ namespace TravelAgency.Service.Core
                 })
                 .ToArrayAsync();
 
+            if (!String.IsNullOrEmpty(search))
+            {
+                return landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
+            }
+
             return landmarks;
         }
 
-        public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksByDestinationIdAsync(string? userId, string? destId)
+        public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksByDestinationIdAsync(string? userId, string? destId, string? search)
         {
             IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkRepository
                 .GetAllAttached()
@@ -108,10 +113,15 @@ namespace TravelAgency.Service.Core
                 })
                 .ToArrayAsync();
 
+            if (!String.IsNullOrEmpty(search))
+            {
+                return landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
+            }
+
             return landmarks;
         }
 
-        public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksForAdmin(string? userId)
+        public async Task<IEnumerable<GetAllLandmarksViewModel>> GetAllLandmarksForAdmin(string? userId, string? search)
         {
             IEnumerable<GetAllLandmarksViewModel> landmarks = await _landmarkRepository
                 .GetAllAttached()
@@ -130,6 +140,11 @@ namespace TravelAgency.Service.Core
                     IsDeleted = l.IsDeleted
                 })
                 .ToArrayAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                return landmarks.Where(l => l.Name.Contains(search) || l.Destination.Contains(search));
+            }
 
             return landmarks;
         }

@@ -49,11 +49,6 @@ namespace TravelAgency.Controllers
             {
                 IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsByDestinationIdAsync(id, search);
 
-                if (hotels == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
                 ViewBag.CurrentFilter = search;
 
                 var pagedList = hotels.ToPagedList(page, PageSize);
