@@ -73,7 +73,7 @@ namespace TravelAgency.Service.Core
             }
         }
 
-        public async Task<IEnumerable<GetAllToursViewModel>> GetAllToursAsync()
+        public async Task<IEnumerable<GetAllToursViewModel>> GetAllToursAsync(string? search)
         {
             IEnumerable<GetAllToursViewModel> tours = await _tourRepository
                 .GetAllAttached()
@@ -91,10 +91,15 @@ namespace TravelAgency.Service.Core
                 })
                 .ToArrayAsync();
 
+            if (!String.IsNullOrEmpty(search))
+            {
+                return tours.Where(t => t.Name.Contains(search) || t.Destination.Contains(search) || t.HotelName.Contains(search));
+            }
+
             return tours;
         }
 
-        public async Task<IEnumerable<GetAllToursViewModel>> GetAllToursForAdminAsync()
+        public async Task<IEnumerable<GetAllToursViewModel>> GetAllToursForAdminAsync(string? search)
         {
             IEnumerable<GetAllToursViewModel> tours = await _tourRepository
                 .GetAllAttached()
@@ -112,6 +117,11 @@ namespace TravelAgency.Service.Core
                     Price = t.Price
                 })
                 .ToArrayAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                return tours.Where(t => t.Name.Contains(search) || t.HotelName.Contains(search) || t.Destination.Contains(search));
+            }
 
             return tours;
         }

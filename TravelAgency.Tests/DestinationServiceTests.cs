@@ -269,6 +269,61 @@ namespace TravelAgency.Tests
         }
 
         [Test]
+        public async Task GetAllDestinationForAdminReturnsDestinationFilteredBySearchWord()
+        {
+            List<Destination> destList = new List<Destination>()
+            {
+                new Destination
+                {
+                    Id = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1"),
+                    CountryName = "Bulgaria",
+                    ImageUrl = null
+                }
+            };
+            IQueryable<Destination> list = destList.BuildMock();
+
+            _destinationRepositoryMock
+                .Setup(d => d.GetAllAttached())
+                .Returns(list);
+
+            IEnumerable<AllDestinationsViewModel> destViewModel = await _destinationService.GetAllDestinationsForAdminAsync("Bul");
+
+            Assert.IsNotNull(destViewModel);
+            Assert.That(destViewModel.Count(), Is.EqualTo(destList.Count()));
+
+            foreach (var dest in destList)
+            {
+                AllDestinationsViewModel? destVm = destViewModel.FirstOrDefault(d => d.Id.ToString() == dest.Id.ToString());
+
+                Assert.IsNotNull(destVm);
+                Assert.That(dest.CountryName, Is.EqualTo(destVm.Name));
+            }
+        }
+
+        [Test]
+        public async Task GetAllDestinationForAdminReturnsEmptyCollectionWhenWordForFilterDontMatch()
+        {
+            List<Destination> destList = new List<Destination>()
+            {
+                new Destination
+                {
+                    Id = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1"),
+                    CountryName = "Bulgaria",
+                    ImageUrl = null
+                }
+            };
+            IQueryable<Destination> list = destList.BuildMock();
+
+            _destinationRepositoryMock
+                .Setup(d => d.GetAllAttached())
+                .Returns(list);
+
+            IEnumerable<AllDestinationsViewModel> destViewModel = await _destinationService.GetAllDestinationsForAdminAsync("A");
+
+            Assert.IsEmpty(destViewModel);
+        }
+
+        [Test]
         public async Task GetDestinationDetailsReturnsNullWithNotExistingId() 
         {
             List<Destination> emptyList = new List<Destination>();

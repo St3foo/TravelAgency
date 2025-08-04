@@ -31,13 +31,7 @@ namespace TravelAgency.Areas.Admin.Controllers
             try
             {
 
-                IEnumerable<GetAllToursViewModel> tours = await _tourService.GetAllToursForAdminAsync();
-
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    tours = tours.Where(t => t.Name.Contains(search) || t.HotelName.Contains(search) || t.Destination.Contains(search));
-                }
+                IEnumerable<GetAllToursViewModel> tours = await _tourService.GetAllToursForAdminAsync(search);
 
                 ViewBag.CurrentFilter = search;
 

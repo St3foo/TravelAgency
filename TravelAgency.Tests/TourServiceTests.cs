@@ -147,7 +147,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllToursViewModel> allTours = await _tourService.GetAllToursAsync();
+            IEnumerable<GetAllToursViewModel> allTours = await _tourService.GetAllToursAsync(null);
 
             Assert.IsEmpty(allTours);
         }
@@ -187,7 +187,7 @@ namespace TravelAgency.Tests
                 .Setup(r => r.GetAllAttached())
                 .Returns(mockTours);
 
-            var result = await _tourService.GetAllToursAsync();
+            var result = await _tourService.GetAllToursAsync(null);
 
             Assert.IsNotNull(result);
             var list = result.ToList();
@@ -200,6 +200,81 @@ namespace TravelAgency.Tests
         }
 
         [Test]
+        public async Task GetAllToursReturnToursContainingTourWord()
+        {
+            var tours = new List<Tour>
+            {
+                new Tour
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Bulgaria",
+                    Destination = new Destination { CountryName = "Italy" },
+                    Hotel = new Hotel { HotelName = "Hotel Roma" },
+                    IsDeleted = false,
+                    ImageUrl = "image1.jpg",
+                    DaysStay = 5,
+                    Price = 1000
+                },
+                new Tour
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test Tour 2",
+                    Destination = new Destination { CountryName = "France" },
+                    Hotel = new Hotel { HotelName = "Hotel Paris" },
+                    IsDeleted = true,
+                    ImageUrl = "image2.jpg",
+                    DaysStay = 7,
+                    Price = 1500
+                }
+            }.AsQueryable();
+
+            var mockTours = tours.BuildMock();
+
+            _tourRepositoryMock
+                .Setup(r => r.GetAllAttached())
+                .Returns(mockTours);
+
+            var result = await _tourService.GetAllToursAsync("Bul");
+
+            Assert.IsNotNull(result);
+            var list = result.ToList();
+            Assert.AreEqual(1, list.Count);
+
+            Assert.That(list[0].Name, Is.EqualTo("Bulgaria"));
+
+            _tourRepositoryMock.Verify(r => r.GetAllAttached(), Times.Once);
+        }
+
+        [Test]
+        public async Task GetAllToursReturnEmptyCollectionWhenTourWordDontMatch()
+        {
+            var tours = new List<Tour>
+            {
+                new Tour
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Bulgaria",
+                    Destination = new Destination { CountryName = "Italy" },
+                    Hotel = new Hotel { HotelName = "Hotel Roma" },
+                    IsDeleted = false,
+                    ImageUrl = "image1.jpg",
+                    DaysStay = 5,
+                    Price = 1000
+                },
+            }.AsQueryable();
+
+            var mockTours = tours.BuildMock();
+
+            _tourRepositoryMock
+                .Setup(r => r.GetAllAttached())
+                .Returns(mockTours);
+
+            var result = await _tourService.GetAllToursAsync("A");
+
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
         public async Task GetAllToursForAdminReturnEmptyListWhenCollectionIsEmpty()
         {
             List<Tour> tour = new List<Tour>();
@@ -209,7 +284,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllToursViewModel> allTours = await _tourService.GetAllToursForAdminAsync();
+            IEnumerable<GetAllToursViewModel> allTours = await _tourService.GetAllToursForAdminAsync(null);
 
             Assert.IsEmpty(allTours);
         }
@@ -249,7 +324,7 @@ namespace TravelAgency.Tests
                 .Setup(r => r.GetAllAttached())
                 .Returns(mockTours);
 
-            var result = await _tourService.GetAllToursForAdminAsync();
+            var result = await _tourService.GetAllToursForAdminAsync(null);
 
             Assert.IsNotNull(result);
             var list = result.ToList();
@@ -259,6 +334,81 @@ namespace TravelAgency.Tests
             Assert.That(list[1].HotelName, Is.EqualTo("Hotel Paris"));
 
             _tourRepositoryMock.Verify(r => r.GetAllAttached(), Times.Once);
+        }
+
+        [Test]
+        public async Task GetAllToursForAdminReturnToursContainingTourWord()
+        {
+            var tours = new List<Tour>
+            {
+                new Tour
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Bulgaria",
+                    Destination = new Destination { CountryName = "Italy" },
+                    Hotel = new Hotel { HotelName = "Hotel Roma" },
+                    IsDeleted = false,
+                    ImageUrl = "image1.jpg",
+                    DaysStay = 5,
+                    Price = 1000
+                },
+                new Tour
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test Tour 2",
+                    Destination = new Destination { CountryName = "France" },
+                    Hotel = new Hotel { HotelName = "Hotel Paris" },
+                    IsDeleted = true,
+                    ImageUrl = "image2.jpg",
+                    DaysStay = 7,
+                    Price = 1500
+                }
+            }.AsQueryable();
+
+            var mockTours = tours.BuildMock();
+
+            _tourRepositoryMock
+                .Setup(r => r.GetAllAttached())
+                .Returns(mockTours);
+
+            var result = await _tourService.GetAllToursForAdminAsync("Bul");
+
+            Assert.IsNotNull(result);
+            var list = result.ToList();
+            Assert.AreEqual(1, list.Count);
+
+            Assert.That(list[0].Name, Is.EqualTo("Bulgaria"));
+
+            _tourRepositoryMock.Verify(r => r.GetAllAttached(), Times.Once);
+        }
+
+        [Test]
+        public async Task GetAllToursForAdminReturnEmptyCollectionWhenTourWordDontMatch()
+        {
+            var tours = new List<Tour>
+            {
+                new Tour
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Bulgaria",
+                    Destination = new Destination { CountryName = "Italy" },
+                    Hotel = new Hotel { HotelName = "Hotel Roma" },
+                    IsDeleted = false,
+                    ImageUrl = "image1.jpg",
+                    DaysStay = 5,
+                    Price = 1000
+                },
+            }.AsQueryable();
+
+            var mockTours = tours.BuildMock();
+
+            _tourRepositoryMock
+                .Setup(r => r.GetAllAttached())
+                .Returns(mockTours);
+
+            var result = await _tourService.GetAllToursForAdminAsync("A");
+
+            Assert.IsEmpty(result);
         }
 
         [Test]

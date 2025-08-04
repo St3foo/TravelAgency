@@ -4,9 +4,9 @@ namespace TravelAgency.Service.Core.Contracts
 {
     public interface ITourService
     {
-        Task<IEnumerable<GetAllToursViewModel>> GetAllToursAsync();
+        Task<IEnumerable<GetAllToursViewModel>> GetAllToursAsync(string? search);
 
-        Task<IEnumerable<GetAllToursViewModel>> GetAllToursForAdminAsync();
+        Task<IEnumerable<GetAllToursViewModel>> GetAllToursForAdminAsync(string? search);
 
         Task<TourDetailsViewModel> GetTourDetailsAsync(string? id);
 

@@ -23,12 +23,7 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                var tours = await _tourService.GetAllToursAsync();
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    tours = tours.Where(t => t.Name.Contains(search) || t.Destination.Contains(search) || t.HotelName.Contains(search));
-                }
+                var tours = await _tourService.GetAllToursAsync(search);
 
                 ViewBag.CurrentFilter = search;
 
