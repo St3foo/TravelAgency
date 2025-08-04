@@ -73,7 +73,7 @@ namespace TravelAgency.Areas.Admin.Controllers
         {
             try
             {
-                IEnumerable<AllDestinationsViewModel> destinations = await _destinationService.GetAllDestinationsForAdminAsync();
+                IEnumerable<AllDestinationsViewModel> destinations = await _destinationService.GetAllDestinationsForAdminAsync(null);
 
                 if (!String.IsNullOrEmpty(search))
                 {

@@ -55,7 +55,7 @@ namespace TravelAgency.Service.Core
             }
         }
 
-        public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsAsync()
+        public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsAsync(string? search)
         {
             IEnumerable<AllDestinationsViewModel> destinations = await _destinationRepository
                 .GetAllAttached()
@@ -69,10 +69,15 @@ namespace TravelAgency.Service.Core
                 })
                 .ToArrayAsync();
 
+            if (!String.IsNullOrEmpty(search))
+            {
+                return destinations.Where(d => d.Name.Contains(search));
+            }
+
             return destinations;
         }
 
-        public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsForAdminAsync()
+        public async Task<IEnumerable<AllDestinationsViewModel>> GetAllDestinationsForAdminAsync(string? search)
         {
             IEnumerable<AllDestinationsViewModel> destinations = await _destinationRepository
                 .GetAllAttached()
@@ -86,6 +91,11 @@ namespace TravelAgency.Service.Core
                     IsDeleted = d.IsDeleted
                 })
                 .ToArrayAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                destinations = destinations.Where(d => d.Name.Contains(search));
+            }
 
             return destinations;
         }

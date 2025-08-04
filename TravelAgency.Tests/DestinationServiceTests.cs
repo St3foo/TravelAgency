@@ -69,7 +69,7 @@ namespace TravelAgency.Tests
                 .Setup(d => d.GetAllAttached())
                 .Returns(emptyQueryable);
 
-            IEnumerable<AllDestinationsViewModel> emptyViewModel = await _destinationService.GetAllDestinationsAsync();
+            IEnumerable<AllDestinationsViewModel> emptyViewModel = await _destinationService.GetAllDestinationsAsync(null);
 
             Assert.IsNotNull(emptyViewModel);
             Assert.That(emptyViewModel.Count(), Is.EqualTo(emptyList.Count()));
@@ -93,7 +93,7 @@ namespace TravelAgency.Tests
                 .Setup(d => d.GetAllAttached())
                 .Returns(list);
 
-            IEnumerable<AllDestinationsViewModel> destViewModel = await _destinationService.GetAllDestinationsAsync();
+            IEnumerable<AllDestinationsViewModel> destViewModel = await _destinationService.GetAllDestinationsAsync(null);
 
             Assert.IsNotNull(destViewModel);
             Assert.That(destViewModel.Count(), Is.EqualTo(destList.Count()));
@@ -105,6 +105,61 @@ namespace TravelAgency.Tests
                 Assert.IsNotNull(destVm);
                 Assert.That(dest.CountryName, Is.EqualTo(destVm.Name));
             }
+        }
+
+        [Test]
+        public async Task GetAllDestinationReturnsDestinationFilteredBySearchWord()
+        {
+            List<Destination> destList = new List<Destination>()
+            {
+                new Destination
+                {
+                    Id = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1"),
+                    CountryName = "Bulgaria",
+                    ImageUrl = null
+                }
+            };
+            IQueryable<Destination> list = destList.BuildMock();
+
+            _destinationRepositoryMock
+                .Setup(d => d.GetAllAttached())
+                .Returns(list);
+
+            IEnumerable<AllDestinationsViewModel> destViewModel = await _destinationService.GetAllDestinationsAsync("Bul");
+
+            Assert.IsNotNull(destViewModel);
+            Assert.That(destViewModel.Count(), Is.EqualTo(destList.Count()));
+
+            foreach (var dest in destList)
+            {
+                AllDestinationsViewModel? destVm = destViewModel.FirstOrDefault(d => d.Id.ToString() == dest.Id.ToString());
+
+                Assert.IsNotNull(destVm);
+                Assert.That(dest.CountryName, Is.EqualTo(destVm.Name));
+            }
+        }
+
+        [Test]
+        public async Task GetAllDestinationReturnsEmptyCollectionWhenWordForFilterDontMatch()
+        {
+            List<Destination> destList = new List<Destination>()
+            {
+                new Destination
+                {
+                    Id = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1"),
+                    CountryName = "Bulgaria",
+                    ImageUrl = null
+                }
+            };
+            IQueryable<Destination> list = destList.BuildMock();
+
+            _destinationRepositoryMock
+                .Setup(d => d.GetAllAttached())
+                .Returns(list);
+
+            IEnumerable<AllDestinationsViewModel> destViewModel = await _destinationService.GetAllDestinationsAsync("A");
+
+            Assert.IsEmpty(destViewModel);
         }
 
         [Test]
@@ -174,7 +229,7 @@ namespace TravelAgency.Tests
                 .Setup(d => d.GetAllAttached())
                 .Returns(emptyQueryable);
 
-            IEnumerable<AllDestinationsViewModel> emptyViewModel = await _destinationService.GetAllDestinationsForAdminAsync();
+            IEnumerable<AllDestinationsViewModel> emptyViewModel = await _destinationService.GetAllDestinationsForAdminAsync(null);
 
             Assert.IsNotNull(emptyViewModel);
             Assert.That(emptyViewModel.Count(), Is.EqualTo(emptyList.Count()));
@@ -199,7 +254,7 @@ namespace TravelAgency.Tests
                 .Setup(d => d.GetAllAttached())
                 .Returns(list);
 
-            IEnumerable<AllDestinationsViewModel> destViewModel = await _destinationService.GetAllDestinationsForAdminAsync();
+            IEnumerable<AllDestinationsViewModel> destViewModel = await _destinationService.GetAllDestinationsForAdminAsync(null);
 
             Assert.IsNotNull(destViewModel);
             Assert.That(destViewModel.Count(), Is.EqualTo(destList.Count()));

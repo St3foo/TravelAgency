@@ -63,7 +63,7 @@ namespace TravelAgency.Areas.Admin.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                model.Destinations = await _destinationService.GetAllDestinationsAsync();
+                model.Destinations = await _destinationService.GetAllDestinationsAsync(null);
 
                 return View(model);
             }
@@ -81,7 +81,7 @@ namespace TravelAgency.Areas.Admin.Controllers
             {
                 if (!this.ModelState.IsValid)
                 {
-                    model.Destinations = await _destinationService.GetAllDestinationsAsync();
+                    model.Destinations = await _destinationService.GetAllDestinationsAsync(null);
                     return View(model);
                 }
 
@@ -89,7 +89,7 @@ namespace TravelAgency.Areas.Admin.Controllers
 
                 if (result == false)
                 {
-                    model.Destinations = await _destinationService.GetAllDestinationsAsync();
+                    model.Destinations = await _destinationService.GetAllDestinationsAsync(null);
                     return View(model);
                 }
 
@@ -110,7 +110,7 @@ namespace TravelAgency.Areas.Admin.Controllers
             {
                 AddLandmarkViewModel landmark = new AddLandmarkViewModel
                 {
-                    Destinations = await _destinationService.GetAllDestinationsAsync(),
+                    Destinations = await _destinationService.GetAllDestinationsAsync(null),
                 };
 
                 return View(landmark);
@@ -129,7 +129,7 @@ namespace TravelAgency.Areas.Admin.Controllers
             {
                 if (!this.ModelState.IsValid)
                 {
-                    model.Destinations = await _destinationService.GetAllDestinationsAsync();
+                    model.Destinations = await _destinationService.GetAllDestinationsAsync(null);
                     return View(model);
                 }
 
@@ -137,7 +137,7 @@ namespace TravelAgency.Areas.Admin.Controllers
 
                 if (result == false)
                 {
-                    model.Destinations = await _destinationService.GetAllDestinationsAsync();
+                    model.Destinations = await _destinationService.GetAllDestinationsAsync(null);
                     return View(model);
                 }
 

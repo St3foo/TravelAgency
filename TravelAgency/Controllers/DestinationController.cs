@@ -25,13 +25,7 @@ namespace TravelAgency.Controllers
             try
             {
 
-                var destinations = await _destinationService.GetAllDestinationsAsync();
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    destinations = destinations.Where(d => d.Name.Contains(search));
-                }
-
+                var destinations = await _destinationService.GetAllDestinationsAsync(search);
 
                 ViewBag.CurrentFilter = search;
 
