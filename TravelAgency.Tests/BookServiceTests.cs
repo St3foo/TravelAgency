@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Identity;
 using MockQueryable.Moq;
 using Moq;
 using TravelAgency.Data.Models;
@@ -254,6 +255,97 @@ namespace TravelAgency.Tests
             var result = await _bookService.GetBookingDetailsForAddAsync(tourId);
 
             Assert.IsNull(result);
+        }
+
+        [Test]
+        public async Task GetUserBookingsAsyncUserNotFoundReturnsNull()
+        {
+            string userId = "invalid-user-id";
+            _userManagerMock
+                .Setup(u => u.FindByIdAsync(userId))
+                .ReturnsAsync((IdentityUser?)null);
+
+            var result = await _bookService.GetUserBookingsAsync(userId);
+
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public async Task GetUserBookingsAsyncValidUserReturnsBookings()
+        {
+            string userId = "test-user-id";
+
+            var user = new IdentityUser { Id = userId };
+            _userManagerMock
+                .Setup(u => u.FindByIdAsync(userId))
+                .ReturnsAsync(user);
+
+            var bookingList = new List<UserTour>
+                {
+                    new UserTour
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = userId,
+                        TourId = Guid.NewGuid(),
+                        StartDate = DateTime.Today,
+                        EndDate = DateTime.Today.AddDays(3),
+                        Tour = new Tour
+                        {
+                            Name = "Adventure Tour",
+                            ImageUrl = "url",
+                            Price = 999.99m,
+                            Destination = new Destination { CountryName = "Italy" },
+                            Hotel = new Hotel { HotelName = "Hotel Roma" }
+                        }
+                    }
+                };
+
+            var bookingsQuery = bookingList.AsQueryable().BuildMock();
+
+            _userTourRepositoryMock
+                .Setup(r => r.GetAllAttached())
+                .Returns(bookingsQuery);
+
+            var result = await _bookService.GetUserBookingsAsync(userId);
+
+            Assert.IsNotNull(result);
+            Assert.That(result.Count(), Is.EqualTo(1));
+            Assert.That(result.First().Name, Is.EqualTo("Adventure Tour"));
+            Assert.That(result.First().DestinationName, Is.EqualTo("Italy"));
+        }
+
+        [Test]
+        public async Task RemoveBookingAsyncValidIdDeletesBooking()
+        {
+            string id = Guid.NewGuid().ToString();
+            var booking = new UserTour { Id = Guid.Parse(id) };
+
+            _userTourRepositoryMock
+                .Setup(r => r.SingleOrDefaultAsync(It.IsAny<Expression<Func<UserTour, bool>>>()))
+                .ReturnsAsync(booking);
+
+            _userTourRepositoryMock
+                .Setup(r => r.HardDeleteAsync(booking))
+                .ReturnsAsync(true)
+                .Verifiable();
+
+            await _bookService.RemoveBookingAsync(id);
+
+            _userTourRepositoryMock.Verify(r => r.HardDeleteAsync(booking), Times.Once);
+        }
+
+        [Test]
+        public async Task RemoveBookingAsyncInvalidIdDoesNotDeleteBooking()
+        {
+            string id = Guid.NewGuid().ToString();
+
+            _userTourRepositoryMock
+                .Setup(r => r.SingleOrDefaultAsync(It.IsAny<Expression<Func<UserTour, bool>>>()))
+                .ReturnsAsync((UserTour?)null);
+
+            await _bookService.RemoveBookingAsync(id);
+
+            _userTourRepositoryMock.Verify(r => r.HardDeleteAsync(It.IsAny<UserTour>()), Times.Never);
         }
     }
 }
