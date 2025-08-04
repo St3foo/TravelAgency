@@ -74,6 +74,7 @@ namespace TravelAgency.Service.Core
                         StartDate = uh.StartDate,
                         EndDate = uh.EndDate
                     })
+                    .OrderBy(uh => uh.StartDate)
                     .ToListAsync();
             }
 
@@ -141,6 +142,7 @@ namespace TravelAgency.Service.Core
                         StartDate = uh.StartDate,
                         EndDate = uh.EndDate
                     })
+                    .OrderBy(Uh => Uh.StartDate)
                     .ToListAsync();
 
             return reservations;

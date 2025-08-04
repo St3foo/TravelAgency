@@ -71,6 +71,7 @@ namespace TravelAgency.Service.Core
                     HotelName = t.Tour.Hotel.HotelName,
                     UserName = t.User.NormalizedUserName
                 })
+                .OrderBy(t => t.StartDate)
                 .ToArrayAsync();
 
             return bookings;
@@ -136,6 +137,7 @@ namespace TravelAgency.Service.Core
                         StartDate = ut.StartDate,
                         EndDate = ut.EndDate,
                     })
+                    .OrderBy(ut => ut.StartDate)
                     .ToListAsync();
             }
 
