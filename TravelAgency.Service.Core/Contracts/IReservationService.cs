@@ -8,7 +8,7 @@ namespace TravelAgency.Service.Core.Contracts
 
         Task<IEnumerable<GetAllReservationViewModel>> GetAllReservationsAsync();
 
-        Task<AddReservationViewModel> GetReservationDetailsAsync(string? hotelId);
+        Task<AddReservationViewModel> GetReservationDetailsForAddAsync(string? hotelId);
 
         Task<bool> AddReservationAsync(string? userId, AddReservationViewModel? model);
 

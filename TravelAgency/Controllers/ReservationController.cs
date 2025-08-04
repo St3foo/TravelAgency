@@ -47,7 +47,7 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                AddReservationViewModel? model = await _reservationService.GetReservationDetailsAsync(id);
+                AddReservationViewModel? model = await _reservationService.GetReservationDetailsForAddAsync(id);
 
                 if (model == null)
                 {

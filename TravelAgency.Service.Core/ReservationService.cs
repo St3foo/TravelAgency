@@ -80,7 +80,7 @@ namespace TravelAgency.Service.Core
             return reservations;
         }
 
-        public async Task<AddReservationViewModel> GetReservationDetailsAsync(string? hotelId)
+        public async Task<AddReservationViewModel> GetReservationDetailsForAddAsync(string? hotelId)
         {
             AddReservationViewModel? model = null;
 
