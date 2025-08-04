@@ -5,11 +5,11 @@ namespace TravelAgency.Service.Core.Contracts
 {
     public interface IHotelService
     {
-        Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync();
+        Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync(string? search);
 
-        Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsForAdminAsync();
+        Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsForAdminAsync(string? search);
 
-        Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsByDestinationIdAsync(string? id);
+        Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsByDestinationIdAsync(string? id, string? search);
 
         Task<HotelDetailsViewModel> GetHotelDetailsAsync(string id);
 

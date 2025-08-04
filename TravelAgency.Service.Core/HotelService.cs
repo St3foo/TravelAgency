@@ -64,7 +64,7 @@ namespace TravelAgency.Service.Core
             }
         }
 
-        public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync()
+        public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsAsync(string? search)
         {
             IEnumerable<GetAllHotelsViewModel> hotels = await _hotelRepository
                 .GetAllAttached()
@@ -82,10 +82,15 @@ namespace TravelAgency.Service.Core
                 })
                 .ToArrayAsync();
 
+            if (!String.IsNullOrEmpty(search))
+            {
+                return hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
+            }
+
             return hotels;
         }
 
-        public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsByDestinationIdAsync(string? id)
+        public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsByDestinationIdAsync(string? id, string? search)
         {
             IEnumerable<GetAllHotelsViewModel> hotels = await _hotelRepository
                 .GetAllAttached()
@@ -103,10 +108,15 @@ namespace TravelAgency.Service.Core
                 })
                 .ToArrayAsync();
 
+            if (!String.IsNullOrEmpty(search))
+            {
+                return hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
+            }
+
             return hotels;
         }
 
-        public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsForAdminAsync()
+        public async Task<IEnumerable<GetAllHotelsViewModel>> GetAllHotelsForAdminAsync(string? search)
         {
             IEnumerable<GetAllHotelsViewModel> hotels = await _hotelRepository
                 .GetAllAttached()
@@ -124,6 +134,11 @@ namespace TravelAgency.Service.Core
                     IsDeleted = h.IsDeleted,
                 })
                 .ToArrayAsync();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                return hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
+            }
 
             return hotels;
         }

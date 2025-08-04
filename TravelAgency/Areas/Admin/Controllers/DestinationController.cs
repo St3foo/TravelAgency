@@ -22,9 +22,7 @@ namespace TravelAgency.Areas.Admin.Controllers
         {
             try
             {
-
                 var destinations = await _destinationService.GetAllDestinationsForAdminAsync(search);
-
 
                 ViewBag.CurrentFilter = search;
 

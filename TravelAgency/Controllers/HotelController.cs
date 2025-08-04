@@ -26,13 +26,7 @@ namespace TravelAgency.Controllers
         {
             try
             {
-
-                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsAsync();
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    hotels = hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
-                }
+                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsAsync(search);
 
                 ViewBag.CurrentFilter = search;
 
@@ -53,16 +47,11 @@ namespace TravelAgency.Controllers
         {
             try
             {
-                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsByDestinationIdAsync(id);
+                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelInterface.GetAllHotelsByDestinationIdAsync(id, search);
 
                 if (hotels == null)
                 {
                     return RedirectToAction(nameof(Index));
-                }
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    hotels = hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
                 }
 
                 ViewBag.CurrentFilter = search;

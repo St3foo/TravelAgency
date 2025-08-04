@@ -180,7 +180,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsAsync();
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsAsync(null);
 
             Assert.IsEmpty(allHotels);
         }
@@ -214,7 +214,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(hotelList);
 
-            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsAsync();
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsAsync(null);
 
             Assert.IsNotEmpty(allHotels);
             Assert.That(hotelList.Count(), Is.EqualTo(allHotels.Count()));
@@ -228,6 +228,82 @@ namespace TravelAgency.Tests
         }
 
         [Test]
+        public async Task GetAllHotelsBySearchStringReturnList()
+        {
+            var hotelId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var hotel = new Hotel
+            {
+                Id = hotelId,
+                HotelName = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                Destination = destination,
+                DestinationId = destinationId,
+                CityName = "Name",
+            };
+
+            var hotelList = new List<Hotel> { hotel }.BuildMock();
+
+            _hotelRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(hotelList);
+
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsAsync("Name");
+
+            Assert.IsNotEmpty(allHotels);
+            Assert.That(hotelList.Count(), Is.EqualTo(allHotels.Count()));
+            foreach (var hot in allHotels)
+            {
+                GetAllHotelsViewModel hotelVm = allHotels.FirstOrDefault(l => l.Id.ToString() == hot.Id.ToString());
+
+                Assert.IsNotNull(hotelVm);
+                Assert.That(hot.Name, Is.EqualTo(hotelVm.Name));
+            }
+        }
+
+        [Test]
+        public async Task GetAllHotelsBySearchStringReturnEmptyList()
+        {
+            var hotelId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var hotel = new Hotel
+            {
+                Id = hotelId,
+                HotelName = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                Destination = destination,
+                DestinationId = destinationId,
+                CityName = "Name",
+            };
+
+            var hotelList = new List<Hotel> { hotel }.BuildMock();
+
+            _hotelRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(hotelList);
+
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsAsync("A");
+
+            Assert.IsEmpty(allHotels);
+        }
+
+        [Test]
         public async Task GetAllHotelsByDestIdReturnEmptyListWhenThereIsNoMatch()
         {
             List<Hotel> hotels = new List<Hotel>();
@@ -237,13 +313,13 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsByDestinationIdAsync("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsByDestinationIdAsync("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd", null);
 
             Assert.IsEmpty(allHotels);
         }
 
         [Test]
-        public async Task GetAllHotelsByDestIdReturnLandmarksWhenIdIsCorrect()
+        public async Task GetAllHotelsByDestIdReturnHotelsWhenIdIsCorrect()
         {
             var hotelId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
             var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
@@ -271,7 +347,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(hotelList);
 
-            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsByDestinationIdAsync(destinationId.ToString());
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsByDestinationIdAsync(destinationId.ToString(), null);
 
             Assert.IsNotEmpty(allHotels);
             Assert.That(hotelList.Count(), Is.EqualTo(allHotels.Count()));
@@ -285,6 +361,82 @@ namespace TravelAgency.Tests
         }
 
         [Test]
+        public async Task GetAllHotelsByDestIdAndSearchStringReturnHotelWhitCorrectIdAndString()
+        {
+            var hotelId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var hotel = new Hotel
+            {
+                Id = hotelId,
+                HotelName = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                CityName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+            };
+
+            var hotelList = new List<Hotel> { hotel }.BuildMock();
+
+            _hotelRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(hotelList);
+
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsByDestinationIdAsync(destinationId.ToString(), "Na");
+
+            Assert.IsNotEmpty(allHotels);
+            Assert.That(hotelList.Count(), Is.EqualTo(allHotels.Count()));
+            foreach (var hot in allHotels)
+            {
+                GetAllHotelsViewModel hotVm = allHotels.FirstOrDefault(l => l.Id.ToString() == hot.Id.ToString());
+
+                Assert.IsNotNull(hotVm);
+                Assert.That(hot.Name, Is.EqualTo(hotVm.Name));
+            }
+        }
+
+        [Test]
+        public async Task GetAllHotelsByDestIdAndSearchStringReturnEmptyCollectionWhneNoMatch()
+        {
+            var hotelId = Guid.Parse("271cf215-ce36-4fc9-87e5-c71e214af3a1");
+            var destinationId = Guid.Parse("ca67ea43-c1b6-4a0e-b501-bd5393bb98fd");
+
+            var destination = new Destination
+            {
+                Id = destinationId,
+                CountryName = "BG"
+            };
+
+            var hotel = new Hotel
+            {
+                Id = hotelId,
+                HotelName = "Name",
+                Description = "Description",
+                ImageUrl = null,
+                CityName = "Loc",
+                Destination = destination,
+                DestinationId = destinationId,
+            };
+
+            var hotelList = new List<Hotel> { hotel }.BuildMock();
+
+            _hotelRepositoryMock
+                .Setup(l => l.GetAllAttached())
+                .Returns(hotelList);
+
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsByDestinationIdAsync(destinationId.ToString(), "A");
+
+            Assert.IsEmpty(allHotels);
+        }
+
+        [Test]
         public async Task GetAllHotelsForAdminReturnEmptyListWhenTherAreNoHotels()
         {
             List<Hotel> hotels = new List<Hotel>();
@@ -294,7 +446,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(queryList);
 
-            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsForAdminAsync();
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsForAdminAsync(null);
 
             Assert.IsEmpty(allHotels);
         }
@@ -341,7 +493,7 @@ namespace TravelAgency.Tests
                 .Setup(l => l.GetAllAttached())
                 .Returns(hotelList);
 
-            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsForAdminAsync();
+            IEnumerable<GetAllHotelsViewModel> allHotels = await _hotelService.GetAllHotelsForAdminAsync(null);
 
             Assert.IsNotEmpty(allHotels);
             Assert.That(hotelList.Count(), Is.EqualTo(allHotels.Count()));

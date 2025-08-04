@@ -20,22 +20,11 @@ namespace TravelAgency.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string? id, string? search, int page = 1)
+        public async Task<IActionResult> Index(string? search, int page = 1)
         {
             try
             {
-
-                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelService.GetAllHotelsForAdminAsync();
-
-                if (id != null)
-                {
-                    hotels = await _hotelService.GetAllHotelsByDestinationIdAsync(id);
-                }
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    hotels = hotels.Where(h => h.Name.Contains(search) || h.City.Contains(search) || h.Destination.Contains(search));
-                }
+                IEnumerable<GetAllHotelsViewModel> hotels = await _hotelService.GetAllHotelsForAdminAsync(search);
 
                 ViewBag.CurrentFilter = search;
 
